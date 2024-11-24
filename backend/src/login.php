@@ -66,3 +66,4 @@ switch ($method) {
         echo $userController->login($loginData);
         break;
 }
+?>

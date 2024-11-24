@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useRouteLoaderData } from "react-router-dom";
 import logo from "../logo/cat.png";
+import { useAuth } from "../util/AuthContext";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 const NavBar = () => {
+  const {authToken} = useAuth();
   return (
     <nav className="flex items-center justify-between py-3 bg-slate-800">
       <Link to={"/"}>
@@ -10,8 +12,9 @@ const NavBar = () => {
           <h1 className="text-xl text-white font-semibold">Market Place.io</h1>
         </div>
       </Link>
-      {localStorage.getItem("authToken") ? (
+      {authToken ? (
         <>
+        <div className="flex items-center mr-4">
           <Link to={"/profile"}>
             <div className="flex items-center gap-1 mr-4 p-1 rounded-md  text-white bg-gray-800 hover:bg-gray-700 focus:outline-none cursor-pointer">
               <UserCircleIcon color="white" width={30} />
@@ -20,6 +23,14 @@ const NavBar = () => {
               </p>
             </div>
           </Link>
+          <Link
+              to="/logout"
+              className="text-white font-semibold hover:text-gray-200"
+              aria-label="Logout"
+            >
+              Logout
+            </Link>
+            </div>
         </>
       ) : (
         <>
