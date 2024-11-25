@@ -1,0 +1,5 @@
+RewriteEngine On
+#Hanle Front Controller
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond ^ index.php [L]
