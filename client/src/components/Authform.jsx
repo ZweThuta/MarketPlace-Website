@@ -62,7 +62,7 @@ const Authform = ({ isLoginPage }) => {
         } else {
           if (isLoginPage) {
             const token = response.data.data.token;
-            login(token); // Use the login function from context
+            login(token);  
             navigate("/");
           } else {
             navigate("/login");

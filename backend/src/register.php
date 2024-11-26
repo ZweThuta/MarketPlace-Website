@@ -37,6 +37,20 @@ class UserController {
             return $this->response(0, 'Database error: ' . $e->getMessage());
         }
     }
+
+    public function getAllUsers() {
+        try {
+            $sql = "SELECT id, name, email FROM users"; // Exclude password
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $this->response(1, 'Users retrieved successfully!', $users);
+        } catch (PDOException $e) {
+            return $this->response(0, 'Database error: ' . $e->getMessage());
+        }
+    }
+
     private function emailExists($email) {
         $sql = "SELECT id FROM users WHERE email = :email";
         $stmt = $this->conn->prepare($sql);
@@ -58,6 +72,10 @@ switch ($method) {
     case 'POST':
         $userData = json_decode(file_get_contents('php://input'));
         echo $userController->createUser ($userData);
+        break;
+        
+    case 'GET':
+        echo $userController->getAllUsers();
         break;
 }
 ?>

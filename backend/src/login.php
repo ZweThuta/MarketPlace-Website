@@ -1,6 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: *");
+header("Access-Control-Allow-Headers: Authorization, Content-Type");
 header("Content-Type: application/json");
 
 include("dbConnect.php");
@@ -15,6 +15,7 @@ class UserController
         $this->conn = $db->connect();
     }
 
+    // Login functionality with token generation
     public function login($loginData)
     {
         try {
@@ -37,12 +38,15 @@ class UserController
                 $tokenData = [
                     'id' => $user['id'],
                     'email' => $user['email'],
-                    'exp' => time() + (86400) // 1 day expiration
+                    'exp' => time() + (86400) // Token expiration (1 day)
                 ];
 
                 $token = base64_encode(json_encode($tokenData));
 
-                return $this->response(1, 'Login successful!', ['token' => $token]);
+                return $this->response(1, 'Login successful!', [
+                    'token' => $token,
+                    'user_id' => $user['id']
+                ]);
             } else {
                 return $this->response(0, 'Invalid email or password!');
             }
@@ -51,11 +55,66 @@ class UserController
         }
     }
 
-    private function response($status, $message, $data = null)
+
+    private function getAuthenticatedUserId()
+    {
+        $headers = apache_request_headers();
+
+        if (!isset($headers['Authorization'])) {
+            return null;
+        }
+
+        $authHeader = $headers['Authorization'];
+        $token = str_replace('Bearer ', '', $authHeader);
+
+
+        $decodedToken = json_decode(base64_decode($token), true);
+
+        if (isset($decodedToken['id']) && isset($decodedToken['exp'])) {
+
+            if ($decodedToken['exp'] < time()) {
+                return null;
+            }
+
+            return $decodedToken['id'];
+        }
+
+        return null;
+    }
+
+
+    public function getUser()
+    {
+        $userId = $this->getAuthenticatedUserId();
+
+        if (!$userId) {
+            return $this->response(0, 'Unauthorized or invalid token!');
+        }
+
+        try {
+            $sql = "SELECT id, name, email FROM users WHERE id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(":id", $userId);
+            $stmt->execute();
+
+            if ($stmt->rowCount() == 0) {
+                return $this->response(0, 'User not found!');
+            }
+
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $this->response(1, 'User retrieved successfully!', $user);
+        } catch (PDOException $e) {
+            return $this->response(0, 'Database error: ' . $e->getMessage());
+        }
+    }
+
+
+    public function response($status, $message, $data = null)
     {
         return json_encode(['status' => $status, 'message' => $message, 'data' => $data]);
     }
 }
+
 
 $method = $_SERVER['REQUEST_METHOD'];
 $userController = new UserController();
@@ -65,5 +124,12 @@ switch ($method) {
         $loginData = json_decode(file_get_contents('php://input'), true);
         echo $userController->login($loginData);
         break;
+
+    case 'GET':
+        echo $userController->getUser();
+        break;
+
+    default:
+        echo $userController->response(0, 'Invalid request method!');
+        break;
 }
-?>
