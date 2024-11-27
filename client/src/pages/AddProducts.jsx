@@ -4,6 +4,9 @@ import { useRef, useState, useEffect } from "react";
 const AddProducts = () => {
   const formRef = useRef(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [secondImagePreview, setSecondImagePreview] = useState(null);
+  const [thirdImagePreview, setThirdImagePreview] = useState(null);
+  const [fourthImagePreview, setFourthImagePreview] = useState(null);
   const [userId, setUserId] = useState("");
   const [productName, setProductName] = useState("");
   const [errors, setErrors] = useState({});
@@ -12,6 +15,9 @@ const AddProducts = () => {
     if (formRef.current) {
       formRef.current.reset();
       setImagePreview(null);
+      setSecondImagePreview(null);
+      setThirdImagePreview(null);
+      setFourthImagePreview(null);
     }
   };
 
@@ -22,23 +28,20 @@ const AddProducts = () => {
     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };
 
-  const handleImageChange = (event) => {
+  const handleImageChange = (event, setPreview) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
+      reader.onloadend = () => setPreview(reader.result);
       reader.readAsDataURL(file);
     }
   };
 
   const validate = () => {
     const newErrors = {};
-    if (!productName.productNameme) {
+    if (!productName.productName) {
       newErrors.productName = "Product name is required";
-    }
-    else if (productName.productName.length < 3) {
+    } else if (productName.productName.length < 3) {
       newErrors.productName = "Name must be at least 3 characters long";
     }
     if (!productName.description) {
@@ -48,18 +51,21 @@ const AddProducts = () => {
       newErrors.price = "Price is required";
     } else if (productName.price < 0) {
       newErrors.price = "Price must be a positive number";
+    } else if (productName.price < 10000) {
+      newErrors.price = "Price must has at least 10000MMK";
     }
     if (!productName.category) {
       newErrors.category = "Category is required";
-    } 
+    }
     if (!productName.quantity) {
       newErrors.quantity = "Stock quantity is required";
     } else if (productName.quantity <= 0) {
       newErrors.quantity = "Stock quantity must has at least one.";
     }
-    if (!productName.image) {
-      newErrors.image = "Image is required";
-    } 
+    if (!imagePreview) newErrors.image = "Cover image is required";
+    if (!secondImagePreview) newErrors.secondImage = "Second image is required";
+    if (!thirdImagePreview) newErrors.thirdImage = "Third image is required";
+    if (!fourthImagePreview) newErrors.fourthImage = "Fourth image is required";
     return newErrors;
   };
 
@@ -105,6 +111,9 @@ const AddProducts = () => {
     formData.append("category", productName.category);
     formData.append("quantity", productName.quantity);
     formData.append("image", imagePreview);
+    formData.append("secondImage", secondImagePreview);
+    formData.append("thirdImage", thirdImagePreview);
+    formData.append("fourthImage", fourthImagePreview);
 
     axios
       .post(import.meta.env.VITE_ADD_PRODUCT_URL, formData)
@@ -116,16 +125,24 @@ const AddProducts = () => {
         }
       })
       .catch(function (error) {
-        console.error("There was an error while adding product:", error.message);
+        console.error(
+          "There was an error while adding product:",
+          error.message
+        );
       });
   };
 
   return (
     <>
       <section className="flex flex-col md:flex-row w-full h-auto p-8">
-        <div className="w-full md:w-1/2 p-6">
-          {/* Image Preview Area */}
-          <div className="h-full flex items-center justify-center border border-gray-300 rounded-lg">
+        {/* Image Preview Area */}
+        <div className="w-full md:w-1/2 p-5">
+          <div>
+            <h1 className="text-xl text-center text-richChocolate font-bold mb-6 uppercase tracking-wide">
+              Image Preview Area
+            </h1>
+          </div>
+          <div className="h-1/2 flex items-center justify-center border border-gray-300 rounded-lg mb-4">
             {imagePreview ? (
               <img
                 src={imagePreview}
@@ -133,14 +150,51 @@ const AddProducts = () => {
                 className="h-full w-full object-cover rounded-lg"
               />
             ) : (
-              <p className="text-gray-800 text-sm">Image Preview Area</p>
+              <p className="text-gray-500 text-sm">Image Preview Area</p>
             )}
           </div>
-        </div>
 
-        <div className="w-full md:w-1/2 p-6 rounded-lg shadow-lg">
-          <h1 className="text-2xl text-richChocolate font-bold mb-6">
-            Add Products
+          <div className="flex flex-row gap-2 h-1/3">
+            <div className="h-full w-1/3 flex items-center justify-center border border-gray-300 rounded-lg mb-4">
+              {secondImagePreview ? (
+                <img
+                  src={secondImagePreview}
+                  alt="Preview"
+                  className="h-full w-full object-cover rounded-lg"
+                />
+              ) : (
+                <p className="text-gray-500 text-sm">Image Preview Area</p>
+              )}
+            </div>
+            <div className="h-full w-1/3 flex items-center justify-center border border-gray-300 rounded-lg mb-4">
+              {thirdImagePreview ? (
+                <img
+                  src={thirdImagePreview}
+                  alt="Preview"
+                  className="h-full w-full object-cover rounded-lg"
+                />
+              ) : (
+                <p className="text-gray-500 text-sm">Image Preview Area</p>
+              )}
+            </div>
+            <div className="h-full w-1/3 flex items-center justify-center border border-gray-300 rounded-lg mb-4">
+              {fourthImagePreview ? (
+                <img
+                  src={fourthImagePreview}
+                  alt="Preview"
+                  className="h-full w-full object-cover rounded-lg"
+                />
+              ) : (
+                <p className="text-gray-500 text-sm">Image Preview Area</p>
+              )}
+            </div>
+          </div>
+        </div>
+        {/* preview image  */}
+
+        <div className="w-full md:w-1/2 p-6 rounded-lg shadow-lg max-h-fit">
+          <h1 className="text-2xl text-richChocolate font-bold mb-6 uppercase tracking-wide">
+            What you want to sell?
           </h1>
           <form
             name="addProductForm"
@@ -169,7 +223,6 @@ const AddProducts = () => {
                 name="productName"
                 type="text"
                 onChange={handleChange}
-                
                 className={`text-gray-800 bg-white border ${
                   errors.productName ? "border-red-500" : "border-gray-300"
                 } w-full text-sm px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -189,7 +242,6 @@ const AddProducts = () => {
               <textarea
                 name="description"
                 onChange={handleChange}
-                
                 className={`text-gray-800 bg-white border ${
                   errors.description ? "border-red-500" : "border-gray-300"
                 } w-full text-sm px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -210,17 +262,15 @@ const AddProducts = () => {
                 type="number"
                 onChange={handleChange}
                 min="0"
-                
                 className={`text-gray-800 bg-white border ${
                   errors.price ? "border-red-500" : "border-gray-300"
                 } w-full text-sm px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
                 placeholder="Enter price"
               />
               {errors.price && (
-                <p className="text-red-500 text-xs mt-4">
-                  {errors.price}
-                </p>
-              )} </div>
+                <p className="text-red-500 text-xs mt-4">{errors.price}</p>
+              )}
+            </div>
 
             <div>
               <label className="text-gray-800 text-sm mb-2 block">
@@ -229,7 +279,6 @@ const AddProducts = () => {
               <select
                 name="category"
                 onChange={handleChange}
-                
                 className={`text-gray-800 bg-white border ${
                   errors.category ? "border-red-500" : "border-gray-300"
                 } w-full text-sm px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -238,9 +287,7 @@ const AddProducts = () => {
                 {/* Add more options */}
               </select>
               {errors.category && (
-                <p className="text-red-500 text-xs mt-4">
-                  {errors.category}
-                </p>
+                <p className="text-red-500 text-xs mt-4">{errors.category}</p>
               )}
             </div>
 
@@ -252,7 +299,6 @@ const AddProducts = () => {
                 name="quantity"
                 type="number"
                 onChange={handleChange}
-                
                 className={`text-gray-800 bg-white border ${
                   errors.quantity ? "border-red-500" : "border-gray-300"
                 } w-full text-sm px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -260,28 +306,133 @@ const AddProducts = () => {
                 placeholder="Enter stock quantity"
               />
               {errors.quantity && (
-                <p className="text-red-500 text-xs mt-4">
-                  {errors.quantity}
-                </p>
+                <p className="text-red-500 text-xs mt-4">{errors.quantity}</p>
               )}
             </div>
 
-            <div>
-              <label className="text-gray-800 text-sm mb-2 block">Image</label>
-              <input
-                name="image"
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className={`text-gray-800 bg-white border ${
-                  errors.image ? "border-red-500" : "border-gray-300"
-                } w-full text-sm px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              />
-              {errors.image && (
-                <p className="text-red-500 text-xs mt-4">
-                  {errors.image}
-                </p>
-              )}
+            {/* Image upload */}
+            <label className="text-gray-500 text-xs mb-2 block">
+              This image will appear as a cover.
+            </label>
+            <div className="flex flex-col items-center">
+              <label
+                htmlFor="file-upload"
+                className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer transition duration-200 ease-in-out 
+        ${
+          errors.image
+            ? "border-red-600"
+            : "border-gray-300 hover:border-blue-500"
+        }`}
+              >
+                <span className="text-richChocolate text-md font-light">
+                  {imagePreview ? (
+                    <p>Image Selected</p>
+                  ) : !errors.image ? (
+                    " Add your image here!"
+                  ) : (
+                    <p className="text-red-500 text-xs">{errors.image}</p>
+                  )}
+                </span>
+                <input
+                  id="file-upload"
+                  name="image"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleImageChange(e, setImagePreview)}
+                  className="hidden" // Hide the default input
+                />
+              </label>
+            </div>
+            {/* Image upload */}
+
+            <label className="text-gray-500 text-xs mb-2 block">
+              These images will appear as a gallery.
+            </label>
+
+            <div className="flex flex-row gap-3">
+              <label
+                htmlFor="file-upload-2"
+                className={`flex flex-col items-center justify-center w-1/3 h-32 border-2 border-dashed rounded-lg cursor-pointer transition duration-200 ease-in-out 
+        ${
+          errors.image
+            ? "border-red-600"
+            : "border-gray-300 hover:border-blue-500"
+        }`}
+              >
+                <span className="text-richChocolate text-xs text-center font-light">
+                  {secondImagePreview ? (
+                    <>Image Selected</>
+                  ) : !errors.secondImage ? (
+                    " Add additional image here!"
+                  ) : (
+                    <p className="text-red-500 text-xs">{errors.secondImage}</p>
+                  )}
+                </span>
+                <input
+                  id="file-upload-2"
+                  name="secondImage"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleImageChange(e, setSecondImagePreview)}
+                  className="hidden" // Hide the default input
+                />
+              </label>
+
+              <label
+                htmlFor="file-upload-3"
+                className={`flex flex-col items-center justify-center w-1/3 h-32 border-2 border-dashed rounded-lg cursor-pointer transition duration-200 ease-in-out 
+        ${
+          errors.image
+            ? "border-red-600"
+            : "border-gray-300 hover:border-blue-500"
+        }`}
+              >
+                <span className="text-richChocolate text-xs text-center font-light">
+                  {thirdImagePreview ? (
+                    <>Image Selected</>
+                  ) : !errors.thirdImage ? (
+                    " Add additional image here!"
+                  ) : (
+                    <p className="text-red-500 text-xs">{errors.thirdImage}</p>
+                  )}
+                </span>
+                <input
+                  id="file-upload-3"
+                  name="thirdImage"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleImageChange(e, setThirdImagePreview)}
+                  className="hidden" // Hide the default input
+                />
+              </label>
+
+              <label
+                htmlFor="file-upload-4"
+                className={`flex flex-col items-center justify-center w-1/3 h-32 border-2 border-dashed rounded-lg cursor-pointer transition duration-200 ease-in-out 
+        ${
+          errors.image
+            ? "border-red-600"
+            : "border-gray-300 hover:border-blue-500"
+        }`}
+              >
+                <span className="text-richChocolate text-xs text-center font-light">
+                  {fourthImagePreview ? (
+                    <>Image Selected</>
+                  ) : !errors.fourthImage ? (
+                    " Add additional image here!"
+                  ) : (
+                    <p className="text-red-500 text-xs">{errors.fourthImage}</p>
+                  )}
+                </span>
+                <input
+                  id="file-upload-4"
+                  name="fourthImage"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleImageChange(e, setFourthImagePreview)}
+                  className="hidden" // Hide the default input
+                />
+              </label>
             </div>
 
             <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">

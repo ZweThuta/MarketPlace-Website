@@ -5,7 +5,7 @@ import { UserCircleIcon } from "@heroicons/react/24/solid";
 const NavBar = () => {
   const {authToken} = useAuth();
   return (
-    <nav className="flex items-center justify-between py-3 bg-richChocolate">
+    <nav className="flex items-center justify-between py-1 bg-richChocolate">
       <Link to={"/"}>
         <div className="flex items-center gap-1">
           <img src={logo} alt="LuxeSphere Logo" width={60} className="ml-2" />
