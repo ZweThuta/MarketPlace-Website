@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AddProducts = () => {
   const formRef = useRef(null);
@@ -10,6 +11,8 @@ const AddProducts = () => {
   const [userId, setUserId] = useState("");
   const [productName, setProductName] = useState("");
   const [errors, setErrors] = useState({});
+  const navigation = useNavigate();
+  const isSubmitting = navigation.state === "submitting";
 
   const clearForm = () => {
     if (formRef.current) {
@@ -438,9 +441,10 @@ const AddProducts = () => {
             <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
               <button
                 type="submit"
+                disabled={isSubmitting}
                 className="w-full md:w-auto py-3 px-10 tracking-wider text-sm rounded-md text-white bg-richChocolate800 hover:bg-richChocolate900 focus:outline-none"
               >
-                Add to Sell
+                {isSubmitting ? "Submitting":"Add to sell"}
               </button>
               <button
                 type="button"
