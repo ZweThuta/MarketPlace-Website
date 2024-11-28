@@ -8,8 +8,14 @@ const AddProducts = () => {
   const [secondImagePreview, setSecondImagePreview] = useState(null);
   const [thirdImagePreview, setThirdImagePreview] = useState(null);
   const [fourthImagePreview, setFourthImagePreview] = useState(null);
+  const [selectedImages, setSelectedImages] = useState({});
   const [userId, setUserId] = useState("");
   const [productName, setProductName] = useState("");
+  const [description, setDescription] = useState("");
+  const [quality, setQuality] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("");
+  const [quantity, setQuantity] = useState("");
   const [errors, setErrors] = useState({});
   const navigation = useNavigate();
   const isSubmitting = navigation.state === "submitting";
@@ -21,54 +27,82 @@ const AddProducts = () => {
       setSecondImagePreview(null);
       setThirdImagePreview(null);
       setFourthImagePreview(null);
+      setSelectedImages({});
+      setProductName("");
+      setDescription("");
+      setQuality("");
+      setPrice("");
+      setCategory("");
+      setQuantity("");
+      setErrors({});
     }
   };
 
   const handleChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setProductName((values) => ({ ...values, [name]: value }));
+    const { name, value } = e.target;
+
+    if (name === "productName") {
+      setProductName(value);
+    } else if (name === "description") {
+      setDescription(value);
+    } else if (name === "quality") {
+      setQuality(value);
+    } else if (name === "price") {
+      setPrice(value);
+    } else if (name === "category") {
+      setCategory(value);
+    } else if (name === "quantity") {
+      setQuantity(value);
+    }
+
     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };
 
-  const handleImageChange = (event, setPreview) => {
+  const handleImageChange = (event, setPreview, key) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => setPreview(reader.result);
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
       reader.readAsDataURL(file);
+      setSelectedImages((prev) => ({ ...prev, [key]: file }));
     }
   };
 
   const validate = () => {
     const newErrors = {};
-    if (!productName.productName) {
+    if (!productName) {
       newErrors.productName = "Product name is required";
-    } else if (productName.productName.length < 3) {
+    } else if (productName.length < 3) {
       newErrors.productName = "Name must be at least 3 characters long";
     }
-    if (!productName.description) {
+    if (!description) {
       newErrors.description = "Description is required";
     }
-    if (!productName.price) {
-      newErrors.price = "Price is required";
-    } else if (productName.price < 0) {
-      newErrors.price = "Price must be a positive number";
-    } else if (productName.price < 10000) {
-      newErrors.price = "Price must has at least 10000MMK";
+    if (!quality) {
+      newErrors.quality = "Quality is required";
     }
-    if (!productName.category) {
+    if (!price) {
+      newErrors.price = "Price is required";
+    } else if (price <= 0) {
+      newErrors.price = "Price must be a positive number";
+    } else if (price < 10000) {
+      newErrors.price = "Price must be at least 10000 MMK";
+    }
+    if (!category) {
       newErrors.category = "Category is required";
     }
-    if (!productName.quantity) {
+    if (!quantity) {
       newErrors.quantity = "Stock quantity is required";
-    } else if (productName.quantity <= 0) {
-      newErrors.quantity = "Stock quantity must has at least one.";
+    } else if (quantity <= 0) {
+      newErrors.quantity = "Stock quantity must be at least one.";
     }
     if (!imagePreview) newErrors.image = "Cover image is required";
     if (!secondImagePreview) newErrors.secondImage = "Second image is required";
     if (!thirdImagePreview) newErrors.thirdImage = "Third image is required";
     if (!fourthImagePreview) newErrors.fourthImage = "Fourth image is required";
+
     return newErrors;
   };
 
@@ -108,26 +142,37 @@ const AddProducts = () => {
 
     const formData = new FormData();
     formData.append("userId", userId);
-    formData.append("productName", productName.productName);
-    formData.append("description", productName.description);
-    formData.append("price", productName.price);
-    formData.append("category", productName.category);
-    formData.append("quantity", productName.quantity);
-    formData.append("image", imagePreview);
-    formData.append("secondImage", secondImagePreview);
-    formData.append("thirdImage", thirdImagePreview);
-    formData.append("fourthImage", fourthImagePreview);
+    formData.append("productName", productName);
+    formData.append("description", description);
+    formData.append("quality", quality);
+    formData.append("price", price);
+    formData.append("category", category);
+    formData.append("quantity", quantity);
+    formData.append("image", selectedImages.image ? selectedImages.image : "");
+    formData.append(
+      "secondImage",
+      selectedImages.secondImage ? selectedImages.secondImage : ""
+    );
+    formData.append(
+      "thirdImage",
+      selectedImages.thirdImage ? selectedImages.thirdImage : ""
+    );
+    formData.append(
+      "fourthImage",
+      selectedImages.fourthImage ? selectedImages.fourthImage : ""
+    );
 
     axios
       .post(import.meta.env.VITE_ADD_PRODUCT_URL, formData)
-      .then(function (response) {
+      .then((response) => {
         if (response.data.status === 0) {
           setErrors({ message: response.data.message });
         } else {
           clearForm();
+          // console.log("Product added successfully");
         }
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.error(
           "There was an error while adding product:",
           error.message
@@ -142,7 +187,7 @@ const AddProducts = () => {
         <div className="w-full md:w-1/2 p-5">
           <div>
             <h1 className="text-xl text-center text-richChocolate font-bold mb-6 uppercase tracking-wide">
-              Image Preview Area
+              Product Images
             </h1>
           </div>
           <div className="h-1/2 flex items-center justify-center border border-gray-300 rounded-lg mb-4">
@@ -201,6 +246,7 @@ const AddProducts = () => {
           </h1>
           <form
             name="addProductForm"
+            encType="multipart/form-data"
             method="POST"
             className="space-y-4"
             ref={formRef}
@@ -259,6 +305,24 @@ const AddProducts = () => {
             </div>
 
             <div>
+              <label className="text-gray-800 text-sm mb-2 block">
+                Quality
+              </label>
+              <input
+                name="quality"
+                type="text"
+                onChange={handleChange}
+                className={`text-gray-800 bg-white border ${
+                  errors.productName ? "border-red-500" : "border-gray-300"
+                } w-full text-sm px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                placeholder="Brand new or second"
+              />
+              {errors.quality && (
+                <p className="text-red-500 text-xs mt-4">{errors.quality}</p>
+              )}
+            </div>
+
+            <div>
               <label className="text-gray-800 text-sm mb-2 block">Price</label>
               <input
                 name="price"
@@ -287,6 +351,10 @@ const AddProducts = () => {
                 } w-full text-sm px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
               >
                 <option>Select Category</option>
+                <option>Book</option>
+                <option>Electornic</option>
+                <option>Game</option>
+
                 {/* Add more options */}
               </select>
               {errors.category && (
@@ -341,7 +409,9 @@ const AddProducts = () => {
                   name="image"
                   type="file"
                   accept="image/*"
-                  onChange={(e) => handleImageChange(e, setImagePreview)}
+                  onChange={(e) =>
+                    handleImageChange(e, setImagePreview, "image")
+                  }
                   className="hidden" // Hide the default input
                 />
               </label>
@@ -376,7 +446,9 @@ const AddProducts = () => {
                   name="secondImage"
                   type="file"
                   accept="image/*"
-                  onChange={(e) => handleImageChange(e, setSecondImagePreview)}
+                  onChange={(e) =>
+                    handleImageChange(e, setSecondImagePreview, "secondImage")
+                  }
                   className="hidden" // Hide the default input
                 />
               </label>
@@ -404,7 +476,9 @@ const AddProducts = () => {
                   name="thirdImage"
                   type="file"
                   accept="image/*"
-                  onChange={(e) => handleImageChange(e, setThirdImagePreview)}
+                  onChange={(e) =>
+                    handleImageChange(e, setThirdImagePreview, "thirdImage")
+                  }
                   className="hidden" // Hide the default input
                 />
               </label>
@@ -432,7 +506,9 @@ const AddProducts = () => {
                   name="fourthImage"
                   type="file"
                   accept="image/*"
-                  onChange={(e) => handleImageChange(e, setFourthImagePreview)}
+                  onChange={(e) =>
+                    handleImageChange(e, setFourthImagePreview, "fourthImage")
+                  }
                   className="hidden" // Hide the default input
                 />
               </label>
@@ -444,7 +520,7 @@ const AddProducts = () => {
                 disabled={isSubmitting}
                 className="w-full md:w-auto py-3 px-10 tracking-wider text-sm rounded-md text-white bg-richChocolate800 hover:bg-richChocolate900 focus:outline-none"
               >
-                {isSubmitting ? "Submitting":"Add to sell"}
+                {isSubmitting ? "Submitting" : "Add to sell"}
               </button>
               <button
                 type="button"
