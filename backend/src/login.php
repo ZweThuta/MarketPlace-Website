@@ -98,7 +98,7 @@ class UserController
             $stmt->execute();
 
             if ($stmt->rowCount() == 0) {
-                return $this->response(0, 'User not found!');
+                return $this->response(0, 'User not found!');  
             }
 
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
