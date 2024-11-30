@@ -8,7 +8,7 @@ import { AuthProvider } from "./util/AuthContext";
 import Logout from "./pages/Logout";
 import Profile from "./pages/Profile";
 import AddProducts from "./pages/AddProducts";
-import UserProducts from "./pages/UserProducts";
+import UserProducts, { userProductsLoader } from "./pages/UserProducts";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -43,7 +43,8 @@ const App = () => {
         },
         {
           path: "/userProduct",
-          element: <UserProducts/>
+          element: <UserProducts/>,
+          loader: userProductsLoader,
         }
       ],
     },

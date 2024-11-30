@@ -1,85 +1,62 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
+import axios from "axios"
+import { useLoaderData } from "react-router-dom"
+import UserItems from "../components/UserItems";
 
 const UserProducts = () => {
-  const [userId, setUserId] = useState("");
-  const [products, setProducts] = useState([]);
+    const products = useLoaderData();
+  return (
+    <>
+    <section className="p-6 bg-gray-50">
+  <div className="mb-4">
+    <h2 className="text-3xl font-bold text-center">My Products</h2>
+  </div>
+  <div className="flex flex-col md:flex-row gap-5">
+    <div className="w-full md:w-1/3">
+      {/* Optional sidebar or additional content can go here */}
+    </div>
+    <div className="w-full bg-gray-100 p-4 rounded-lg">
+      {products.length > 0 ? (
+        products.map((product) => (
+          <UserItems product={product} key={product.id} />
+        ))
+      ) : (
+        <p className="text-center text-gray-600">No product available!</p>
+      )}
+    </div>
+  </div>
+</section>
+    </>
+  )
+}
 
-  useEffect(() => {
-    getUserId();
-  }, []);
+export default UserProducts
 
-  useEffect(() => {
-    if (userId) {
-      fetchUserProducts();
-    }
-  }, [userId]);
-
-  const getUserId = async () => {
+export async function userProductsLoader() {
     try {
       const token = localStorage.getItem("authToken");
       if (!token) {
-        console.error("No token found, user may not be logged in.");
-        return;
+        throw new Error("No authentication token found.");
       }
-
-      const response = await axios.get(import.meta.env.VITE_LOGIN_URL, {
+  
+      // Fetch user ID
+      const userIdResponse = await axios.get(import.meta.env.VITE_LOGIN_URL, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      if (response.data.status === 1 && response.data.data) {
-        setUserId(response.data.data.id);
-      } else {
-        console.error("Failed to fetch user ID:", response.data.message);
-      }
-    } catch (error) {
-      console.error("Error fetching user ID:", error.message);
-    }
-  };
-
-  const fetchUserProducts = async () => {
-    try {
-      const response = await axios.get(`${import.meta.env.VITE_ADD_PRODUCT_URL}`, {
+  
+      const userId = userIdResponse.data.data.id;
+  
+      // Fetch user products
+      const productsResponse = await axios.get(import.meta.env.VITE_ADD_PRODUCT_URL, {
         params: { userId },
       });
-      if (response.data.status === 1) {
-        setProducts(response.data.data);
+  
+      if (productsResponse.data.status === 1) {
+        return productsResponse.data.data;  
       } else {
-        console.error("No products found.");
+        return [];  
       }
     } catch (error) {
-      console.error("Error fetching user products", error);
+      console.error("Error fetching products:", error);
+      return [];  
     }
-  };
-  
-
-  return (
-    <section className="p-6 bg-gray-100">
-    <h2 className="text-3xl font-bold text-center mb-6">My Products</h2>
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {products.length > 0 ? (
-        products.map((product) => (
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl relative group" key={product.id}>
-            <img src={`${import.meta.env.VITE_IMAGES_URL}/${product.image}`} alt={product.productName} className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110" />
-            <div className="p-4">
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">{product.productName}</h3>
-              {/* <p className="text-gray-600 mb-2">{product.description}</p> */}
-              <div className="flex justify-between items-center">
-                <p className="text-gray-700 font-bold">Price: ${product.price}</p>
-                <p className="text-gray-500 text-sm">Quality: {product.quality}</p>
-              </div>
-              <p className="text-gray-700">Category: {product.category}</p>
-              <p className="text-gray-500 text-sm">Date Added: {new Date(product.date).toLocaleDateString()}</p>
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900 opacity-0 transition-opacity duration-300 group-hover:opacity-30"></div>
-          </div>
-        ))
-      ) : (
-        <p>No products available.</p>
-      )}
-    </div>
-  </section>
-  );
-};
-
-export default UserProducts;
+  }
