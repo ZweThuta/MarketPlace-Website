@@ -9,7 +9,7 @@ import Logout from "./pages/Logout";
 import Profile from "./pages/Profile";
 import AddProducts from "./pages/AddProducts";
 import UserProducts, { userProductsLoader } from "./pages/UserProducts";
-
+import UserProductsDetails from "./pages/UserProductDetails"
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -45,6 +45,10 @@ const App = () => {
           path: "/userProduct",
           element: <UserProducts/>,
           loader: userProductsLoader,
+        },
+        {
+          path: "/userProductDetail/:productId",
+          element: <UserProductsDetails/>
         }
       ],
     },
