@@ -10,6 +10,7 @@ import Profile from "./pages/Profile";
 import AddProducts from "./pages/AddProducts";
 import UserProducts, { userProductsLoader } from "./pages/UserProducts";
 import UserProductsDetails from "./pages/UserProductDetails"
+import EditProduct from "./pages/EditProduct";
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -40,6 +41,11 @@ const App = () => {
         {
           path: "/addProduct",
           element:<AddProducts/>
+        },
+        {
+          path: "/editProduct/:productId",
+          element: <EditProduct/>
+
         },
         {
           path: "/userProduct",

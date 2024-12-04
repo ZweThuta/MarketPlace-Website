@@ -17,7 +17,7 @@ const Error = () => {
                 </p>
 
                 <Link to={"/"}>
-                  <button class="sm:w-full lg:w-auto my-2 border rounded md py-4 px-8 text-center  text-ivoryWhite bg-richChocolate800 hover:bg-richChocolate900 focus:outline-none">
+                  <button class="sm:w-full lg:w-auto my-2 border rounded md py-4 px-8 text-center  text-ivoryWhite bg-blue-700 hover:bg-richChocolate900 focus:outline-none">
                     Take me there!
                   </button>
                 </Link>

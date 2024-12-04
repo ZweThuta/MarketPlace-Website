@@ -36,7 +36,7 @@ const ProductDetail = () => {
       );
 
       if (response.data.status === 1) {
-        alert("Product deleted successfully!");
+        // alert("Product deleted successfully!");
         navigate("/userProduct");  
       } else {
         alert(response.data.message);
@@ -82,7 +82,7 @@ const ProductDetail = () => {
           </p>
           <div className="flex flex-row justify-end gap-4">
             <Link
-              to={`/edit/${productId}`}
+              to={`/editProduct/${productId}`}
               className="p-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md shadow-md hover:shadow-lg transition"
             >
               Edit

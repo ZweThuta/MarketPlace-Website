@@ -1,12 +1,12 @@
 import React from 'react'
 import ProductsForm from '../components/ProductsForm'
 
-const AddProducts = () => {
+const EditProduct = () => {
   return (
     <>
-    <ProductsForm isAddProduct={true}/>
+    <ProductsForm isAddProduct={false}/>
     </>
   )
 }
 
-export default AddProducts
+export default EditProduct
