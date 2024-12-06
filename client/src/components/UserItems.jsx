@@ -59,7 +59,7 @@ const UserItems = ({ product }) => {
           <p className="mt-2 text-lg font-medium text-green-600">{quality}</p>
           <p className="mt-1 text-gray-500">Quantity: {quantity}</p>
           <div className="flex justify-between items-center mt-3">
-            <p className="text-lg font-semibold text-gray-800">{price} MMK</p>
+            <p className="text-lg font-semibold text-gray-800">{price} Ks</p>
             <div className='flex items-center gap-1 text-gray-600'>
               <CalendarDateRangeIcon width={20} />
               <p className="text-sm">{date}</p>

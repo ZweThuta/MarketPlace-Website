@@ -64,16 +64,16 @@ const ProductDetail = () => {
         onConfirm={handleConfirmDelete}
         message={`Are you sure you want to delete the product "${product.productName}"?`}
       />
-      <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+      <div className="max-w-4xl h-auto mx-auto bg-white shadow-md rounded-lg overflow-hidden">
         <img
           src={`${import.meta.env.VITE_IMAGES_URL}/${product.image}`}
           alt={product.productName}
-          className="w-full h-64 object-cover"
+          className="w-full h-96 object-cover"
         />
         <div className="p-6">
           <h1 className="text-3xl font-bold">{product.productName}</h1>
           <p className="mt-4 text-gray-700">{product.description}</p>
-          <p className="mt-4 text-xl font-semibold">Price: {product.price} MMK</p>
+          <p className="mt-4 text-xl font-semibold">Price: {product.price} Ks</p>
           <p className="mt-2 text-gray-600">Category: {product.category}</p>
           <p className="mt-2 text-gray-600">Quality: {product.quality}</p>
           <p className="mt-2 text-gray-600">Quantity: {product.quantity}</p>

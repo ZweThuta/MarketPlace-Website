@@ -79,65 +79,48 @@ class ProductController
     public function updateProduct($productId, $postData)
     {
         try {
-            // Check if the required fields are provided
             if (empty($postData['productName']) || empty($postData['description']) || empty($postData['quality']) || empty($postData['price']) || empty($postData['category']) || empty($postData['quantity'])) {
                 return $this->response(0, 'All fields are required.');
             }
-    
-            // Path for uploading images
+
             $uploadDir = "./productImages/";
-    
-            // Handle file uploads for images (only update if a new image is uploaded)
-            $coverImage = isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK ? $this->uploadFile($_FILES['image'], $uploadDir) : null;
-            $secondImage = isset($_FILES['secondImage']) && $_FILES['secondImage']['error'] === UPLOAD_ERR_OK ? $this->uploadFile($_FILES['secondImage'], $uploadDir) : null;
-            $thirdImage = isset($_FILES['thirdImage']) && $_FILES['thirdImage']['error'] === UPLOAD_ERR_OK ? $this->uploadFile($_FILES['thirdImage'], $uploadDir) : null;
-            $fourthImage = isset($_FILES['fourthImage']) && $_FILES['fourthImage']['error'] === UPLOAD_ERR_OK ? $this->uploadFile($_FILES['fourthImage'], $uploadDir) : null;
-    
-            // Build the SQL update query dynamically
-            $fields = [];
-            foreach ($postData as $key => $value) {
-                if ($key !== 'productId' && !empty($value)) {
-                    $fields[] = "$key = :$key";
-                }
-            }
-    
-            // Handle image fields if they are set
-            if ($coverImage) {
-                $fields[] = "image = :image";
-                $postData['image'] = $coverImage;  // Use the full file path for the image field
-            }
-            if ($secondImage) {
-                $fields[] = "secondImage = :secondImage";
-                $postData['secondImage'] = $secondImage;
-            }
-            if ($thirdImage) {
-                $fields[] = "thirdImage = :thirdImage";
-                $postData['thirdImage'] = $thirdImage;
-            }
-            if ($fourthImage) {
-                $fields[] = "fourthImage = :fourthImage";
-                $postData['fourthImage'] = $fourthImage;
-            }
-    
-            if (empty($fields)) {
-                return $this->response(0, 'No fields to update.');
-            }
-    
-            // Prepare the SQL query for updating the product
-            $sql = "UPDATE products SET " . implode(", ", $fields) . " WHERE id = :productId";
+
+            $coverImage = isset($_FILES['image']) ? $this->uploadFile($_FILES['image'], $uploadDir) : null;
+            $secondImage = isset($_FILES['secondImage']) ? $this->uploadFile($_FILES['secondImage'], $uploadDir) : null;
+            $thirdImage = isset($_FILES['thirdImage']) ? $this->uploadFile($_FILES['thirdImage'], $uploadDir) : null;
+            $fourthImage = isset($_FILES['fourthImage']) ? $this->uploadFile($_FILES['fourthImage'], $uploadDir) : null;
+
+            $sql = "UPDATE products SET 
+                    productName = :productName, 
+                    description = :description, 
+                    quality = :quality, 
+                    price = :price, 
+                    category = :category, 
+                    quantity = :quantity, 
+                    date = NOW()";
+
+            if ($coverImage) $sql .= ", image = :image";
+            if ($secondImage) $sql .= ", secondImage = :secondImage";
+            if ($thirdImage) $sql .= ", thirdImage = :thirdImage";
+            if ($fourthImage) $sql .= ", fourthImage = :fourthImage";
+
+            $sql .= " WHERE id = :productId";
+
             $stmt = $this->conn->prepare($sql);
-    
-            // Bind parameters dynamically
-            foreach ($postData as $key => $value) {
-                if ($key !== 'productId' && !empty($value)) {
-                    $stmt->bindValue(":$key", $value);
-                }
-            }
-    
-            // Bind the productId for the WHERE clause
+            $stmt->bindParam(":productName", $postData['productName']);
+            $stmt->bindParam(":description", $postData['description']);
+            $stmt->bindParam(":quality", $postData['quality']);
+            $stmt->bindParam(":price", $postData['price']);
+            $stmt->bindParam(":category", $postData['category']);
+            $stmt->bindParam(":quantity", $postData['quantity']);
+
+            if ($coverImage) $stmt->bindParam(":image", $coverImage);
+            if ($secondImage) $stmt->bindParam(":secondImage", $secondImage);
+            if ($thirdImage) $stmt->bindParam(":thirdImage", $thirdImage);
+            if ($fourthImage) $stmt->bindParam(":fourthImage", $fourthImage);
+
             $stmt->bindParam(":productId", $productId, PDO::PARAM_INT);
-    
-            // Execute the query
+
             if ($stmt->execute()) {
                 return $this->response(1, 'Product updated successfully.');
             } else {
@@ -147,23 +130,22 @@ class ProductController
             return $this->response(0, 'Database error: ' . $e->getMessage());
         }
     }
-    
 
-// File upload function
-private function uploadFile($file, $uploadDir)
-{
-    if (isset($file) && $file['error'] == 0) {
-        $fileName = basename($file['name']);
-        $targetFilePath = $uploadDir . uniqid() . "_" . $fileName;
 
-        if (move_uploaded_file($file['tmp_name'], $targetFilePath)) {
-            return $targetFilePath;
-        } else {
-            return null;
+    // File upload function for handling image uploads
+    private function uploadFile($file, $uploadDir)
+    {
+        if (isset($file) && $file['error'] === UPLOAD_ERR_OK) {
+            $fileName = basename($file['name']);
+            $targetFilePath = $uploadDir . uniqid() . "_" . $fileName;
+
+            if (move_uploaded_file($file['tmp_name'], $targetFilePath)) {
+                return $targetFilePath;
+            }
         }
+        return null; // Return null if no file was uploaded
     }
-    return null;
-}
+
 
 
     private function response($status, $message, $data = null)
@@ -185,16 +167,15 @@ switch ($method) {
         }
         break;
 
-   case 'PUT':
-    $inputData = json_decode(file_get_contents("php://input"), true);
+    case 'POST':
+        if (isset($_POST['productId'])) {
+            $productId = $_POST['productId'];
+            echo $productController->updateProduct($productId, $_POST);
+        } else {
+            echo json_encode(['status' => 0, 'message' => 'Product ID is required.']);
+        }
+        break;
 
-    if (isset($inputData['productId'])) {
-        $productId = $inputData['productId'];
-        echo $productController->updateProduct($productId, $inputData);
-    } else {
-        echo json_encode(['status' => 0, 'message' => 'Product ID is required.']);
-    }
-    break;
 
 
     case 'DELETE':

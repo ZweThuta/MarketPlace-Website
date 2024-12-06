@@ -64,6 +64,7 @@ const Authform = ({ isLoginPage }) => {
             const token = response.data.data.token;
             login(token);  
             navigate("/");
+            window.location.reload();
           } else {
             navigate("/login");
           }

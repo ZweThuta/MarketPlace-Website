@@ -55,26 +55,6 @@ class ProductController
         }
     }
 
-    // New: Get Products Method
-    public function getProducts($userId)
-    {
-        try {
-            $sql = "SELECT * FROM products WHERE userId = :userId";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(":userId", $userId);
-            $stmt->execute();
-            $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            if ($products) {
-                return $this->response(1, 'Products retrieved successfully.', $products);
-            } else {
-                return $this->response(0, 'No products found.');
-            }
-        } catch (PDOException $e) {
-            return $this->response(0, 'Database error: ' . $e->getMessage());
-        }
-    }
-
     private function uploadFile($file, $uploadDir)
     {
         if (isset($file) && $file['error'] == 0) {
@@ -89,6 +69,28 @@ class ProductController
         }
         return null;
     }
+
+    // New: Get Products Method
+    public function getProducts($userId)
+    {
+        try {
+            $sql = "SELECT * FROM products WHERE userId = :userId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(":userId", $userId);
+            $stmt->execute();
+            $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                                            
+            if ($products) {
+                return $this->response(1, 'Products retrieved successfully.', $products);
+            } else {
+                return $this->response(0, 'No products found.');
+            }
+        } catch (PDOException $e) {
+            return $this->response(0, 'Database error: ' . $e->getMessage());
+        }
+    }
+
+   
 
     private function response($status, $message, $data = null)
     {

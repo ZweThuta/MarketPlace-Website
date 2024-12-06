@@ -41,6 +41,7 @@ const ProductsForm = ({ isAddProduct }) => {
 
       if (response.data.status === 1) {
         const data = response.data.data;
+
         setProductName(data.productName);
         setDescription(data.description);
         setQuality(data.quality);
@@ -183,6 +184,9 @@ const ProductsForm = ({ isAddProduct }) => {
     }
 
     const formData = new FormData();
+    if (!isAddProduct) {
+      formData.append("productId", productId);
+    }
     formData.append("userId", userId);
     formData.append("productName", productName);
     formData.append("description", description);
@@ -190,50 +194,23 @@ const ProductsForm = ({ isAddProduct }) => {
     formData.append("price", price);
     formData.append("category", category);
     formData.append("quantity", quantity);
-      formData.append(
-        "image",
-        selectedImages.image ? selectedImages.image : ""
-      );
-      formData.append(
-        "secondImage",
-        selectedImages.secondImage ? selectedImages.secondImage : ""
-      );
-      formData.append(
-        "thirdImage",
-        selectedImages.thirdImage ? selectedImages.thirdImage : ""
-      );
-      formData.append(
-        "fourthImage",
-        selectedImages.fourthImage ? selectedImages.fourthImage : ""
-      );
-    
+    formData.append("image", selectedImages.image ? selectedImages.image : "");
+    formData.append(
+      "secondImage",
+      selectedImages.secondImage ? selectedImages.secondImage : ""
+    );
+    formData.append(
+      "thirdImage",
+      selectedImages.thirdImage ? selectedImages.thirdImage : ""
+    );
+    formData.append(
+      "fourthImage",
+      selectedImages.fourthImage ? selectedImages.fourthImage : ""
+    );
 
     const request = isAddProduct
       ? axios.post(import.meta.env.VITE_ADD_PRODUCT_URL, formData)
-      :axios.put(import.meta.env.VITE_USER_PRODUCT_DETAILS, {
-        productId: productId,
-        productName: productName,
-        description: description,
-        price: price,
-        category: category,
-        quantity: quantity,
-        quality: quality,
-        image: selectedImages.image
-        ? "./productImages/"+selectedImages.image.name
-        : "./productImages/"+imagePreview.split("/").pop(),
-
-        secondImage:  selectedImages.secondImage
-        ? "./productImages/"+selectedImages.secondImage.name 
-        : "./productImages/"+secondImagePreview.split("/").pop(),
-
-        thirdImage:  selectedImages.thirdImage
-        ?"./productImages/"+ selectedImages.thirdImage.name
-        : "./productImages/"+thirdImagePreview.split("/").pop(),
-
-        fourthImage:  selectedImages.fourthImage
-        ? "./productImages/"+selectedImages.fourthImage.name
-        : "./productImages/"+fourthImagePreview.split("/").pop()
-    });
+      : axios.post(import.meta.env.VITE_USER_PRODUCT_DETAILS, formData);
 
     request
       .then((response) => {
@@ -339,7 +316,7 @@ const ProductsForm = ({ isAddProduct }) => {
                 type="text"
                 value={userId}
                 readOnly
-                // hidden
+                hidden
                 required
                 className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
@@ -351,7 +328,7 @@ const ProductsForm = ({ isAddProduct }) => {
                 type="text"
                 value={productId}
                 readOnly
-                // hidden
+                hidden
                 required
                 className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
@@ -450,17 +427,20 @@ const ProductsForm = ({ isAddProduct }) => {
               >
                 {isAddProduct ? (
                   <>
-                    {" "}
                     <option>Select Category</option>
                     <option>Fashion</option>
                     <option>Electornic</option>
                     <option>Game</option>
+                    <option>Shoe</option>
+
                   </>
                 ) : (
                   <>
                     <option>Fashion</option>
                     <option>Electornic</option>
                     <option>Game</option>
+                    <option>Shoe</option>
+
                   </>
                 )}
 
@@ -507,7 +487,9 @@ const ProductsForm = ({ isAddProduct }) => {
               >
                 <span className="text-richChocolate text-md font-light">
                   {imagePreview ? (
-                    <p>Image Selected</p>
+                    <p className="text-blue-600 font-medium tracking-wide text-sm">
+                      Image Selected
+                    </p>
                   ) : !errors.image ? (
                     " Add your image here!"
                   ) : (
@@ -544,7 +526,9 @@ const ProductsForm = ({ isAddProduct }) => {
               >
                 <span className="text-richChocolate text-xs text-center font-light">
                   {secondImagePreview ? (
-                    <>Image Selected</>
+                    <p className="text-blue-600 font-medium tracking-wide text-sm">
+                      Image Selected
+                    </p>
                   ) : !errors.secondImage ? (
                     " Add additional image here!"
                   ) : (
@@ -574,7 +558,9 @@ const ProductsForm = ({ isAddProduct }) => {
               >
                 <span className="text-richChocolate text-xs text-center font-light">
                   {thirdImagePreview ? (
-                    <>Image Selected</>
+                    <p className="text-blue-600 font-medium tracking-wide text-sm">
+                      Image Selected
+                    </p>
                   ) : !errors.thirdImage ? (
                     " Add additional image here!"
                   ) : (
@@ -604,7 +590,9 @@ const ProductsForm = ({ isAddProduct }) => {
               >
                 <span className="text-richChocolate text-xs text-center font-light">
                   {fourthImagePreview ? (
-                    <>Image Selected</>
+                    <p className="text-blue-600 font-medium tracking-wide text-sm">
+                      Image Selected
+                    </p>
                   ) : !errors.fourthImage ? (
                     " Add additional image here!"
                   ) : (
