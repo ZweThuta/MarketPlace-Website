@@ -7,10 +7,21 @@ export default {
   theme: {
     extend: {
       colors: {
-        richChocolate: '#29201f',
         ivoryWhite:'#FFFFF0',
+        ivoryWhite200:'#fdfd8a',
+        ivoryWhite600:'#d9a106',
+        ivoryWhite500:'#f5cd0b',
+        richChocolate: '#29201f',
+        richChocolate100: '#e5e2dc',
+        richChocolate200: '#cec4ba',
+        richChocolate300: '#b1a293',
+        richChocolate400: '#9b8674',
+        richChocolate500: '#8c7666',
+        richChocolate600: '#786256',
+        richChocolate700: '#614d47',
         richChocolate800:'#634530',
         richChocolate900:'#4e3629',
+        richChocolate600:'#9b8674',
       },
     },
   },

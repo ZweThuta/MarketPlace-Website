@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Index from "./pages/Index";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import Main from "./layputs/Main";
+import Main from "./layouts/Main";
 import Error from "./pages/Error";
 import { AuthProvider } from "./util/AuthContext";
 import Logout from "./pages/Logout";
@@ -11,6 +11,8 @@ import AddProducts from "./pages/AddProducts";
 import UserProducts, { userProductsLoader } from "./pages/UserProducts";
 import UserProductsDetails from "./pages/UserProductDetails"
 import EditProduct from "./pages/EditProduct";
+import Products, { productsLoader } from "./pages/Products";
+import ProductDetails from "./pages/ProductDetails";
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -55,6 +57,15 @@ const App = () => {
         {
           path: "/userProductDetail/:productId",
           element: <UserProductsDetails/>
+        },
+        {
+          path:"/products",
+          element:<Products/>,
+          loader: productsLoader,
+        },
+        {
+          path: "/productDetails/:productId",
+          element:<ProductDetails/>
         }
       ],
     },

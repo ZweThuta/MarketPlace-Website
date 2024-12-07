@@ -53,6 +53,9 @@ const NavBar = () => {
           </div>
         </div>
       </Link>
+      <div>
+          <Link  className="text-white font-semibold hover:text-gray-200 uppercase tracking-wider"  to={"/products"}>Market Place</Link>
+        </div>
       {authToken ? (
         <>
           <div className="flex items-center mr-4">
@@ -83,7 +86,7 @@ const NavBar = () => {
         </>
       ) : (
         <>
-          {" "}
+       
           <div className="flex gap-5 mr-5">
             <Link
               to="/login"

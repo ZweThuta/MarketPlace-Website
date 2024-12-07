@@ -432,6 +432,7 @@ const ProductsForm = ({ isAddProduct }) => {
                     <option>Electornic</option>
                     <option>Game</option>
                     <option>Shoe</option>
+                    <option>Home & Kitchen</option>
 
                   </>
                 ) : (
@@ -440,6 +441,8 @@ const ProductsForm = ({ isAddProduct }) => {
                     <option>Electornic</option>
                     <option>Game</option>
                     <option>Shoe</option>
+                    <option>Home & Kitchen</option>
+
 
                   </>
                 )}

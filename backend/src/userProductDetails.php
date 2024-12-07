@@ -132,7 +132,7 @@ class ProductController
     }
 
 
-    // File upload function for handling image uploads
+    
     private function uploadFile($file, $uploadDir)
     {
         if (isset($file) && $file['error'] === UPLOAD_ERR_OK) {
@@ -143,7 +143,7 @@ class ProductController
                 return $targetFilePath;
             }
         }
-        return null; // Return null if no file was uploaded
+        return null;  
     }
 
 
