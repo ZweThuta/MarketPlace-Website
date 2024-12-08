@@ -54,7 +54,7 @@ const NavBar = () => {
         </div>
       </Link>
       <div>
-          <Link  className="text-white font-semibold hover:text-gray-200 uppercase tracking-wider"  to={"/products"}>Market Place</Link>
+          <Link  className="text-white font-semibold hover:text-gray-200 hover:[text-shadow:_0px_0px_2px_#d4d4d4] uppercase tracking-widest [text-shadow:_1px_1px_2px_#d4d4d4]"  to={"/products"}>Market Place</Link>
         </div>
       {authToken ? (
         <>

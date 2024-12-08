@@ -33,7 +33,7 @@ const ViewProducts = ({ product }) => {
             className="w-full h-56 object-cover"
           />
         </Link>
-        <button className="mt-3 bg-richChocolate800 text-ivoryWhite text-sm  p-2 rounded-lg hover:bg-richChocolate800 transition absolute right-3 top-1 tracking-wider">
+        <button className="mt-3 bg-richChocolate700 text-ivoryWhite text-sm  p-2 rounded-lg hover:bg-richChocolate900 transition absolute right-3 top-1 tracking-wider">
           {category}
         </button>
         <div className="p-5">

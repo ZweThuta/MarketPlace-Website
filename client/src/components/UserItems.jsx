@@ -1,5 +1,9 @@
-import { CalendarDateRangeIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
-import { Link } from 'react-router-dom';
+import {
+  CalendarDateRangeIcon,
+  PencilSquareIcon,
+  TrashIcon,
+} from "@heroicons/react/24/solid";
+import { Link } from "react-router-dom";
 
 const UserItems = ({ product }) => {
   const {
@@ -25,7 +29,10 @@ const UserItems = ({ product }) => {
   return (
     <div className="w-full p-4">
       <div className="flex flex-col md:flex-row bg-white shadow-xl rounded-lg overflow-hidden transition-transform transform hover:shadow-2xl hover:scale-105">
-        <Link to={`/userProductDetail/${id}`} className="w-full md:w-1/4 h-auto mt-1">
+        <Link
+          to={`/userProductDetail/${id}`}
+          className="w-full md:w-1/3 h-auto mt-1"
+        >
           <img
             src={`${import.meta.env.VITE_IMAGES_URL}/${image}`}
             alt={productName}
@@ -49,18 +56,47 @@ const UserItems = ({ product }) => {
             />
           </div>
         </Link>
-        <div className="w-full p-4">
-         
-          <h1 className="text-xl font-semibold mt-2">{shortProductName}</h1>
-          <p className="text-sm text-gray-700 mt-1">{shortDescription}</p>
-          <button className="mt-2 bg-gray-200 text-gray-800 text-base font-semibold py-1 px-4 rounded-md hover:bg-gray-300 transition absolute right-5">
+        <div className="w-full p-6 bg-white  rounded-lg  transition duration-300 relative">
+          {/* Product Name */}
+          <h1 className="text-xl font-bold mt-2 mb-3 text-gray-800">
+            {shortProductName}
+          </h1>
+
+          {/* Description */}
+          <p className="text-sm text-gray-600 leading-relaxed mb-4">
+            {shortDescription}
+          </p>
+
+          {/* Category Button */}
+          <button className="bg-blue-100 text-blue-700 text-sm font-medium py-1 px-4 rounded-md hover:bg-blue-200  top-4 left-4">
             {category}
           </button>
-          <p className="mt-2 text-lg font-medium text-green-600">{quality}</p>
-          <p className="mt-1 text-gray-500">Quantity: {quantity}</p>
-          <div className="flex justify-between items-center mt-3">
-            <p className="text-lg font-semibold text-gray-800">{price} Ks</p>
-            <div className='flex items-center gap-1 text-gray-600'>
+
+          {/* Brand and Quality */}
+          <div className="flex gap-2 items-center mt-3">
+            <p className="text-1xl font-semibold text-gray-700">Brand:</p>
+            <p className="text-lg font-semibold text-green-600">{quality}</p>
+          </div>
+
+          {/* Quantity */}
+          <div className="flex gap-2 items-center mt-3">
+          <p className="text-1xl font-semibold text-gray-700">Quantity:</p>
+          <p className="text-1xl font-semibold ">{quantity} in stock</p>
+          </div>
+      
+
+          {/* Price and Date */}
+          <div className="flex justify-between items-center mt-5">
+          <div className="mb-10">
+            <span className="text-xl text-gray-500 line-through mr-3">
+              {parseInt(product.price)} Ks
+            </span>
+            <span className="text-2xl font-semibold italic text-red-500">
+              {Math.round(parseInt(product.price) * 0.7)} Ks
+            </span>
+           
+          </div>
+            <div className="flex items-center gap-2 text-gray-500">
               <CalendarDateRangeIcon width={20} />
               <p className="text-sm">{date}</p>
             </div>
