@@ -59,7 +59,7 @@ const NavBar = () => {
       {authToken ? (
         <>
           <div className="flex items-center mr-4">
-            <Link to={"/profile"}>
+            <Link to={"/userProduct"}>
               <div className="flex items-center gap-1 mr-4 p-1 rounded-md  text-ivoryWhite cursor-pointer">
                 <UserCircleIcon color="white" width={30} />
                 {loading ? ( 

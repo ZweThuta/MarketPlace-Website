@@ -92,7 +92,7 @@ class UserController
         }
 
         try {
-            $sql = "SELECT id, name, email, date, phno, address, city, profile FROM users WHERE id = :id";
+            $sql = "SELECT id, name, email, date, phno, address, city, profile, note FROM users WHERE id = :id";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(":id", $userId);
             $stmt->execute();

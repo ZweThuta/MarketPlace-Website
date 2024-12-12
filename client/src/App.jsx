@@ -6,13 +6,13 @@ import Main from "./layouts/Main";
 import Error from "./pages/Error";
 import { AuthProvider } from "./util/AuthContext";
 import Logout from "./pages/Logout";
-import Profile from "./pages/Profile";
 import AddProducts from "./pages/AddProducts";
 import UserProducts, { userProductsLoader } from "./pages/UserProducts";
 import UserProductsDetails from "./pages/UserProductDetails"
 import EditProduct from "./pages/EditProduct";
 import Products, { productsLoader } from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
+import Category, { categoryLoader } from "./pages/Category";
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -36,10 +36,7 @@ const App = () => {
           path: "/logout",
           element:<Logout/>
         },
-        {
-          path: "/profile",
-          element:<Profile/>
-        },
+        
         {
           path: "/addProduct",
           element:<AddProducts/>
@@ -66,6 +63,11 @@ const App = () => {
         {
           path: "/productDetails/:productId",
           element:<ProductDetails/>
+        },
+        {
+          path:"/category/:category",
+          element:<Category/>,
+          loader: categoryLoader,
         }
       ],
     },

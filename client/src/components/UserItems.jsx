@@ -72,27 +72,17 @@ const UserItems = ({ product }) => {
             {category}
           </button>
 
-          {/* Brand and Quality */}
-          <div className="flex gap-2 items-center mt-3">
-            <p className="text-1xl font-semibold text-gray-700">Brand:</p>
-            <p className="text-lg font-semibold text-green-600">{quality}</p>
-          </div>
-
-          {/* Quantity */}
-          <div className="flex gap-2 items-center mt-3">
-          <p className="text-1xl font-semibold text-gray-700">Quantity:</p>
-          <p className="text-1xl font-semibold ">{quantity} in stock</p>
-          </div>
+        
       
 
           {/* Price and Date */}
           <div className="flex justify-between items-center mt-5">
           <div className="mb-10">
             <span className="text-xl text-gray-500 line-through mr-3">
-              {parseInt(product.price)} Ks
+              {parseInt(price)} Ks
             </span>
             <span className="text-2xl font-semibold italic text-red-500">
-              {Math.round(parseInt(product.price) * 0.7)} Ks
+              {Math.round(parseInt(price) * 0.7)} Ks
             </span>
            
           </div>

@@ -9,7 +9,7 @@ class DbConnect
 
     const ERR_MODE = PDO::ERRMODE_EXCEPTION;
 
-    public function __construct($server = "localhost", $port = 3306, $user = "root", $password = "", $dbname = "marketplace")
+    public function __construct($server = "localhost", $port = 4306, $user = "root", $password = "", $dbname = "marketplace")
     {
         $this->server = $server;
         $this->port = $port;

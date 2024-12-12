@@ -70,7 +70,7 @@ class ProductController
         return null;
     }
 
-    // New: Get Products Method
+    //  Get Products Method
     public function getProducts($userId)
     {
         try {

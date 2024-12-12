@@ -7,7 +7,7 @@ const Products = () => {
   return (
     <>
       <div className="p-10 bg-gray-100">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
           {products.length > 0 ? (
             products.map((product) => (
               <ViewProducts product={product} key={product.id} />

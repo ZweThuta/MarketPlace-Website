@@ -1,30 +1,30 @@
 import {
-  UserCircleIcon,
-  ShoppingCartIcon,
-  HeartIcon,
-} from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
+    UserCircleIcon,
+    ShoppingCartIcon,
+    HeartIcon,
+  } from "@heroicons/react/24/solid";
+  import { Link } from "react-router-dom";
 
-const ViewProducts = ({ product }) => {
-  const {
-    id,
-    userId,
-    name,
-    productName,
-    description,
-    image,
-    price,
-    category,
-    date,
-  } = product;
+const CategoryProducts = ({product}) => {
+    const {
+        id,
+        userId,
+        name,
+        productName,
+        description,
+        image,
+        price,
+        category,
+        date,
+      } = product;
 
-  const shortProductName =
+      const shortProductName =
     productName.length > 30 ? productName.substr(0, 30) + "..." : productName;
   const shortDescription =
     description.length > 80 ? description.substr(0, 80) + "..." : description;
   return (
     <>
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
+     <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
         <Link to={`/productDetails/${id}`}>
           <img
             src={`${import.meta.env.VITE_IMAGES_URL}/${image}`}
@@ -77,7 +77,7 @@ const ViewProducts = ({ product }) => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ViewProducts;
+export default CategoryProducts;
