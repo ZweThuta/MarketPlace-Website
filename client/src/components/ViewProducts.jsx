@@ -3,9 +3,12 @@ import {
   ShoppingCartIcon,
   HeartIcon,
 } from "@heroicons/react/24/solid";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { itemContext } from "../util/itemContext";
 
 const ViewProducts = ({ product }) => {
+
   const {
     id,
     userId,
@@ -22,6 +25,24 @@ const ViewProducts = ({ product }) => {
     productName.length > 30 ? productName.substr(0, 30) + "..." : productName;
   const shortDescription =
     description.length > 80 ? description.substr(0, 80) + "..." : description;
+    
+    const {addItem} = useContext(itemContext);
+    const [currentAmount, setCurrentAmount] = useState(1);
+    const currentAmountNumber = +currentAmount;
+
+    const addToCartHandler = () => {
+      if (currentAmountNumber < 1 || currentAmountNumber > 5) {
+        alert("please enter an valid amount !!!");
+        return;
+      }
+      addItem({
+        id,
+        productName,
+        price,
+        image,
+        amount: currentAmountNumber,
+      });
+    };
   return (
     <>
       <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
@@ -67,7 +88,9 @@ const ViewProducts = ({ product }) => {
             </div>
           </Link>
           <div className="flex space-x-2">
-            <button className="text-richChocolate600 hover:text-richChocolate700 transition">
+            <button
+            onClick={addToCartHandler} 
+             className="text-richChocolate600 hover:text-richChocolate700 transition">
               <ShoppingCartIcon className="h-6 w-6" />
             </button>
             <button className="text-red-500 hover:text-red-700 transition">

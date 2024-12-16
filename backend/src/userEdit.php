@@ -48,15 +48,17 @@ class UserController
         }
 
         try {
-            // Validate required fields
+            
             if (empty($data['name']) || empty($data['email']) || empty($data['phno'])) {
                 return $this->response(0, 'Name, email, and phone number are required!');
             }
 
             $uploadDir = "./userProfiles/";
             $profileImage = isset($_FILES['profile']) ? $this->uploadFile($_FILES['profile'], $uploadDir) : null;
+            $banner = isset($_FILES['banner']) ? $this->uploadFile($_FILES['banner'], $uploadDir) : null;
 
-            // Prepare SQL query
+
+            
             $sql = "UPDATE users SET
                 name = :name,
                 email = :email,
@@ -67,6 +69,10 @@ class UserController
 
             if ($profileImage) {
                 $sql .= ", profile = :profile";
+            }
+
+            if ($banner) {
+                $sql .= ", banner = :banner";
             }
 
             $sql .= " WHERE id = :id";
@@ -83,6 +89,12 @@ class UserController
             if ($profileImage) {
                 $stmt->bindParam(":profile", $profileImage);
             }
+
+            
+            if ($banner) {
+                $stmt->bindParam(":banner", $banner);
+            }
+
 
             $stmt->bindParam(":id", $userId, PDO::PARAM_INT);
 
@@ -119,7 +131,7 @@ class UserController
     }
 }
 
-// Handle request
+ 
 $method = $_SERVER['REQUEST_METHOD'];
 $userController = new UserController();
 

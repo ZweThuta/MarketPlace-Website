@@ -13,6 +13,7 @@ import EditProduct from "./pages/EditProduct";
 import Products, { productsLoader } from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
 import Category, { categoryLoader } from "./pages/Category";
+import MyCart from "./pages/MyCart";
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -68,6 +69,10 @@ const App = () => {
           path:"/category/:category",
           element:<Category/>,
           loader: categoryLoader,
+        },
+        {
+          path:"/addToCart",
+          element:<MyCart/>
         }
       ],
     },

@@ -18,9 +18,11 @@ const ProfileEdit = ({ isOpen, onClose }) => {
     phno: "",
     note: "",
     profileImage: null,
+    banner:null,
   });
   const [errors, setErrors] = useState({});
   const [imagePreview, setImagePreview] = useState(null);
+  const [banner, setBanner] = useState(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -40,6 +42,14 @@ const ProfileEdit = ({ isOpen, onClose }) => {
       setImagePreview(URL.createObjectURL(file));
     }
   };
+
+  const handleBannerChange = (e) =>{
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({ ...prev, banner: file }));
+      setBanner(URL.createObjectURL(file));
+    }
+  }
 
   const validateForm = () => {
     const errors = {};
@@ -74,6 +84,9 @@ const ProfileEdit = ({ isOpen, onClose }) => {
     payload.append("note", formData.note);
     if (formData.profileImage) {
       payload.append("profile", formData.profileImage);
+    }
+    if(formData.banner){
+      payload.append("banner",formData.banner);
     }
     
   
@@ -112,7 +125,9 @@ const ProfileEdit = ({ isOpen, onClose }) => {
       phno: "",
       note: "",
       profileImage: null,
+      banner:null,
     });
+    setBanner(null);
     setImagePreview(null);
     setErrors({});
   };
@@ -138,6 +153,7 @@ const ProfileEdit = ({ isOpen, onClose }) => {
           phno: data.phno || "",
           note: data.note || "",
           profileImage: null,
+          banner:null
         });
         setName(data.name);
         setEmail(data.email);
@@ -188,6 +204,29 @@ const ProfileEdit = ({ isOpen, onClose }) => {
             type="file"
             accept="image/*"
             onChange={handleImageChange}
+            className="mt-2 text-sm text-gray-600 cursor-pointer"
+          />
+        </div>
+
+         {/* Profile Image */}
+         <div className="flex flex-col items-center mb-4">
+          <div className="relative w-full h-24 overflow-hidden shadow-md border-2 border-gray-300">
+            {banner ? (
+              <img
+                src={banner}
+                alt="Banner Preview"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full text-sm text-center flex items-center justify-center bg-gray-200 text-gray-500">
+                 Your banner
+              </div>
+            )}
+          </div>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleBannerChange}
             className="mt-2 text-sm text-gray-600 cursor-pointer"
           />
         </div>

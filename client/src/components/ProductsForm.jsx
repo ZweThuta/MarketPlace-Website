@@ -134,9 +134,7 @@ const ProductsForm = ({ isAddProduct }) => {
       newErrors.price = "Price is required";
     } else if (price <= 0) {
       newErrors.price = "Price must be a positive number";
-    } else if (price < 10000) {
-      newErrors.price = "Price must be at least 10000 MMK";
-    }
+    } 
     if (!category) {
       newErrors.category = "Category is required";
     }

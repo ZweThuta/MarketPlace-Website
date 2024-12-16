@@ -1,13 +1,19 @@
 import { Link, useRouteLoaderData } from "react-router-dom";
 import logo from "../logo/LuxeSphere_Logo.png";
 import { useAuth } from "../util/AuthContext";
-import { UserCircleIcon } from "@heroicons/react/24/solid";
-import { useEffect, useState } from "react";
+import { UserCircleIcon, ShoppingCartIcon } from "@heroicons/react/24/solid";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { itemContext } from "../util/itemContext";
 const NavBar = () => {
   const [user, setUser] = useState(null);
   const { authToken } = useAuth();
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
+  const { items } = useContext(itemContext);
+  const totalCart = items.reduce((currentVal, item) => {
+    return currentVal + item.amount;
+  }, 0);
+
   useEffect(() => {
     getUserData();
   }, []);
@@ -32,11 +38,10 @@ const NavBar = () => {
       }
     } catch (error) {
       console.error("Error fetching user ID:", error.message);
-    } finally{
+    } finally {
       setLoading(false);
     }
   };
- 
 
   return (
     <nav className="flex items-center justify-between py-1 bg-richChocolate">
@@ -54,15 +59,20 @@ const NavBar = () => {
         </div>
       </Link>
       <div>
-          <Link  className="text-white font-semibold hover:text-gray-200 hover:[text-shadow:_0px_0px_2px_#d4d4d4] uppercase tracking-widest [text-shadow:_1px_1px_2px_#d4d4d4]"  to={"/products"}>Market Place</Link>
-        </div>
+        <Link
+          className="text-white text-center font-semibold hover:text-gray-200 hover:[text-shadow:_0px_0px_2px_#d4d4d4] uppercase tracking-widest [text-shadow:_1px_1px_2px_#d4d4d4]"
+          to={"/products"}
+        >
+          Market Place
+        </Link>
+      </div>
       {authToken ? (
         <>
           <div className="flex items-center mr-4">
             <Link to={"/userProduct"}>
               <div className="flex items-center gap-1 mr-4 p-1 rounded-md  text-ivoryWhite cursor-pointer">
                 <UserCircleIcon color="white" width={30} />
-                {loading ? ( 
+                {/* {loading ? ( 
                   <p className="text-white pr-2">Loading...</p>
                 ) : user ? (
                   <p className="text-white pr-2 hover:text-gray-200 font-semibold capitalize">
@@ -72,9 +82,21 @@ const NavBar = () => {
                   <p className="text-white pr-2 hover:text-gray-200 font-semibold">
                     Profile
                   </p>
-                )}
+                )} */}
               </div>
             </Link>
+
+            <div className="relative inline-block mr-5">
+              <Link to={"/addToCart"} className="flex items-center">
+                <ShoppingCartIcon color="white" width={30} />
+              </Link>
+              {totalCart > 0 && (
+                <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {totalCart}
+                </span>
+              )}
+            </div>
+
             <Link
               to="/logout"
               className="text-white font-semibold hover:text-gray-200"
@@ -86,7 +108,6 @@ const NavBar = () => {
         </>
       ) : (
         <>
-       
           <div className="flex gap-5 mr-5">
             <Link
               to="/login"

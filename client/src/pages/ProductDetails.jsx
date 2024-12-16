@@ -81,7 +81,7 @@ const ProductDetails = () => {
 
           {/* Thumbnail Images */}
           <div className="flex justify-between mt-4 space-x-3">
-            {[product.secondImage, product.thirdImage, product.fourthImage].map(
+            {[product.secondImage, product.thirdImage, product.fourthImage,product.image].map(
               (img, index) => (
                 <div key={index} className="flex-1">
                   <img
