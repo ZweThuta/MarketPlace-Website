@@ -1,6 +1,6 @@
 import axios from "axios";
 import {useLoaderData } from "react-router-dom";
-import CategoryProducts from "../components/CategoryProducts";
+import ViewProducts from "../components/ViewProducts";
 const Category = () => {
     const products = useLoaderData();
   return (
@@ -9,7 +9,7 @@ const Category = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {products.length > 0 ? (
             products.map((product) => (
-              <CategoryProducts product={product} key={product.id} />
+              <ViewProducts product={product} key={product.id} />
             ))
           ) : (
             <p className="text-center text-gray-600 col-span-full">

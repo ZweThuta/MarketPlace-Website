@@ -2,12 +2,16 @@ import { useContext } from "react";
 import { itemContext } from "../util/itemContext";
 
 const CartItem = ({ product }) => {
-  const { id, productName, image, price, amount } = product;
+  const { id, productName, image, price, amount, quantity } = product;
 
   const { addItem, removeItem } = useContext(itemContext);
 
   const addAmountHandler = () => {
-    addItem({ ...product, amount: 1 });
+    if (amount < quantity) {
+      addItem({ ...product, amount: 1 });
+    } else {
+      alert(`Maximum quantity of ${quantity} reached.`);
+    }
   };
 
   const removeAmountHandler = () => {
@@ -26,7 +30,7 @@ const CartItem = ({ product }) => {
           <h1 className="text-lg font-semibold text-gray-800">{productName}</h1>
           <span className="text-gray-600">${price}</span>
           <div className="mt-2">
-            <span className="text-gray-600">Quantity: {amount}</span>
+            <span className="text-gray-600">Quantity: {amount} / {quantity}</span>
           </div>
         </div>
       </div>

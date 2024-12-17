@@ -17,6 +17,7 @@ const ViewProducts = ({ product }) => {
     description,
     image,
     price,
+    quantity,
     category,
     date,
   } = product;
@@ -31,15 +32,13 @@ const ViewProducts = ({ product }) => {
     const currentAmountNumber = +currentAmount;
 
     const addToCartHandler = () => {
-      if (currentAmountNumber < 1 || currentAmountNumber > 5) {
-        alert("please enter an valid amount !!!");
-        return;
-      }
+     
       addItem({
         id,
         productName,
         price,
         image,
+        quantity,
         amount: currentAmountNumber,
       });
     };
@@ -57,23 +56,21 @@ const ViewProducts = ({ product }) => {
           {category}
         </Link>
         <div className="p-5">
-          <h2 className="text-normal font-bold text-gray-800 tracking-wide">
+          <h2 className="text-normal capitalize font-bold text-gray-800 tracking-wide">
             {shortProductName}
           </h2>
           <p className="text-gray-600 mt-1 text-xs tracking-normal align-baseline">
             {shortDescription}
           </p>
           <div className="flex justify-between items-center mt-4">
-            <div className="flex items-baseline space-x-2">
-              <span className="text-1xl text-gray-500 line-through font-mono">
-                {parseInt(price)} Ks
+            <div className="flex items-baseline text-lg space-x-2">
+            <span className="text-medium text-green-500 font-semibold">
+                $
               </span>
               <span className="text-1xl italic text-richChocolate600 font-bold font-mono">
-                {Math.round(parseInt(price) * 0.7)} Ks
+                {price}
               </span>
-              <span className="text-sm text-green-500 font-semibold">
-                30% Off!
-              </span>
+              
             </div>
           </div>
         </div>

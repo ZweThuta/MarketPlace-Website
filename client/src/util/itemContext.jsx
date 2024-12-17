@@ -7,26 +7,41 @@ const initialState = {
 
 const itemReducer = (state, action) => {
   if (action.type === "ADD_ITEM") {
-    const updatedTotalAmount =
-      state.totalAmount + action.item.price * action.item.amount;
-
     const existItemIndex = state.items.findIndex(
       (item) => item.id === action.item.id
     );
     const existItem = state.items[existItemIndex];
 
     let updatedItems;
+    let updatedTotalAmount;
 
     if (existItem) {
+      const newAmount = existItem.amount + action.item.amount;
+
+      if (newAmount > action.item.quantity) {
+        alert(`This item has only ${action.item.quantity} in stock at the market.`);
+        return state; 
+      }
+
       const updatedItem = {
         ...existItem,
-        amount: existItem.amount + action.item.amount,
+        amount: newAmount,
       };
       updatedItems = [...state.items];
       updatedItems[existItemIndex] = updatedItem;
     } else {
+     
+      if (action.item.amount > action.item.quantity) {
+        alert(`This item has only ${action.item.quantity} in stock at the market.`);
+
+        return state;
+      }
+
       updatedItems = state.items.concat(action.item);
     }
+
+    updatedTotalAmount =
+      state.totalAmount + action.item.price * action.item.amount;
 
     return {
       items: updatedItems,
@@ -55,7 +70,8 @@ const itemReducer = (state, action) => {
       totalAmount: updatedTotalAmount,
     };
   }
-  return initialState;
+
+  return state; 
 };
 
 export const itemContext = createContext({

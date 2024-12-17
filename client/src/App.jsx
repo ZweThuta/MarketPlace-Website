@@ -14,6 +14,7 @@ import Products, { productsLoader } from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
 import Category, { categoryLoader } from "./pages/Category";
 import MyCart from "./pages/MyCart";
+import SearchProducts from "./pages/SearchProducts";
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -73,6 +74,10 @@ const App = () => {
         {
           path:"/addToCart",
           element:<MyCart/>
+        },
+        {
+          path:"/searchProducts",
+          element:<SearchProducts/>
         }
       ],
     },

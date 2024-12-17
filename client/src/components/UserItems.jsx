@@ -58,7 +58,7 @@ const UserItems = ({ product }) => {
         </Link>
         <div className="w-full p-6 bg-white  rounded-lg  transition duration-300 relative">
           {/* Product Name */}
-          <h1 className="text-xl font-bold mt-2 mb-3 text-gray-800">
+          <h1 className="text-xl capitalize font-bold mt-2 mb-3 text-gray-800">
             {shortProductName}
           </h1>
 
@@ -78,12 +78,10 @@ const UserItems = ({ product }) => {
           {/* Price and Date */}
           <div className="flex justify-between items-center mt-5">
           <div className="mb-10">
-            <span className="text-xl text-gray-500 line-through mr-3">
-              {parseInt(price)} Ks
+            <span className="text-xl text-gray-500  mr-3">
+             $ {price}
             </span>
-            <span className="text-2xl font-semibold italic text-red-500">
-              {Math.round(parseInt(price) * 0.7)} Ks
-            </span>
+           
            
           </div>
             <div className="flex items-center gap-2 text-gray-500">

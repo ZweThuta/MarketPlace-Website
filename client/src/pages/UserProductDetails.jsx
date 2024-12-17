@@ -107,6 +107,7 @@ const ProductDetail = () => {
                 product.secondImage,
                 product.thirdImage,
                 product.fourthImage,
+                product.image
               ].map((img, index) => (
                 <div key={index} className="flex-1">
                   <img
@@ -129,7 +130,7 @@ const ProductDetail = () => {
 
           {/* Product Details Section */}
           <div className="p-4 flex flex-col">
-            <h1 className="text-3xl font-bold text-gray-800 mb-1 tracking-wide">
+            <h1 className="text-3xl font-bold capitalize text-gray-800 mb-1 tracking-wide">
               {product.productName}
             </h1>
             <span className="text-richChocolate600 mb-6 font-semibold text-medium tracking-wide">
@@ -139,21 +140,17 @@ const ProductDetail = () => {
               <RatingStars />
             </div>
             <div className="mb-10">
-              <span className="text-2xl text-gray-500 line-through mr-3">
-                {parseInt(product.price)} Ks
-              </span>
+              
               <span className="text-3xl font-semibold italic text-red-500">
-                {Math.round(parseInt(product.price) * 0.7)} Ks
+                ${product.price}
               </span>
-              <span className="ml-3 text-sm text-green-600 font-semibold">
-                30% Off!
-              </span>
+             
             </div>
 
             <span className="text-medium text-gray-500 underline capitalize mb-2">
               About this item
             </span>
-            <span className="text-gray-600 text-medium text-justify mb-5">
+            <span className="text-gray-600 capitalize text-medium text-justify mb-5">
               {product.description}
             </span>
 

@@ -240,7 +240,6 @@ const ProductsForm = ({ isAddProduct }) => {
           <div className="h-1/2 flex items-center justify-center border border-gray-300 rounded-lg mb-4">
             {imagePreview ? (
               <img
-                // src= {isAddProduct ? imagePreview : `${import.meta.env.VITE_IMAGES_URL}/${prevProduct.image}`}
                 src={imagePreview}
                 alt="Preview"
                 className="h-full w-full object-cover rounded-lg"
@@ -398,6 +397,7 @@ const ProductsForm = ({ isAddProduct }) => {
               <input
                 name="price"
                 type="number"
+                step="any"
                 onChange={handleChange}
                 min="0"
                 className={`text-gray-800 bg-white border ${
@@ -430,6 +430,7 @@ const ProductsForm = ({ isAddProduct }) => {
                     <option>Electornic</option>
                     <option>Game</option>
                     <option>Shoe</option>
+                    <option>Lipstick</option>
                     <option>Home & Kitchen</option>
 
                   </>
@@ -439,6 +440,7 @@ const ProductsForm = ({ isAddProduct }) => {
                     <option>Electornic</option>
                     <option>Game</option>
                     <option>Shoe</option>
+                    <option>Lipstick</option>
                     <option>Home & Kitchen</option>
 
 
