@@ -1,0 +1,115 @@
+<?php
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: *");
+header("Access-Control-Allow-Methods: POST");
+header("Content-Type: application/json");
+
+include("dbConnect.php");
+
+class ReviewController
+{
+    private $conn;
+
+    public function __construct()
+    {
+        $db = new dbConnect();
+        $this->conn = $db->connect();
+    }
+
+    public function addReview()
+    {
+        $input = json_decode(file_get_contents("php://input"), true);
+
+        if (!isset($input['productId'], $input['ownerId'], $input['userId'], $input['comment'])) {
+            echo $this->response(0, "Invalid input. All fields are required.");
+            return;
+        }
+
+        $productId = $input['productId'];
+        $ownerId = $input['ownerId'];
+        $userId = $input['userId'];
+        $comment = trim($input['comment']);
+        $date = date("Y-m-d");
+
+        if (empty($comment)) {
+            echo $this->response(0, "Comment cannot be empty.");
+            return;
+        }
+
+        try {
+
+            $query = "INSERT INTO reviews (productId, ownerId, userId, comment, date) 
+                      VALUES (:productId, :ownerId, :userId, :comment, :date)";
+
+            $stmt = $this->conn->prepare($query);
+
+            $stmt->bindParam(':productId', $productId, PDO::PARAM_INT);
+            $stmt->bindParam(':ownerId', $ownerId, PDO::PARAM_INT);
+            $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+            $stmt->bindParam(':comment', $comment, PDO::PARAM_STR);
+            $stmt->bindParam(':date', $date, PDO::PARAM_STR);
+
+            if ($stmt->execute()) {
+                echo $this->response(1, "Review added successfully.");
+            } else {
+                echo $this->response(0, "Failed to add review. Please try again.");
+            }
+        } catch (Exception $e) {
+            echo $this->response(0, "An error occurred: " . $e->getMessage());
+        }
+    }
+
+    public function getReviews($productId)
+    {
+        try {
+            $query = "SELECT r.comment, r.date, u.name, u.email 
+                      FROM reviews r 
+                      INNER JOIN users u ON r.userId = u.id
+                      WHERE r.productId = :productId
+                      ORDER BY r.date DESC";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':productId', $productId, PDO::PARAM_INT);
+
+            $stmt->execute();
+
+            $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if ($reviews) {
+                echo $this->response(1, "Reviews fetched successfully.", $reviews);
+            } else {
+                echo $this->response(0, "No reviews found for this product.");
+            }
+        } catch (Exception $e) {
+            echo $this->response(0, "An error occurred: " . $e->getMessage());
+        }
+    }
+
+    private function response($status, $message, $data = null)
+    {
+        return json_encode(['status' => $status, 'message' => $message, 'data' => $data]);
+    }
+}
+
+$method = $_SERVER['REQUEST_METHOD'];
+$reviewController = new ReviewController();
+
+switch ($method) {
+    case 'POST':
+        $reviewController->addReview();
+        break;
+
+    case 'GET':
+        if (isset($_GET['productId'])) {
+            $productId = intval($_GET['productId']);
+            $reviewController->getReviews($productId);
+        } else {
+            echo json_encode(['status' => 0, 'message' => 'Product ID is required.']);
+        }
+        break;
+
+
+    default:
+        echo json_encode(['status' => 0, 'message' => 'Invalid request method.']);
+        break;
+}

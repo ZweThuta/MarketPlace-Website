@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ConfirmModal from "../components/ConfirmModel";
+import { Spinner } from "@material-tailwind/react";
+
 import {
   PencilSquareIcon,
   TrashIcon,
@@ -71,9 +73,9 @@ const ProductDetail = () => {
 
   if (!product) {
     return (
-      <p className="text-center mt-10 text-gray-600">
-        Loading product details...
-      </p>
+       <div className="flex items-center justify-center mt-20">
+                <Spinner className="h-16 w-16 text-center text-gray-500/50" />
+        </div>
     );
   }
 

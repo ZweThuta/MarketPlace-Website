@@ -8,11 +8,11 @@ import { Link } from "react-router-dom";
 import { itemContext } from "../util/itemContext";
 
 const ViewProducts = ({ product }) => {
-
   const {
     id,
     userId,
     name,
+    profile,
     productName,
     description,
     image,
@@ -26,22 +26,22 @@ const ViewProducts = ({ product }) => {
     productName.length > 30 ? productName.substr(0, 30) + "..." : productName;
   const shortDescription =
     description.length > 80 ? description.substr(0, 80) + "..." : description;
-    
-    const {addItem} = useContext(itemContext);
-    const [currentAmount, setCurrentAmount] = useState(1);
-    const currentAmountNumber = +currentAmount;
 
-    const addToCartHandler = () => {
-     
-      addItem({
-        id,
-        productName,
-        price,
-        image,
-        quantity,
-        amount: currentAmountNumber,
-      });
-    };
+  const { addItem } = useContext(itemContext);
+  const [currentAmount, setCurrentAmount] = useState(1);
+  const currentAmountNumber = +currentAmount;
+
+  const addToCartHandler = () => {
+    addItem({
+      id,
+      productName,
+      price,
+      image,
+      quantity,
+      amount: currentAmountNumber,
+    });
+  };
+
   return (
     <>
       <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
@@ -52,7 +52,10 @@ const ViewProducts = ({ product }) => {
             className="w-full h-56 object-cover"
           />
         </Link>
-        <Link to={`/category/${category}`} className="mt-3 bg-richChocolate700 text-ivoryWhite text-sm  p-2 rounded-lg hover:bg-richChocolate900 transition absolute right-3 top-1 tracking-wider">
+        <Link
+          to={`/category/${category}`}
+          className="mt-3 bg-richChocolate700 text-ivoryWhite text-sm  p-2 rounded-lg hover:bg-richChocolate900 transition absolute right-3 top-1 tracking-wider"
+        >
           {category}
         </Link>
         <div className="p-5">
@@ -64,19 +67,31 @@ const ViewProducts = ({ product }) => {
           </p>
           <div className="flex justify-between items-center mt-4">
             <div className="flex items-baseline text-lg space-x-2">
-            <span className="text-medium text-green-500 font-semibold">
+              <span className="text-medium text-green-500 font-semibold">
                 $
               </span>
               <span className="text-1xl italic text-richChocolate600 font-bold font-mono">
                 {price}
               </span>
-              
             </div>
           </div>
         </div>
         <div className="flex justify-between items-center p-4 border-t">
           <Link to={`userDetails/${userId}`} className="flex items-center">
-            <UserCircleIcon className="h-9 w-9 text-gray-500" />
+            {profile ? (
+              <>
+                <div>
+                  <img
+                    src={`${import.meta.env.VITE_IMAGES_URL}/${profile}`}
+                    alt={productName}
+                    className="w-10 h-10 rounded-full object-cover border-2 mr-1 border-gray-300"
+                  />
+                </div>
+              </>
+            ) : (
+              <UserCircleIcon className="h-10 w-10 text-gray-500" />
+            )}
+
             <div className="ml-1">
               <p className="text-sm font-semibold text-gray-800 tracking-wide capitalize">
                 {name}
@@ -86,8 +101,9 @@ const ViewProducts = ({ product }) => {
           </Link>
           <div className="flex space-x-2">
             <button
-            onClick={addToCartHandler} 
-             className="text-richChocolate600 hover:text-richChocolate700 transition">
+              onClick={addToCartHandler}
+              className="text-richChocolate600 hover:text-richChocolate700 transition"
+            >
               <ShoppingCartIcon className="h-6 w-6" />
             </button>
             <button className="text-red-500 hover:text-red-700 transition">

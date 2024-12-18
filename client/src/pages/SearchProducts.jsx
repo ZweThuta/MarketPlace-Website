@@ -1,15 +1,15 @@
+import { Spinner } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import ViewProducts from "../components/ViewProducts";
 
 const SearchProducts = () => {
-  const [products, setProducts] = useState([]);  
-  const [loading, setLoading] = useState(false);  
-  const [error, setError] = useState("");  
-  const location = useLocation();  
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const location = useLocation();
 
- 
   const searchParams = new URLSearchParams(location.search);
   const query = searchParams.get("query");
 
@@ -23,15 +23,14 @@ const SearchProducts = () => {
     setLoading(true);
     setError("");
     setProducts([]);
-  
+
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_SEARCH_URL}?query=${encodeURIComponent(query)}`
       );
-  
-       
+
       if (response.data && response.data.status === 1 && response.data.data) {
-        setProducts(response.data.data);  
+        setProducts(response.data.data);
       } else {
         setError("No products found for. Please try a different search.");
       }
@@ -52,7 +51,12 @@ const SearchProducts = () => {
       </h1>
 
       {/* Loading State */}
-      {loading && <p className="text-gray-500">Loading...</p>}
+
+      {loading && (
+        <div className="flex items-center justify-center mt-20">
+          <Spinner className="h-16 w-16 text-center text-gray-500/50" />
+        </div>
+      )}
 
       {/* Error State */}
       {error && <p className="text-red-500">{error}</p>}

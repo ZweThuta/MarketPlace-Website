@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Spinner } from "@material-tailwind/react";
+
 import {
   ShoppingCartIcon,
   HeartIcon,
@@ -11,6 +13,7 @@ import {
 } from "@heroicons/react/24/outline";
 import RatingStars from "../components/RatingStars";
 import { itemContext } from "../util/itemContext";
+import ReviewsForm from "../components/ReviewsForm";
 
 const ProductDetails = () => {
   const { productId } = useParams();
@@ -58,13 +61,15 @@ const ProductDetails = () => {
     };
     fetchProduct();
   }, [productId]);
+  
+
 
   if (!product) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <p className="text-lg text-gray-600 animate-pulse">
-          Loading product details...
-        </p>
+         <div className="flex items-center justify-center mt-20">
+                <Spinner className="h-16 w-16 text-center text-gray-500/50" />
+        </div>
       </div>
     );
   }
@@ -221,6 +226,7 @@ const ProductDetails = () => {
         </div>
       </div>
       <hr className="m-5" />
+      <ReviewsForm product={product}/>
     </>
   );
 };

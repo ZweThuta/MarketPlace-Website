@@ -18,8 +18,7 @@ class ProductsController
     public function getAllProducts()
     {
         try {
-            // Assuming users table has 'id' as primary key and 'username' column for the name
-            $sql = "SELECT products.*, users.name 
+            $sql = "SELECT products.*, users.name, users.profile 
                     FROM products 
                     INNER JOIN users ON products.userId = users.id";
             $stmt = $this->conn->prepare($sql);
