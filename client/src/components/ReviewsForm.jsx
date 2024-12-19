@@ -3,9 +3,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { rating } from "@material-tailwind/react";
+import {
+  UserCircleIcon,
+  EyeIcon,
+  EyeSlashIcon,
+} from "@heroicons/react/24/outline";
+import moment from "moment";
 
-const ReviewsForm = ({ product }) => {
+const ReviewsForm = ({ product, productIds }) => {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [review, setReview] = useState({ comment: "", rating: 0 });
@@ -13,11 +18,25 @@ const ReviewsForm = ({ product }) => {
   const [reviewerId, setReviewerId] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [reviews, setReviews] = useState([]);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
+    setReviews([]); 
     fetchUser();
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_REVIEW_URL}?productId=${productId}`
+        );
+        if (response.data?.status === 1) {
+          setReviews(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
     fetchReviews();
-  }, []);
+  }, [productId]);
 
   const fetchUser = async () => {
     try {
@@ -37,20 +56,6 @@ const ReviewsForm = ({ product }) => {
       console.error("Error fetching user data:", error);
     }
   };
-
-  const fetchReviews = async () => {
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_REVIEW_URL}?productId=${productId}`
-      );
-      if (response.data?.status === 1) {
-        setReviews(response.data.data);
-      }
-    } catch (error) {
-      console.error("Error fetching reviews:", error);
-    }
-  };
-  console.log(reviews);
 
   const clearHandler = () => {
     setReview({ comment: "" });
@@ -211,59 +216,97 @@ const ReviewsForm = ({ product }) => {
             Customer Reviews
           </h2>
           {reviews.length > 0 ? (
-            reviews.map((review) => (
-              <div
-                key={review.date + review.comment}
-                className="mb-6 p-4 bg-white rounded-lg shadow-sm border border-gray-200"
-              >
-                <div className="flex items-start gap-4">
-                  <img
-                    src={`${import.meta.env.VITE_IMAGES_URL}/${review.profile}`}
-                    alt={`${review.name}'s profile`}
-                    className="w-16 h-16 rounded-full object-cover border-2 border-richChocolate900"
-                  />
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-gray-800 text-lg font-semibold capitalize">
-                          {review.name}
-                        </p>
-                        <p className="text-gray-500 text-xs">{review.email}</p>
+            <>
+              {reviews.slice(0, showAll ? reviews.length : 3).map((review) => (
+                <div
+                  key={review.date + review.comment}
+                  className="mb-6 p-4 bg-white rounded-lg shadow-sm border border-gray-200"
+                >
+                  <div className="flex items-start gap-4">
+                    {review.profile ? (
+                      <img
+                        src={`${import.meta.env.VITE_IMAGES_URL}/${
+                          review.profile
+                        }`}
+                        alt={`${review.name}'s profile`}
+                        className="w-16 h-16 rounded-full object-cover border-2 border-richChocolate900"
+                      />
+                    ) : (
+                      <UserCircleIcon className="w-16 h-16 rounded-full object-cover border-2 border-richChocolate900" />
+                    )}
+
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-gray-800 text-lg font-semibold capitalize">
+                            {review.name}
+                          </p>
+                          <p className="text-gray-500 text-xs">
+                            {review.email}
+                          </p>
+                        </div>
+                        <div className="flex items-center">
+                          {Array.from({ length: 5 }, (_, index) => (
+                            <svg
+                              key={index}
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill={index < review.rating ? "gold" : "none"}
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                              className={`w-6 h-6 ${
+                                index < review.rating
+                                  ? "text-yellow-500"
+                                  : "text-gray-300"
+                              }`}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 3.375l2.5 6.856h7.25L16.125 15l2.5 6.869L12 18.018l-6.625 3.851L7.875 15 .375 10.231h7.25L12 3.375z"
+                              />
+                            </svg>
+                          ))}
+                        </div>
                       </div>
-                      <div className="flex items-center">
-                        {Array.from({ length: 5 }, (_, index) => (
-                          <svg
-                            key={index}
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill={index < review.rating ? "gold" : "none"}
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className={`w-5 h-5 ${
-                              index < review.rating
-                                ? "text-yellow-500"
-                                : "text-gray-300"
-                            }`}
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M12 3.375l2.5 6.856h7.25L16.125 15l2.5 6.869L12 18.018l-6.625 3.851L7.875 15 .375 10.231h7.25L12 3.375z"
-                            />
-                          </svg>
-                        ))}
-                      </div>
+                      <p className="mt-3 text-gray-700 leading-relaxed">
+                        {review.comment}
+                      </p>
                     </div>
-                    <p className="mt-3 text-gray-700 leading-relaxed">
-                      {review.comment}
+                  </div>
+
+                  <div className="mt-4 text-right">
+                    <p className="text-gray-400 text-sm">
+                      {moment(review.date).fromNow()}
                     </p>
                   </div>
                 </div>
-                <div className="mt-4 text-right">
-                  <p className="text-gray-400 text-sm">{review.date}</p>
-                </div>
+              ))}
+              <div className="text-center">
+                {reviews.length > 3 && (
+                  <button
+                    onClick={() => setShowAll(!showAll)}
+                    className="py-2 px-6 bg-blue-500 text-sm  text-white rounded-lg hover:bg-blue-600"
+                  >
+                    {showAll ? (
+                      <>
+                        <div className="flex gap-2">
+                          <span>Show Less</span>
+                          <EyeSlashIcon className="w-5 h-5" />
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="flex gap-2">
+                          <span>Show More</span>
+                          <EyeIcon className="w-5 h-5" />
+                        </div>
+                      </>
+                    )}
+                  </button>
+                )}
               </div>
-            ))
+            </>
           ) : (
             <div className="flex flex-col items-center justify-center py-10 bg-gray-100 rounded-lg">
               <p className="text-gray-600 text-sm">

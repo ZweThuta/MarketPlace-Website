@@ -8,7 +8,7 @@ const AverageRating = ({ productId }) => {
 
   useEffect(() => {
     fetchAverageRating();
-  }, []);
+  }, [productId]);
 
   const fetchAverageRating = async () => {
     try {

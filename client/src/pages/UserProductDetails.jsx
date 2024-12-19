@@ -139,7 +139,7 @@ const ProductDetail = () => {
               {product.category}
             </span>
             <div className="mb-4">
-              <RatingStars />
+              <RatingStars productId={productId} />
             </div>
             <div className="mb-10">
               

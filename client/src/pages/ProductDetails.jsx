@@ -14,6 +14,7 @@ import {
 import RatingStars from "../components/RatingStars";
 import { itemContext } from "../util/itemContext";
 import ReviewsForm from "../components/ReviewsForm";
+import RelatedProducts from "../components/RelatedProducts";
 
 const ProductDetails = () => {
   const { productId } = useParams();
@@ -223,7 +224,8 @@ const ProductDetails = () => {
       </div>
       <hr className="mt-5 border-t-3 border-grey" />
 
-      <ReviewsForm product={product} />
+      <ReviewsForm  product={product} />
+      <RelatedProducts productId={productId} />
     </>
   );
 };
