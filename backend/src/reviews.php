@@ -141,6 +141,37 @@ class ReviewController
     }
 }
 
+public function updateReview($reviewId, $newComment, $newRating){
+    try {
+        $sql = "SELECT * FROM reviews WHERE id = :reviewId";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':reviewId', $reviewId, PDO::PARAM_INT);
+        $stmt->execute();
+        $review = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$review) {
+            return json_encode(['status' => 0, 'message' => 'Review not found.']);
+        }
+
+        if($newRating < 1 || $newRating > 5){
+            return $this->response(0, 'Rating must be between 1 and 5.');
+        }
+
+        $sql = "UPDATE reviews SET comment = :newComment, rating = :newRating, updated_at = NOW() WHERE id = :reviewId";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':newComment', $newComment, PDO::PARAM_STR);
+        $stmt->bindParam(':newRating', $newRating, PDO::PARAM_INT);
+        $stmt->bindParam(':reviewId', $reviewId, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            return $this->response(1, 'Review updated successfully.');
+        } else {
+            return $this->response(0, 'Failed to update review.');
+        }
+    } catch (PDOException $e) {
+        return json_encode(['status' => 0, 'message' => 'Database error: ' . $e->getMessage()]);
+    }
+}
 
     private function response($status, $message, $data = null)
     {
@@ -177,6 +208,18 @@ switch ($method) {
             echo json_encode(['status' => 0, 'message' => 'Review ID is required.']);
         }
         break;
+
+    case 'PUT':
+            $reviewId = $_POST['reviewId'] ?? null;
+            $newComment = $_POST['comment'] ?? null;
+            $newRating = $_POST['rating'] ?? null;
+        
+            if ($reviewId && $newComment && $newRating) {
+                echo $reviewController->updateReview($reviewId, $newComment, $newRating);
+            } else {
+                echo json_encode(['status' => 0, 'message' => 'Review ID, comment, and rating are required.']);
+            }
+            break;
 
     default:
         echo json_encode(['status' => 0, 'message' => 'Invalid request method.']);

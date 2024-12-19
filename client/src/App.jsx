@@ -89,7 +89,7 @@ const App = () => {
     <>
       <AuthProvider>
       <ToastContainer position="bottom-right" theme="dark" autoClose={2000} />
-        <RouterProvider router={router} />;
+        <RouterProvider router={router} />
       </AuthProvider>
     </>
   );

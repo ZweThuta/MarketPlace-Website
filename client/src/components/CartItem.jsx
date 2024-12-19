@@ -1,5 +1,7 @@
 import { useContext } from "react";
 import { itemContext } from "../util/itemContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CartItem = ({ product }) => {
   const { id, productName, image, price, amount, quantity } = product;
@@ -10,7 +12,7 @@ const CartItem = ({ product }) => {
     if (amount < quantity) {
       addItem({ ...product, amount: 1 });
     } else {
-      alert(`Maximum quantity of ${quantity} reached.`);
+      toast.error(`Maximum quantity of ${quantity} reached.`);
     }
   };
 

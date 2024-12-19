@@ -1,5 +1,6 @@
 import { createContext, useReducer } from "react";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const initialState = {
   items: [],
   totalAmount: 0,
@@ -19,7 +20,7 @@ const itemReducer = (state, action) => {
       const newAmount = existItem.amount + action.item.amount;
 
       if (newAmount > action.item.quantity) {
-        alert(`This item has only ${action.item.quantity} in stock at the market.`);
+        toast.error(`This item has only ${action.item.quantity} in stock at the market.`);
         return state; 
       }
 
@@ -32,8 +33,7 @@ const itemReducer = (state, action) => {
     } else {
      
       if (action.item.amount > action.item.quantity) {
-        alert(`This item has only ${action.item.quantity} in stock at the market.`);
-
+        toast.error(`This item has only ${action.item.quantity} in stock at the market.`);
         return state;
       }
 

@@ -3,12 +3,24 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import ViewProducts from "../components/ViewProducts";
+import ReactPaginate from "react-paginate";
 
 const SearchProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const location = useLocation();
+  const [currentPage, setCurrentPage] = useState(0);
+  const productsPerPage = 12;
+  const pageCount = Math.ceil(products.length / productsPerPage);
+  const displayedProducts = products.slice(
+    currentPage * productsPerPage,
+    (currentPage + 1) * productsPerPage
+  );
+
+  const handlePageClick = (data) => {
+    setCurrentPage(data.selected);
+  };
 
   const searchParams = new URLSearchParams(location.search);
   const query = searchParams.get("query");
@@ -62,9 +74,9 @@ const SearchProducts = () => {
       {error && <p className="text-red-500">{error}</p>}
 
       {/* Search Results */}
-      {!loading && !error && products.length > 0 ? (
+      {!loading && !error && displayedProducts.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
+          {displayedProducts.map((product) => (
             <ViewProducts key={product.id} product={product} />
           ))}
         </div>
@@ -73,6 +85,36 @@ const SearchProducts = () => {
         !error && (
           <p className="text-gray-500 text-center">No products found.</p>
         )
+      )}
+
+      {/* Pagination */}
+      {products.length > productsPerPage && (
+        <div className="flex justify-center mt-10">
+          <ReactPaginate
+            previousLabel={"← Previous"}
+            nextLabel={"Next →"}
+            breakLabel={"..."}
+            pageCount={pageCount}
+            marginPagesDisplayed={1}
+            pageRangeDisplayed={2}
+            onPageChange={handlePageClick}
+            containerClassName={
+              "flex items-center space-x-2 text-sm bg-white rounded-lg shadow-md p-3"
+            }
+            activeClassName={"bg-richChocolate700 text-white rounded-full"}
+            pageLinkClassName={
+              "px-3 py-1 rounded-lg hover:bg-gray-200 transition"
+            }
+            previousLinkClassName={
+              "px-4 py-2 rounded-lg hover:bg-gray-200 transition"
+            }
+            nextLinkClassName={
+              "px-4 py-2 rounded-lg hover:bg-gray-200 transition"
+            }
+            breakClassName={"px-3 py-2"}
+            disabledClassName={"text-gray-300 cursor-not-allowed"}
+          />
+        </div>
       )}
     </div>
   );
