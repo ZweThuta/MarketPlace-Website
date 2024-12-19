@@ -23,12 +23,12 @@ const FavProducts = () => {
   useEffect(() => {
     fetchUser();
   }, []);
-  
+
   useEffect(() => {
     if (currentUserId) {
       fetchFavProducts();
     }
-  }, [currentUserId]); 
+  }, [currentUserId]);
   const fetchUser = async () => {
     try {
       const token = localStorage.getItem("authToken");
@@ -62,7 +62,19 @@ const FavProducts = () => {
   return (
     <>
       <div className="p-10 ">
-        <h1 className="text-center text-2xl font-semibold tracking-widest text-gray-600 col-span-full mb-10">My Whistlists</h1>
+        <div className="flex flex-col items-center mb-10">
+          <h1 className="text-4xl font-extrabold tracking-wide text-gray-900 mb-3">
+            My Wishlist
+          </h1>
+          <span className="text-md text-gray-500 tracking-wide">
+            {favProducts.length === 0
+              ? "Your wishlist is empty."
+              : `You have ${favProducts.length} item${
+                  favProducts.length > 1 ? "s" : ""
+                } in your wishlist.`}
+          </span>
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
           {displayedProducts.length > 0 ? (
             displayedProducts.map((product) => (
@@ -74,7 +86,7 @@ const FavProducts = () => {
             ))
           ) : (
             <p className="text-center text-gray-600 col-span-full">
-              No product available!
+             {/*Empty Wishlist */}
             </p>
           )}
         </div>

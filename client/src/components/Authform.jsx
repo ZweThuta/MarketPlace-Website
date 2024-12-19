@@ -94,7 +94,7 @@ const Authform = ({ isLoginPage }) => {
                 <>
                   <div>
                     <h1 className="text-xs text-gray-400 font-semibold uppercase p-5">
-                    LuxeSphere
+                    TrendHaven
                     </h1>
                     <img
                       src={photo}
@@ -116,7 +116,7 @@ const Authform = ({ isLoginPage }) => {
                 <>
                   <div>
                     <h1 className="text-xs text-gray-400 font-semibold uppercase p-5">
-                    LuxeSphere
+                    TrendHaven
                     </h1>
                     <img
                       src={foto}

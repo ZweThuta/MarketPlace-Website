@@ -65,8 +65,8 @@ const NavBar = () => {
         <div className="flex items-center gap-2">
           <img src={logo} alt="LuxeSphere Logo" width={50} className="ml-2" />
           <div>
-            <h1 className="text-2xl text-ivoryWhite font-bold uppercase tracking-wide">
-              LuxeSphere
+            <h1 className="text-xl text-ivoryWhite font-semibold uppercase tracking-wider">
+            TrendHaven
             </h1>
             <p className="text-gray-200 text-xs font-light tracking-wide">
               Online Marketplace

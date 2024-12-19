@@ -10,15 +10,20 @@ import {
   TruckIcon,
   ShieldCheckIcon,
   ReceiptRefundIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
 } from "@heroicons/react/24/outline";
+
 import RatingStars from "../components/RatingStars";
 import { itemContext } from "../util/itemContext";
 import ReviewsForm from "../components/ReviewsForm";
 import RelatedProducts from "../components/RelatedProducts";
-
+import { toast } from "react-toastify";
 const ProductDetails = () => {
   const { productId } = useParams();
+  const [showAll, setShowAll] = useState(false);
   const [product, setProduct] = useState(null);
+  const [currentUserId, setCurrentUserId] = useState(null);
   const [mainImage, setMainImage] = useState(null);
   const navigate = useNavigate();
   const { addItem } = useContext(itemContext);
@@ -36,10 +41,53 @@ const ProductDetails = () => {
     });
   };
 
+  const addToFavouriteHandler = async () => {
+    try {
+      const payload = {
+        userId: currentUserId,
+        productId: productId,
+      };
+      const response = await axios.post(
+        `${import.meta.env.VITE_FAVOURITE_URL}`,
+        payload
+      );
+      if (response.data?.status === 1) {
+        toast.success("Added to Favourites!");
+      } else {
+        toast.error("Already added to Favourites!");
+      }
+    } catch (error) {
+      console.error("Error adding to Favourites:", error);
+      toast.error("Failed to add to Favourites!");
+    }
+  };
+
   const handleThumbnailClick = (image) => {
     setMainImage(image);
   };
 
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  const fetchUser = async () => {
+    try {
+      const token = localStorage.getItem("authToken");
+      if (!token) throw new Error("No authentication token found.");
+
+      const userResponse = await axios.get(import.meta.env.VITE_LOGIN_URL, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (userResponse.data?.data?.id) {
+        setCurrentUserId(userResponse.data.data.id);
+      } else {
+        throw new Error("Failed to fetch user ID.");
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -137,9 +185,33 @@ const ProductDetails = () => {
             <span className="text-medium text-gray-500 underline capitalize mb-2">
               About this item
             </span>
-            <span className="text-gray-600 text-medium capitalize text-justify mb-5">
-              {product.description}
-            </span>
+
+            <div className="text-gray-600 text-medium capitalize text-justify mb-5">
+              {showAll
+                ? product.description
+                : `${product.description.slice(0, 300)}...`}
+
+              {product.description.length > 300 && (
+                <div className="mt-2 flex">
+                  <button
+                    onClick={() => setShowAll(!showAll)}
+                    className=" text-black rounded-lg underline flex items-center"
+                  >
+                    {showAll ? (
+                      <>
+                        <ChevronUpIcon className="h-5 w-5 inline-block mr-2" />
+                        Fold Back
+                      </>
+                    ) : (
+                      <>
+                        <ChevronDownIcon className="h-5 w-5 inline-block mr-2" />
+                        Read More
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+            </div>
 
             <div className="flex gap-1 mb-2">
               <span className="text-1xl font-semibold">Product Brand:</span>
@@ -213,9 +285,12 @@ const ProductDetails = () => {
                 className="flex-1 bg-richChocolate700 text-white py-2 rounded-lg shadow-md hover:bg-richChocolate800 transition"
               >
                 <ShoppingCartIcon className="h-5 w-5 inline-block mr-2" />
-                Add to Cart
+                Add to Bag
               </button>
-              <button className="flex items-center justify-center w-14 h-14 bg-red-500 text-white rounded-full shadow-md hover:bg-red-600 transition">
+              <button
+                onClick={addToFavouriteHandler}
+                className="flex items-center justify-center w-14 h-14 bg-red-500 text-white rounded-full shadow-md hover:bg-red-600 transition"
+              >
                 <HeartIcon className="h-6 w-6" />
               </button>
             </div>
@@ -223,8 +298,8 @@ const ProductDetails = () => {
         </div>
       </div>
       <hr className="mt-5 border-t-3 border-grey" />
-      
-      <ReviewsForm  product={product} />
+
+      <ReviewsForm product={product} />
       <RelatedProducts productId={productId} />
     </>
   );
