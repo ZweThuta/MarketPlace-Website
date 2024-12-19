@@ -6,6 +6,13 @@ const initialState = {
   totalAmount: 0,
 };
 
+
+const message = (
+  <span className="text-sm text-ivoryWhite tracking-wide ">
+    Great Choice! Added to Your Cart!
+  </span>
+);
+
 const itemReducer = (state, action) => {
   if (action.type === "ADD_ITEM") {
     const existItemIndex = state.items.findIndex(
@@ -23,6 +30,9 @@ const itemReducer = (state, action) => {
         toast.error(`This item has only ${action.item.quantity} in stock at the market.`);
         return state; 
       }
+      else{
+        toast.success(message);
+      }
 
       const updatedItem = {
         ...existItem,
@@ -35,6 +45,9 @@ const itemReducer = (state, action) => {
       if (action.item.amount > action.item.quantity) {
         toast.error(`This item has only ${action.item.quantity} in stock at the market.`);
         return state;
+      }
+      else{
+        toast.success(message);
       }
 
       updatedItems = state.items.concat(action.item);

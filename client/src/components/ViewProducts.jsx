@@ -3,11 +3,15 @@ import {
   ShoppingCartIcon,
   HeartIcon,
 } from "@heroicons/react/24/solid";
+
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { itemContext } from "../util/itemContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
-const ViewProducts = ({ product }) => {
+const ViewProducts = ({ product, currentUserId }) => {
   const {
     id,
     userId,
@@ -21,6 +25,8 @@ const ViewProducts = ({ product }) => {
     category,
     date,
   } = product;
+
+  
 
   const shortProductName =
     productName.length > 30 ? productName.substr(0, 30) + "..." : productName;
@@ -42,6 +48,26 @@ const ViewProducts = ({ product }) => {
     });
   };
 
+  const addToFavouriteHandler = async () => {
+    try {
+      const payload ={
+        userId: currentUserId,
+        productId: id
+      }
+      const response = await axios.post(`${import.meta.env.VITE_FAVOURITE_URL}`, payload);
+      if(response.data?.status === 1){
+        toast.success("Added to Favourites!");
+      }
+      else{
+        toast.error("Already added to Favourites!");
+      }
+
+    } catch (error) {
+      console.error("Error adding to Favourites:", error);
+      toast.error("Failed to add to Favourites!");
+    }
+  }
+
   return (
     <>
       <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
@@ -54,10 +80,12 @@ const ViewProducts = ({ product }) => {
         </Link>
         <Link
           to={`/category/${category}`}
-          className="mt-3 bg-richChocolate700 text-ivoryWhite text-xs p-2 rounded-lg hover:bg-richChocolate900 transition absolute right-2 top-1 tracking-wider"
+          className="absolute top-3 right-3 bg-black bg-opacity-50 text-white text-xs px-3 py-1 rounded-full capitalize"
         >
           {category}
         </Link>
+
+      
         <div className="p-5">
           <h2 className="text-normal capitalize font-bold text-gray-800 tracking-wide">
             {shortProductName}
@@ -106,7 +134,9 @@ const ViewProducts = ({ product }) => {
             >
               <ShoppingCartIcon className="h-6 w-6" />
             </button>
-            <button className="text-red-500 hover:text-red-700 transition">
+            <button 
+            onClick={addToFavouriteHandler}
+             className="text-red-500 hover:text-red-700 transition">
               <HeartIcon className="h-6 w-6" />
             </button>
           </div>

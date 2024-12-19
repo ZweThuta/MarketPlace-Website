@@ -17,6 +17,7 @@ import MyCart from "./pages/MyCart";
 import SearchProducts from "./pages/SearchProducts";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FavProducts from "./pages/FavProducts";
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -80,6 +81,10 @@ const App = () => {
         {
           path:"/searchProducts",
           element:<SearchProducts/>
+        },
+        {
+          path:"/favProducts",
+          element:<FavProducts/>
         }
       ],
     },

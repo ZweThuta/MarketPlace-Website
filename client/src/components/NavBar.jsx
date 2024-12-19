@@ -1,9 +1,10 @@
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import { Link, useNavigate } from "react-router-dom";  
 import { useAuth } from "../util/AuthContext";
 import {
   UserCircleIcon,
-  ShoppingCartIcon,
+  ShoppingBagIcon,
   MagnifyingGlassIcon,
+  HeartIcon
 } from "@heroicons/react/24/solid";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
@@ -110,13 +111,20 @@ const NavBar = () => {
         {/* Shopping Cart */}
         <div className="relative">
           <Link to="/addToCart" className="flex items-center">
-            <ShoppingCartIcon color="white" width={30} />
+            <ShoppingBagIcon color="white" width={30} />
           </Link>
           {totalCart > 0 && (
             <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
               {totalCart}
             </span>
           )}
+        </div>
+
+        {/* Favourite */}
+        <div className="relative">
+          <Link to="/favProducts" className="flex items-center">
+            <HeartIcon color="white" width={30} />
+          </Link>
         </div>
 
         {/* User Profile */}
