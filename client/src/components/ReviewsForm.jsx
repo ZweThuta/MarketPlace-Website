@@ -1,11 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { rating } from "@material-tailwind/react";
 
 const ReviewsForm = ({ product }) => {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
-  const [review, setReview] = useState({ comment: "" });
+  const [review, setReview] = useState({ comment: "", rating: 0 });
   const { id: productId, userId: ownerId } = product;
   const [reviewerId, setReviewerId] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -47,9 +50,15 @@ const ReviewsForm = ({ product }) => {
       console.error("Error fetching reviews:", error);
     }
   };
+  console.log(reviews);
 
   const clearHandler = () => {
     setReview({ comment: "" });
+  };
+
+  const handleRating = (selectedRating) => {
+    setReview((prev) => ({ ...prev, rating: selectedRating }));
+    setErrors((prevErrors) => ({ ...prevErrors, rating: "" }));
   };
 
   const handleChange = (e) => {
@@ -60,9 +69,8 @@ const ReviewsForm = ({ product }) => {
 
   const validate = () => {
     const newErrors = {};
-    if (!review.comment.trim()) {
-      newErrors.comment = "Comment is required.";
-    }
+    if (!review.comment.trim()) newErrors.comment = "Comment is required.";
+    if (review.rating === 0) newErrors.rating = "Please select a rating.";
     return newErrors;
   };
 
@@ -83,6 +91,7 @@ const ReviewsForm = ({ product }) => {
         ownerId,
         userId: reviewerId,
         comment: review.comment,
+        rating: review.rating,
       };
 
       const response = await axios.post(
@@ -95,6 +104,7 @@ const ReviewsForm = ({ product }) => {
 
       if (response.data?.status === 1) {
         setReview({ comment: "" });
+        navigate(0);
         fetchReviews();
       } else {
         throw new Error(response.data?.message || "Failed to submit review.");
@@ -108,79 +118,165 @@ const ReviewsForm = ({ product }) => {
   };
 
   return (
-    <div className="p-4 border rounded-lg shadow-md max-w-lg mx-auto mt-4 bg-white">
-      <h1 className="text-center text-xl font-semibold mb-4">Review Area</h1>
+    <>
+      <div className="p-4 border rounded-lg shadow-md max-w-[95%] mx-auto mt-4 bg-white">
+        <h1 className="text-center text-2xl font-semibold capitalize tracking-wide mb-6">
+          Customer Reviews & Rating
+        </h1>
 
-      {/* Review Form */}
-      {localStorage.getItem("authToken") && (
-        <form
-          name="reviewForm"
-          method="POST"
-          onSubmit={handleSubmit}
-          noValidate
-        >
-          <div className="mb-4">
-            <label
-              htmlFor="comment"
-              className="block m-2 text-sm font-medium text-gray-700"
+        {/* Review Form */}
+        {localStorage.getItem("authToken") && (
+          <>
+            <form
+              name="reviewForm"
+              method="POST"
+              onSubmit={handleSubmit}
+              noValidate
             >
-              What's on your mind?
-            </label>
-            <textarea
-              id="comment"
-              name="comment"
-              placeholder="Leave a comment here..."
-              value={review.comment}
-              onChange={handleChange}
-              className="w-full px-3 py-2 mt-1 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
-              rows="4"
-            ></textarea>
-            {errors.comment && (
-              <p className="text-red-500 text-xs mt-1">{errors.comment}</p>
-            )}
-          </div>
+              {/* Star Rating Section */}
+              <div className="mb-6">
+                <label className="block text-1xl tracking-wide capitalize font-medium mb-2 ml-2">
+                  Add Your Rating*
+                </label>
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <FontAwesomeIcon
+                      key={star}
+                      icon={faStar}
+                      onClick={() => handleRating(star)}
+                      className={`cursor-pointer text-3xl ${
+                        star <= review.rating
+                          ? "text-yellow-500"
+                          : "text-gray-300"
+                      }`}
+                    />
+                  ))}
+                </div>
+                {errors.rating && (
+                  <p className="text-red-500 text-sm ml-1 mt-5">
+                    {errors.rating}
+                  </p>
+                )}
+              </div>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className={`w-full py-2 px-4 text-white rounded-lg font-semibold transition ${
-              isSubmitting
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
-            }`}
-          >
-            {isSubmitting ? "Submitting..." : "Submit"}
-          </button>
-          <button
-            type="button"
-            onClick={clearHandler}
-            className="w-full py-2 px-4 mt-2 bg-gray-300 text-black rounded-lg hover:bg-gray-400"
-          >
-            Clear
-          </button>
-        </form>
-      )}
+              <div className="mb-4">
+                <label
+                  htmlFor="comment"
+                  className="block m-2 text-1xl font-medium text-gray-700"
+                >
+                  What's on your mind?
+                </label>
+                <textarea
+                  id="comment"
+                  name="comment"
+                  placeholder="Leave a comment here..."
+                  value={review.comment}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 mt-1 text-sm border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+                  rows="5"
+                ></textarea>
+                {errors.comment && (
+                  <p className="text-red-500 text-xs mt-1">{errors.comment}</p>
+                )}
+              </div>
 
-      {/* Review List */}
-      <div className="mt-6">
-        <h2 className="text-lg font-semibold mb-2">Customer Reviews</h2>
-        {reviews.length > 0 ? (
-          reviews.map((review) => (
-            <div
-              key={review.date + review.comment}
-              className="border-b py-2 mb-2"
-            >
-              <p className="text-gray-700 font-semibold">{review.name}</p>
-              <p className="text-gray-500 text-sm">{review.email}</p>
-              <p className="text-gray-800 mt-1">{review.comment}</p>
-              <p className="text-gray-400 text-xs">{review.date}</p>
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-600">No reviews for this product yet.</p>
+              <div className="gap-5 flex justify-end">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`py-2 px-20 text-white rounded-lg font-semibold transition ${
+                    isSubmitting
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-richChocolate700 hover:bg-richChocolate900"
+                  }`}
+                >
+                  {isSubmitting ? "Submitting..." : "Post"}
+                </button>
+                <button
+                  type="button"
+                  onClick={clearHandler}
+                  className="py-2 px-6 bg-gray-300 text-black rounded-lg hover:bg-gray-400"
+                >
+                  Clear
+                </button>
+              </div>
+            </form>
+            <hr className="mt-5 border-t-2 border-grey" />
+          </>
         )}
+
+        {/* Review List */}
+        <div className="mt-6 p-5 bg-gray-50 rounded-lg shadow-md">
+          <h2 className="text-xl font-semibold tracking-wider mb-6 border-b-2 border-gray-300 pb-2">
+            Customer Reviews
+          </h2>
+          {reviews.length > 0 ? (
+            reviews.map((review) => (
+              <div
+                key={review.date + review.comment}
+                className="mb-6 p-4 bg-white rounded-lg shadow-sm border border-gray-200"
+              >
+                <div className="flex items-start gap-4">
+                  <img
+                    src={`${import.meta.env.VITE_IMAGES_URL}/${review.profile}`}
+                    alt={`${review.name}'s profile`}
+                    className="w-16 h-16 rounded-full object-cover border-2 border-richChocolate900"
+                  />
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-gray-800 text-lg font-semibold capitalize">
+                          {review.name}
+                        </p>
+                        <p className="text-gray-500 text-xs">{review.email}</p>
+                      </div>
+                      <div className="flex items-center">
+                        {Array.from({ length: 5 }, (_, index) => (
+                          <svg
+                            key={index}
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill={index < review.rating ? "gold" : "none"}
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            className={`w-5 h-5 ${
+                              index < review.rating
+                                ? "text-yellow-500"
+                                : "text-gray-300"
+                            }`}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M12 3.375l2.5 6.856h7.25L16.125 15l2.5 6.869L12 18.018l-6.625 3.851L7.875 15 .375 10.231h7.25L12 3.375z"
+                            />
+                          </svg>
+                        ))}
+                      </div>
+                    </div>
+                    <p className="mt-3 text-gray-700 leading-relaxed">
+                      {review.comment}
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-4 text-right">
+                  <p className="text-gray-400 text-sm">{review.date}</p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="flex flex-col items-center justify-center py-10 bg-gray-100 rounded-lg">
+              <p className="text-gray-600 text-sm">
+                No reviews for this product yet.
+              </p>
+              <p className="text-gray-400 text-xs mt-1">
+                Be the first to write a review!
+              </p>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

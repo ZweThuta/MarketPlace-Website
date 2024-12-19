@@ -1,24 +1,44 @@
-import React from 'react';
+import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
 
-const RatingStars = ({ rating }) => {
-  const totalStars = 5; // Total number of stars
-  const filledStars = Math.round(rating); // Round the rating to the nearest whole number
+const AverageRating = ({ productId }) => {
+  const [averageRating, setAverageRating] = useState(0);
+
+  useEffect(() => {
+    fetchAverageRating();
+  }, []);
+
+  const fetchAverageRating = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_REVIEW_URL}?productId=${productId}&average=true`
+      );
+      setAverageRating(response.data.data.averageRating || 0);
+    } catch (error) {
+      console.error("Error fetching average rating:", error);
+    }
+  };
 
   return (
-    <div className="flex items-center">
-      {[...Array(totalStars)].map((_, index) => (
-        <svg
-          key={index}
-          className={`h-5 w-5 ${index < filledStars ? 'text-yellow-500' : 'text-gray-300'}`}
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z" />
-        </svg>
-      ))}
+    <div>
+      <p className="text-lg">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <FontAwesomeIcon
+            key={star}
+            icon={faStar}
+            className={`text-2xl ${
+              star <= Math.round(averageRating)
+                ? "text-yellow-500"
+                : "text-gray-300"
+            }`}
+          />
+        ))}
+        <span className="ml-3 text-lg text-gray-500 font-medium">({averageRating.toFixed(1)}) Based on customer reviews</span>
+      </p>
     </div>
   );
 };
 
-export default RatingStars;
+export default AverageRating;

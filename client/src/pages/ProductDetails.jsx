@@ -61,14 +61,12 @@ const ProductDetails = () => {
     };
     fetchProduct();
   }, [productId]);
-  
-
 
   if (!product) {
     return (
       <div className="flex justify-center items-center h-screen">
-         <div className="flex items-center justify-center mt-20">
-                <Spinner className="h-16 w-16 text-center text-gray-500/50" />
+        <div className="flex items-center justify-center mt-20">
+          <Spinner className="h-16 w-16 text-center text-gray-500/50" />
         </div>
       </div>
     );
@@ -127,7 +125,7 @@ const ProductDetails = () => {
               {product.category}
             </span>
             <div className="mb-4">
-              <RatingStars />
+              <RatingStars productId={productId} />
             </div>
             <div className="mb-10">
               <span className="text-3xl font-semibold italic text-red-500">
@@ -198,10 +196,8 @@ const ProductDetails = () => {
               </div>
             </div>
 
-          
-
             <div className="flex space-x-4">
-            <input
+              <input
                 type="number"
                 min={1}
                 max={product.quantity}
@@ -225,8 +221,9 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
-      <hr className="m-5" />
-      <ReviewsForm product={product}/>
+      <hr className="mt-5 border-t-3 border-grey" />
+
+      <ReviewsForm product={product} />
     </>
   );
 };

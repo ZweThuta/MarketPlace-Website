@@ -19,36 +19,42 @@ class ReviewController
     public function addReview()
     {
         $input = json_decode(file_get_contents("php://input"), true);
-
-        if (!isset($input['productId'], $input['ownerId'], $input['userId'], $input['comment'])) {
+    
+        if (!isset($input['productId'], $input['ownerId'], $input['userId'], $input['comment'], $input['rating'])) {
             echo $this->response(0, "Invalid input. All fields are required.");
             return;
         }
-
+    
         $productId = $input['productId'];
         $ownerId = $input['ownerId'];
         $userId = $input['userId'];
         $comment = trim($input['comment']);
+        $rating = intval($input['rating']);  
         $date = date("Y-m-d");
-
+    
         if (empty($comment)) {
             echo $this->response(0, "Comment cannot be empty.");
             return;
         }
-
+    
+        if ($rating < 1 || $rating > 5) {
+            echo $this->response(0, "Rating must be between 1 and 5.");
+            return;
+        }
+    
         try {
-
-            $query = "INSERT INTO reviews (productId, ownerId, userId, comment, date) 
-                      VALUES (:productId, :ownerId, :userId, :comment, :date)";
-
+            $query = "INSERT INTO reviews (productId, ownerId, userId, comment, rating, date) 
+                      VALUES (:productId, :ownerId, :userId, :comment, :rating, :date)";
+    
             $stmt = $this->conn->prepare($query);
-
+    
             $stmt->bindParam(':productId', $productId, PDO::PARAM_INT);
             $stmt->bindParam(':ownerId', $ownerId, PDO::PARAM_INT);
             $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
             $stmt->bindParam(':comment', $comment, PDO::PARAM_STR);
+            $stmt->bindParam(':rating', $rating, PDO::PARAM_INT);
             $stmt->bindParam(':date', $date, PDO::PARAM_STR);
-
+    
             if ($stmt->execute()) {
                 echo $this->response(1, "Review added successfully.");
             } else {
@@ -58,32 +64,48 @@ class ReviewController
             echo $this->response(0, "An error occurred: " . $e->getMessage());
         }
     }
-
+    
     public function getReviews($productId)
-    {
-        try {
-            $query = "SELECT r.comment, r.date, u.name, u.email 
-                      FROM reviews r 
-                      INNER JOIN users u ON r.userId = u.id
-                      WHERE r.productId = :productId
-                      ORDER BY r.date DESC";
+{
+    try {
+        $query = "SELECT r.comment, r.rating, r.date, u.name, u.email, u.profile
+                  FROM reviews r 
+                  INNER JOIN users u ON r.userId = u.id
+                  WHERE r.productId = :productId
+                  ORDER BY r.date DESC";
 
-            $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':productId', $productId, PDO::PARAM_INT);
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':productId', $productId, PDO::PARAM_INT);
+        $stmt->execute();
 
-            $stmt->execute();
+        $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            if ($reviews) {
-                echo $this->response(1, "Reviews fetched successfully.", $reviews);
-            } else {
-                echo $this->response(0, "No reviews found for this product.");
-            }
-        } catch (Exception $e) {
-            echo $this->response(0, "An error occurred: " . $e->getMessage());
+        if ($reviews) {
+            echo $this->response(1, "Reviews fetched successfully.", $reviews);
+        } else {
+            echo $this->response(0, "No reviews found for this product.");
         }
+    } catch (Exception $e) {
+        echo $this->response(0, "An error occurred: " . $e->getMessage());
     }
+}
+
+public function getAverageRating($productId)
+{
+    try {
+        $query = "SELECT AVG(rating) AS averageRating FROM reviews WHERE productId = :productId";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':productId', $productId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $averageRating = $result['averageRating'] ?? 0;
+
+        echo $this->response(1, "Average rating fetched successfully.", ['averageRating' => round($averageRating, 1)]);
+    } catch (Exception $e) {
+        echo $this->response(0, "An error occurred: " . $e->getMessage());
+    }
+}
 
     private function response($status, $message, $data = null)
     {
@@ -102,12 +124,15 @@ switch ($method) {
     case 'GET':
         if (isset($_GET['productId'])) {
             $productId = intval($_GET['productId']);
-            $reviewController->getReviews($productId);
+            if (isset($_GET['average'])) {
+                $reviewController->getAverageRating($productId);  
+            } else {
+                $reviewController->getReviews($productId);
+            }
         } else {
             echo json_encode(['status' => 0, 'message' => 'Product ID is required.']);
         }
         break;
-
 
     default:
         echo json_encode(['status' => 0, 'message' => 'Invalid request method.']);
