@@ -54,7 +54,7 @@ const ViewProducts = ({ product }) => {
         </Link>
         <Link
           to={`/category/${category}`}
-          className="mt-3 bg-richChocolate700 text-ivoryWhite text-sm  p-2 rounded-lg hover:bg-richChocolate900 transition absolute right-3 top-1 tracking-wider"
+          className="mt-3 bg-richChocolate700 text-ivoryWhite text-xs p-2 rounded-lg hover:bg-richChocolate900 transition absolute right-2 top-1 tracking-wider"
         >
           {category}
         </Link>

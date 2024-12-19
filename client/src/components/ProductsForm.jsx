@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useRef, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProductsForm = ({ isAddProduct }) => {
   const formRef = useRef(null);
@@ -216,6 +218,11 @@ const ProductsForm = ({ isAddProduct }) => {
           setErrors({ message: response.data.message });
         } else {
           clearForm();
+          if (isAddProduct) {
+            toast.success("Product added successfully!");
+          } else {
+            toast.success("Product updated successfully!");
+          }
           navigate("/userProduct");
         }
       })
@@ -426,24 +433,31 @@ const ProductsForm = ({ isAddProduct }) => {
                 {isAddProduct ? (
                   <>
                     <option>Select Category</option>
-                    <option>Fashion</option>
-                    <option>Electornic</option>
-                    <option>Game</option>
-                    <option>Shoe</option>
-                    <option>Lipstick</option>
-                    <option>Home & Kitchen</option>
+                    <option>Fashion & Apparel</option>
+                    <option>Beauty & Care</option>
+                    <option>Electronics</option>
+                    <option>Home & Living</option>
+                    <option>Travel & Luggage</option>
+                    <option>Sports & Outdoor</option>
+                    <option>Health & Wellness</option>
+                    <option>Baby & Kids</option>
+                    <option>Technology & Gadgets</option>
+
+
 
                   </>
                 ) : (
                   <>
-                    <option>Fashion</option>
-                    <option>Electornic</option>
-                    <option>Game</option>
-                    <option>Shoe</option>
-                    <option>Lipstick</option>
-                    <option>Home & Kitchen</option>
-
-
+                    <option>Select Category</option>
+                    <option>Fashion & Apparel</option>
+                    <option>Beauty & Care</option>
+                    <option>Electronics</option>
+                    <option>Home & Living</option>
+                    <option>Travel & Luggage</option>
+                    <option>Sports & Outdoor</option>
+                    <option>Health & Wellness</option>
+                    <option>Baby & Kids</option>
+                    <option>Technology & Gadgets</option>
                   </>
                 )}
 

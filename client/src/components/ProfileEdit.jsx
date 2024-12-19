@@ -105,7 +105,6 @@ const ProfileEdit = ({ isOpen, onClose }) => {
         console.log("User updated successfully:", response.data);
         onClose();  
         navigate("/userProduct");
-        window.location.reload();
       }
     } catch (error) {
       console.error("Error updating profile:", error);

@@ -15,6 +15,8 @@ import ProductDetails from "./pages/ProductDetails";
 import Category, { categoryLoader } from "./pages/Category";
 import MyCart from "./pages/MyCart";
 import SearchProducts from "./pages/SearchProducts";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -86,6 +88,7 @@ const App = () => {
   return (
     <>
       <AuthProvider>
+      <ToastContainer position="bottom-right" theme="dark" autoClose={2000} />
         <RouterProvider router={router} />;
       </AuthProvider>
     </>

@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -7,10 +9,13 @@ import {
   UserCircleIcon,
   EyeIcon,
   EyeSlashIcon,
+  TrashIcon,
+  PencilSquareIcon,
 } from "@heroicons/react/24/outline";
 import moment from "moment";
+import ConfirmModal from "./ConfirmModel";
 
-const ReviewsForm = ({ product, productIds }) => {
+const ReviewsForm = ({ product }) => {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [review, setReview] = useState({ comment: "", rating: 0 });
@@ -19,9 +24,11 @@ const ReviewsForm = ({ product, productIds }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [showAll, setShowAll] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reviewId, setReviewId] = useState(null);
 
   useEffect(() => {
-    setReviews([]); 
+    setReviews([]);
     fetchUser();
     const fetchReviews = async () => {
       try {
@@ -55,6 +62,31 @@ const ReviewsForm = ({ product, productIds }) => {
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
+  };
+
+  const deleteReview = async (reviewId) => {
+    try {
+      const response = await axios.delete(
+        `${import.meta.env.VITE_REVIEW_URL}?reviewId=${reviewId}`
+      );
+
+      if (response.data.status === 1) {
+        setReviews((prevReviews) =>
+          prevReviews.filter((review) => review.id !== reviewId)
+        );
+        toast.success("Your review says Bye Bye!");
+      } else {
+        toast.error("Failed to delete the review. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error deleting review:", error);
+      toast.error("Failed to delete the review. Please try again.");
+    }
+  };
+
+  const handleConfirmDelete = (reviewId) => {
+    setIsModalOpen(false);
+    deleteReview(reviewId);
   };
 
   const clearHandler = () => {
@@ -124,6 +156,12 @@ const ReviewsForm = ({ product, productIds }) => {
 
   return (
     <>
+      <ConfirmModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={() => handleConfirmDelete(reviewId)}
+        message={"Are you sure you want to say goodbye to your review?"}
+      />
       <div className="p-4 border rounded-lg shadow-md max-w-[95%] mx-auto mt-4 bg-white">
         <h1 className="text-center text-2xl font-semibold capitalize tracking-wide mb-6">
           Customer Reviews & Rating
@@ -195,7 +233,7 @@ const ReviewsForm = ({ product, productIds }) => {
                       : "bg-richChocolate700 hover:bg-richChocolate900"
                   }`}
                 >
-                  {isSubmitting ? "Submitting..." : "Post"}
+                  {isSubmitting ? "Posting..." : "Post"}
                 </button>
                 <button
                   type="button"
@@ -245,6 +283,7 @@ const ReviewsForm = ({ product, productIds }) => {
                             {review.email}
                           </p>
                         </div>
+
                         <div className="flex items-center">
                           {Array.from({ length: 5 }, (_, index) => (
                             <svg
@@ -269,16 +308,33 @@ const ReviewsForm = ({ product, productIds }) => {
                           ))}
                         </div>
                       </div>
+
                       <p className="mt-3 text-gray-700 leading-relaxed">
                         {review.comment}
                       </p>
                     </div>
                   </div>
 
-                  <div className="mt-4 text-right">
-                    <p className="text-gray-400 text-sm">
-                      {moment(review.date).fromNow()}
-                    </p>
+                  <div className="mt-4 p-4">
+                    <div className="flex justify-between items-center">
+                      <p className="text-gray-400 text-sm font-medium">
+                        {moment(review.date).fromNow()}
+                      </p>
+                      {review.userId === reviewerId && (
+                        <div className="mt-5 cursor-pointer flex gap-5 hover:text-red-500 transition duration-200">
+                          <PencilSquareIcon className="w-6 h-6 text-blue-600" />
+                          <button
+                            onClick={() => {
+                              setReviewId(review.id);  
+                              setIsModalOpen(true); 
+                            }}
+                            aria-label="Delete Review"
+                          >
+                            <TrashIcon className="w-6 h-6 text-red-500" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}

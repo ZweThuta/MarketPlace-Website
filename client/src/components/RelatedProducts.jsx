@@ -28,7 +28,10 @@ const RelatedProducts = ({ productId }) => {
 
   return (
     <>
-      <div className="p-10 bg-gray-100">
+      <div className="p-10 mt-5">
+        <h1 className="mb-10 capitalize font-semibold text-2xl tracking-wider text-gray-800">
+          Next Up, You Might Like
+        </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
           {products.length > 0 ? (
             products.map((product) => (

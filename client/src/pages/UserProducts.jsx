@@ -36,7 +36,7 @@ const UserProducts = () => {
     };
 
     fetchUser();
-  }, []);
+  }, [user]);
 
   return (
     <>

@@ -3,6 +3,8 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ConfirmModal from "../components/ConfirmModel";
 import { Spinner } from "@material-tailwind/react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import {
   PencilSquareIcon,
@@ -55,14 +57,14 @@ const ProductDetail = () => {
       );
 
       if (response.data.status === 1) {
-        // alert("Product deleted successfully!");
+        toast.success("Your product is removed from market!");
         navigate("/userProduct");
       } else {
-        alert(response.data.message);
+          toast.error("Failed to delete the product. Please try again.");
       }
     } catch (error) {
       console.error("Error deleting product:", error);
-      alert("Failed to delete the product. Please try again.");
+      toast.error("Failed to delete the product. Please try again.");
     }
   };
 
@@ -123,12 +125,7 @@ const ProductDetail = () => {
             </div>
           </div>
 
-          <ConfirmModal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            onConfirm={handleConfirmDelete}
-            message={`Are you sure you want to remove the product "${product.productName}" in the store?`}
-          />
+         
 
           {/* Product Details Section */}
           <div className="p-4 flex flex-col">
@@ -234,6 +231,12 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
+      <ConfirmModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onConfirm={handleConfirmDelete}
+            message={`Are you sure you want to remove the product "${product.productName}" in the store?`}
+          />
     </section>
   );
 };

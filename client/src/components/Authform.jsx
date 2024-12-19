@@ -4,6 +4,8 @@ import { useNavigate, Link, useNavigation } from "react-router-dom";
 import { useAuth } from "../util/AuthContext";
 import photo from "../logo/female.png";
 import foto from "../logo/male.png";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Authform = ({ isLoginPage }) => {
   const { login } = useAuth();
@@ -41,6 +43,7 @@ const Authform = ({ isLoginPage }) => {
     }
     return newErrors;
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -62,10 +65,12 @@ const Authform = ({ isLoginPage }) => {
         } else {
           if (isLoginPage) {
             const token = response.data.data.token;
-            login(token);  
+            login(token); 
+            toast.success("Login successful!"); 
             navigate("/");
             window.location.reload();
           } else {
+            toast.success("Registration successful! Please login.");
             navigate("/login");
           }
         }
