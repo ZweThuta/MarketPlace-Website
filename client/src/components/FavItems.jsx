@@ -49,6 +49,8 @@ import {
         amount: currentAmountNumber,
       });
     };
+
+    
   
     const removeFavouriteHandler = async () => {
 

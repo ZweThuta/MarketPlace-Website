@@ -1,11 +1,11 @@
 import { createContext, useReducer } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 const initialState = {
   items: [],
   totalAmount: 0,
 };
-
 
 const message = (
   <span className="text-sm text-ivoryWhite tracking-wide ">
@@ -31,7 +31,7 @@ const itemReducer = (state, action) => {
         return state; 
       }
       else{
-        toast.success(message);
+        // toast.success(message);
       }
 
       const updatedItem = {
@@ -67,6 +67,21 @@ const itemReducer = (state, action) => {
       (item) => item.id === action.id
     );
     const existItem = state.items[existItemIndex];
+    const updatedTotalAmount = state.totalAmount - existItem.price * existItem.amount;
+
+    const updatedItems = state.items.filter((item) => item.id !== action.id);
+
+    return {
+      items: updatedItems,
+      totalAmount: updatedTotalAmount,
+    };
+  }
+
+  if (action.type === "REMOVE_ONE_ITEM") {
+    const existItemIndex = state.items.findIndex(
+      (item) => item.id === action.id
+    );
+    const existItem = state.items[existItemIndex];
     const updatedTotalAmount = state.totalAmount - existItem.price;
 
     let updatedItems;
@@ -92,6 +107,7 @@ export const itemContext = createContext({
   totalAmount: 0,
   addItem: (item) => {},
   removeItem: (id) => {},
+  removeOneItem: (id) => {},
 });
 
 export const ItemContextProvider = (props) => {
@@ -105,11 +121,16 @@ export const ItemContextProvider = (props) => {
     dispatchItem({ type: "REMOVE_ITEM", id });
   };
 
+  const removeOneItemHandler = (id) => {
+    dispatchItem({ type: "REMOVE_ONE_ITEM", id });
+  };
+
   const itemCtx = {
     items: itemState.items,
     totalAmount: itemState.totalAmount,
     addItem: addItemHandler,
     removeItem: removeItemHandler,
+    removeOneItem: removeOneItemHandler,
   };
 
   return (

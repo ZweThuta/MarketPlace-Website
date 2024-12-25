@@ -70,7 +70,7 @@ class FavProductsController
     public function getFavProducts($userId)
     {
         try {
-            $query = "SELECT p.id, p.productName, p.description, p.category, p.price, p.image, p.date,
+            $query = "SELECT p.id, p.productName, p.description, p.category, p.price, p.image, p.date,p.quantity,
             u.profile, u.name
             FROM products p
             JOIN favorites f ON p.id = f.productId
