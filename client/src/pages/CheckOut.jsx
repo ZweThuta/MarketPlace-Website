@@ -7,6 +7,7 @@ import axios from "axios";
 
 const CheckOut = () => {
   const navigation = useNavigate();
+  const navigate = useNavigate();
   const { items, totalAmount } = useContext(itemContext);
   const [deliveryMethod, setDeliveryMethod] = useState("standard");
   const [currentUserId, setCurrentUserId] = useState(null);
@@ -24,8 +25,15 @@ const CheckOut = () => {
 
   useEffect(() => {
     fetchUser();
-  }, [items]);
+  }, []);
 
+  useEffect(() => {
+    if (currentUserId) {
+      setFormData((prev) => ({ ...prev, userId: currentUserId }));
+    }
+  }, [currentUserId]);
+
+  
   const fetchUser = async () => {
     try {
       const token = localStorage.getItem("authToken");
@@ -60,9 +68,10 @@ const CheckOut = () => {
     note: "",
     totalprice: finalTotalPrice,
     productId: items.map((item) => item.id),
-    userId: currentUserId,
+    userId: "",
     delivery: deliveryMethod,
   });
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -93,9 +102,18 @@ const CheckOut = () => {
       setErrors(validationErrors);
       return;
     }
-    
-    console.log("Order Placed:", formData);
-    toast.success("Thank you for your order!");
+    try {
+      const response = axios.post(import.meta.env.VITE_ORDER_URL, formData);
+      if(response.status === 0){
+        setErrors({ message: response.data.message });
+      }else{
+        toast.success("Thank you for your order!");
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
+      toast.error("Failed to place order. Please try again.");
+    }
   };
 
   const clearHandler = () => {
