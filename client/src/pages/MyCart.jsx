@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { itemContext } from '../util/itemContext';
 import CartItem from '../components/CartItem';
+import { Link } from 'react-router-dom';
 
 const MyCart = () => {
   const { items, totalAmount } = useContext(itemContext);
@@ -48,9 +49,12 @@ const MyCart = () => {
                 <span className="text-xl font-semibold">Total</span>
                 <span className="text-xl font-extrabold">${finalTotalPrice.toFixed(2)}</span>
               </div>
+              <Link to="/checkout">
               <button className="w-full mt-6 py-3 bg-blue-500 text-white text-lg font-semibold rounded hover:bg-blue-700 transition duration-200">
                 Proceed to Checkout
               </button>
+              </Link>
+
             </div>
           )}
         </div>

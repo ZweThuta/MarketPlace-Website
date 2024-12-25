@@ -8,7 +8,7 @@ import { AuthProvider } from "./util/AuthContext";
 import Logout from "./pages/Logout";
 import AddProducts from "./pages/AddProducts";
 import UserProducts, { userProductsLoader } from "./pages/UserProducts";
-import UserProductsDetails from "./pages/UserProductDetails"
+import UserProductsDetails from "./pages/UserProductDetails";
 import EditProduct from "./pages/EditProduct";
 import Products, { productsLoader } from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
@@ -18,6 +18,7 @@ import SearchProducts from "./pages/SearchProducts";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FavProducts from "./pages/FavProducts";
+import CheckOut from "./pages/CheckOut";
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -39,53 +40,53 @@ const App = () => {
         },
         {
           path: "/logout",
-          element:<Logout/>
+          element: <Logout />,
         },
-        
+
         {
           path: "/addProduct",
-          element:<AddProducts/>
+          element: <AddProducts />,
         },
         {
           path: "/editProduct/:productId",
-          element: <EditProduct/>
-
+          element: <EditProduct />,
         },
         {
           path: "/userProduct",
-          element: <UserProducts/>,
+          element: <UserProducts />,
           loader: userProductsLoader,
         },
         {
           path: "/userProductDetail/:productId",
-          element: <UserProductsDetails/>
+          element: <UserProductsDetails />,
         },
         {
-          path:"/products",
-          element:<Products/>,
+          path: "/products",
+          element: <Products />,
           loader: productsLoader,
         },
         {
           path: "/productDetails/:productId",
-          element:<ProductDetails/>
+          element: <ProductDetails />,
         },
         {
-          path:"/category/:category",
-          element:<Category/>,
+          path: "/category/:category",
+          element: <Category />,
           loader: categoryLoader,
         },
         {
-          path:"/addToCart",
-          element:<MyCart/>
+          path: "/addToCart",
+          element: <MyCart />,
         },
         {
-          path:"/searchProducts",
-          element:<SearchProducts/>
+          path: "/searchProducts",
+          element: <SearchProducts />,
         },
         {
-          path:"/favProducts",
-          element:<FavProducts/>
-        }
+          path: "/favProducts",
+          element: <FavProducts />,
+        },
+        { path: "checkout", element: <CheckOut /> },
       ],
     },
   ]);
@@ -93,7 +94,7 @@ const App = () => {
   return (
     <>
       <AuthProvider>
-      <ToastContainer position="bottom-right" theme="dark" autoClose={2000} />
+        <ToastContainer position="bottom-right" theme="dark" autoClose={2000} />
         <RouterProvider router={router} />
       </AuthProvider>
     </>
