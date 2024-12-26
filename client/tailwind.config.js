@@ -22,6 +22,11 @@ export default {
         richChocolate800:'#634530',
         richChocolate900:'#4e3629',
         richChocolate600:'#9b8674',
+
+        neroBlack950:'#262626',
+        neroBlack500:'#6d6d6d',
+        customWhite:'#f3f2ef',
+        customYellow:'#f8ba4d'
       },
     },
   },

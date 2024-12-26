@@ -152,6 +152,7 @@ const InvoicePDF = ({ order }) => (
 
       <View style={{ marginTop: 10 }}>
         <Text style={styles.boldText}>Note:</Text>
+        <Text style={styles.text}>{order.note}</Text>
         <Text style={styles.note}>Thank you for shooping with us!</Text>
       </View>
     </Page>
@@ -245,7 +246,7 @@ const CheckOut = () => {
   };
 
   return (
-    <section className="text-center mt-12">
+    <section className="text-center mt-12 shadow-lg p-8 bg-white">
       <h1 className="text-3xl font-semibold uppercase tracking-wider mb-6">
         Order Confirmation
       </h1>

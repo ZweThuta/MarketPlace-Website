@@ -269,31 +269,33 @@ const ProductDetails = () => {
               </div>
             </div>
 
-            <div className="flex space-x-4">
-              <input
-                type="number"
-                min={1}
-                max={product.quantity}
-                value={currentAmount}
-                onChange={(e) => {
-                  setCurrentAmount(e.target.value);
-                }}
-                className="p-1 text-lg text-center rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-200"
-              />
-              <button
-                onClick={addToCartHandler}
-                className="flex-1 bg-richChocolate700 text-white py-2 rounded-lg shadow-md hover:bg-richChocolate800 transition"
-              >
-                <ShoppingCartIcon className="h-5 w-5 inline-block mr-2" />
-                Add to Bag
-              </button>
-              <button
-                onClick={addToFavouriteHandler}
-                className="flex items-center justify-center w-14 h-14 bg-red-500 text-white rounded-full shadow-md hover:bg-red-600 transition"
-              >
-                <HeartIcon className="h-6 w-6" />
-              </button>
-            </div>
+            {localStorage.getItem("authToken") && (
+              <div className="flex space-x-4">
+                <input
+                  type="number"
+                  min={1}
+                  max={product.quantity}
+                  value={currentAmount}
+                  onChange={(e) => {
+                    setCurrentAmount(e.target.value);
+                  }}
+                  className="p-1 text-lg text-center rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-200"
+                />
+                <button
+                  onClick={addToCartHandler}
+                  className="flex-1 bg-richChocolate700 text-white py-2 rounded-lg shadow-md hover:bg-richChocolate800 transition"
+                >
+                  <ShoppingCartIcon className="h-5 w-5 inline-block mr-2" />
+                  Add to Bag
+                </button>
+                <button
+                  onClick={addToFavouriteHandler}
+                  className="flex items-center justify-center w-14 h-14 bg-red-500 text-white rounded-full shadow-md hover:bg-red-600 transition"
+                >
+                  <HeartIcon className="h-6 w-6" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

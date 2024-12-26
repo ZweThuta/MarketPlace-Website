@@ -104,7 +104,8 @@ const ViewProducts = ({ product, currentUserId }) => {
             </div>
           </div>
         </div>
-        <div className="flex justify-between items-center p-4 border-t">
+        {
+          localStorage.getItem("token") &&  <div className="flex justify-between items-center p-4 border-t">
           <Link to={`userDetails/${userId}`} className="flex items-center">
             {profile ? (
               <>
@@ -141,6 +142,8 @@ const ViewProducts = ({ product, currentUserId }) => {
             </button>
           </div>
         </div>
+        }
+       
       </div>
     </>
   );

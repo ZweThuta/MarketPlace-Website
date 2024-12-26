@@ -3,6 +3,7 @@ import { useLoaderData } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ViewProducts from "../components/ViewProducts";
 import ReactPaginate from "react-paginate";
+import CategoriesFilter from "../components/CategoriesFilter";
 
 const Products = () => {
   const products = useLoaderData();
@@ -46,7 +47,12 @@ const Products = () => {
 
   return (
     <>
+    <section className="flex flex-row">
+      <div>
+        {/* side Bar */}
+      </div>
       <div className="p-10 bg-gray-100">
+        <CategoriesFilter/>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
           {displayedProducts.length > 0 ? (
             displayedProducts.map((product) => (
@@ -87,6 +93,7 @@ const Products = () => {
           </div>
         )}
       </div>
+    </section>
     </>
   );
 };
