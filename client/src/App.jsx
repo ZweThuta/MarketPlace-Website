@@ -20,6 +20,7 @@ import "react-toastify/dist/ReactToastify.css";
 import FavProducts from "./pages/FavProducts";
 import CheckOut from "./pages/CheckOut";
 import BillingReceipt from "./pages/BillingReceipt";
+import About from "./pages/About";
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -30,6 +31,10 @@ const App = () => {
         {
           path: "/",
           element: <Index />,
+        },
+        {
+          path:"/about",
+          element: <About/>
         },
         {
           path: "/register",

@@ -334,7 +334,7 @@ const CheckOut = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-3/4 tracking-wider bg-neroBlack950 text-white py-4 rounded-lg hover:bg-neroBlack500 font-semibold"
+              className="w-3/4 tracking-wider py-4 rounded-lg font-semibold  bg-neroBlack950 text-white hover:bg-customWhite hover:border-neroBlack950 hover:border hover:text-neroBlack950"
             >
               {isSubmitting
                 ? "Submitting..."

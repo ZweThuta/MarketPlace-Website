@@ -19,6 +19,7 @@
     "antd": "^5.22.2",
     "axios": "^1.7.7",
     "flowbite-react": "^0.10.2",
+    "framer-motion": "^11.15.0",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
     "react": "^18.3.1",

@@ -101,7 +101,7 @@ const SearchProducts = () => {
             containerClassName={
               "flex items-center space-x-2 text-sm bg-white rounded-lg shadow-md p-3"
             }
-            activeClassName={"bg-richChocolate700 text-white rounded-full"}
+            activeClassName={"bg-neroBlack950 text-white rounded-full"}
             pageLinkClassName={
               "px-3 py-1 rounded-lg hover:bg-gray-200 transition"
             }

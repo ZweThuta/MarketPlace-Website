@@ -12,7 +12,15 @@ import {
   ReceiptRefundIcon,
   ChevronDownIcon,
   ChevronUpIcon,
+  InformationCircleIcon,
 } from "@heroicons/react/24/outline";
+
+import {
+  UserCircleIcon,
+  MapPinIcon,
+  BuildingOfficeIcon,
+  PhoneIcon,
+} from "@heroicons/react/24/solid";
 
 import RatingStars from "../components/RatingStars";
 import { itemContext } from "../util/itemContext";
@@ -269,36 +277,98 @@ const ProductDetails = () => {
               </div>
             </div>
 
-            {localStorage.getItem("authToken") && (
-              <div className="flex space-x-4">
-                <input
-                  type="number"
-                  min={1}
-                  max={product.quantity}
-                  value={currentAmount}
-                  onChange={(e) => {
-                    setCurrentAmount(e.target.value);
-                  }}
-                  className="p-1 text-lg text-center rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-200"
-                />
-                <button
-                  onClick={addToCartHandler}
-                  className="flex-1 bg-neroBlack900 text-white py-2 rounded-lg shadow-md hover:bg-neroBlack950 transition"
-                >
-                  <ShoppingCartIcon className="h-5 w-5 inline-block mr-2" />
-                  Add to Bag
-                </button>
-                <button
-                  onClick={addToFavouriteHandler}
-                  className="flex items-center justify-center w-14 h-14 bg-red-500 text-white rounded-full shadow-md hover:bg-red-600 transition"
-                >
-                  <HeartIcon className="h-6 w-6" />
-                </button>
+            {localStorage.getItem("authToken") &&
+              currentUserId !== product.userId && (
+                <div className="flex space-x-4">
+                  <input
+                    type="number"
+                    min={1}
+                    max={product.quantity}
+                    value={currentAmount}
+                    onChange={(e) => {
+                      setCurrentAmount(e.target.value);
+                    }}
+                    className="p-1 text-lg text-center rounded border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-200"
+                  />
+                  <button
+                    onClick={addToCartHandler}
+                    className="flex-1 py-2 rounded-lg shadow-md  bg-neroBlack950 text-white hover:bg-customWhite hover:border-neroBlack950 hover:border hover:text-neroBlack950 transition"
+                  >
+                    <ShoppingCartIcon className="h-5 w-5 inline-block mr-2" />
+                    Add to Bag
+                  </button>
+                  <button
+                    onClick={addToFavouriteHandler}
+                    className="flex items-center justify-center w-14 h-14 bg-red-500 text-white rounded-full shadow-md hover:bg-red-600 transition"
+                  >
+                    <HeartIcon className="h-6 w-6" />
+                  </button>
+                </div>
+              )}
+            {currentUserId === product.userId && (
+              <div className="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-lg shadow-md flex items-center space-x-3">
+                <InformationCircleIcon className="h-6 w-6 text-blue-500" />
+                <div>
+                  <p className="font-medium">
+                    You are the owner of this product.
+                  </p>
+                  <p className="text-xs">
+                    Manage or edit your listing from your profile.
+                  </p>
+                </div>
               </div>
             )}
           </div>
         </div>
       </div>
+      <hr className="mt-5 border-t-3 border-grey" />
+      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-7xl mx-auto mt-10">
+      <h1 className="mb-10 uppercase   font-semibold text-lg tracking-wide text-gray-400">
+         Seller Information
+        </h1>
+        <div className="flex items-center space-x-4 mb-6">
+          {product.profile ? (
+            <img
+              src={`${import.meta.env.VITE_IMAGES_URL}/${product.profile}`}
+              alt={product.name}
+              className="w-20 h-20 rounded-full border-2 border-neroBlack950 shadow-md object-cover"
+            />
+          ) : (
+            <UserCircleIcon className="w-20 h-20 text-gray-400 border-4 border-gray-200 rounded-full" />
+          )}
+
+          <div>
+            <h2 className="text-xl font-bold text-gray-800">{product.name}</h2>
+            <p className="text-sm text-gray-500">{product.email}</p>
+          </div>
+        </div>
+
+        <div className="bg-gray-100 rounded-lg p-4 space-y-4">
+          {product.address && (
+            <div className="flex items-center space-x-3">
+              <MapPinIcon className="w-5 h-5 text-neroBlack500" />
+              <span className="text-gray-700">{product.address}</span>
+            </div>
+          )}
+
+          {product.phno && (
+            <div className="flex items-center space-x-3">
+              <PhoneIcon className="w-5 h-5 text-neroBlack500" />
+              <span className="text-gray-700">{product.phno}</span>
+            </div>
+          )}
+
+          {product.city && (
+            <div className="flex items-center space-x-3">
+              <BuildingOfficeIcon className="w-5 h-5 text-neroBlack500" />
+              <span className="text-gray-700">{product.city}</span>
+            </div>
+          )}
+        </div>
+
+        
+      </div>
+
       <hr className="mt-5 border-t-3 border-grey" />
 
       <ReviewsForm product={product} />

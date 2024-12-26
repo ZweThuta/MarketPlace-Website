@@ -26,10 +26,8 @@ const ViewProducts = ({ product, currentUserId }) => {
     date,
   } = product;
 
-  
-
   const shortProductName =
-    productName.length > 30 ? productName.substr(0, 30) + "..." : productName;
+    productName.length > 25 ? productName.substr(0, 25) + "..." : productName;
   const shortDescription =
     description.length > 80 ? description.substr(0, 80) + "..." : description;
 
@@ -50,23 +48,24 @@ const ViewProducts = ({ product, currentUserId }) => {
 
   const addToFavouriteHandler = async () => {
     try {
-      const payload ={
+      const payload = {
         userId: currentUserId,
-        productId: id
-      }
-      const response = await axios.post(`${import.meta.env.VITE_FAVOURITE_URL}`, payload);
-      if(response.data?.status === 1){
+        productId: id,
+      };
+      const response = await axios.post(
+        `${import.meta.env.VITE_FAVOURITE_URL}`,
+        payload
+      );
+      if (response.data?.status === 1) {
         toast.success("Added to Favourites!");
-      }
-      else{
+      } else {
         toast.error("Already added to Favourites!");
       }
-
     } catch (error) {
       console.error("Error adding to Favourites:", error);
       toast.error("Failed to add to Favourites!");
     }
-  }
+  };
 
   return (
     <>
@@ -85,7 +84,6 @@ const ViewProducts = ({ product, currentUserId }) => {
           {category}
         </Link>
 
-      
         <div className="p-5">
           <h2 className="text-normal capitalize font-bold text-gray-800 tracking-wide">
             {shortProductName}
@@ -98,13 +96,29 @@ const ViewProducts = ({ product, currentUserId }) => {
               <span className="text-medium text-green-500 font-semibold">
                 $
               </span>
-              <span className="text-1xl italic text-richChocolate600 font-bold font-mono">
+              <span className="text-1xl italic text-richChocolate800 font-bold font-mono">
                 {price}
               </span>
             </div>
+            {localStorage.getItem("authToken") && currentUserId !== userId && (
+              <div className="flex space-x-3">
+                <button
+                  onClick={addToCartHandler}
+                  className="text-neroBlack500 hover:text-neroBlack950 transition"
+                >
+                  <ShoppingCartIcon className="h-6 w-6" />
+                </button>
+                <button
+                  onClick={addToFavouriteHandler}
+                  className="text-red-500 hover:text-red-700 transition"
+                >
+                  <HeartIcon className="h-6 w-6" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
-        {
+        {/* {
           localStorage.getItem("authToken") &&  <div className="flex justify-between items-center p-4 border-t">
           <Link to={`userDetails/${userId}`} className="flex items-center">
             {profile ? (
@@ -143,7 +157,7 @@ const ViewProducts = ({ product, currentUserId }) => {
           </div>
         </div>
         }
-       
+        */}
       </div>
     </>
   );

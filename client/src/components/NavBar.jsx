@@ -114,10 +114,10 @@ const NavBar = () => {
         </Link>
 
         <Link
-          to={"/"}
+          to={"/about"}
           className="text-customWhite uppercase text-1xl font-semibold tracking-wider hover:text-shadow-xl"
         >
-          About
+          About Us
         </Link>
       </div>
 
@@ -128,7 +128,7 @@ const NavBar = () => {
             <h1 className="text-xl text-customWhite italic font-semibold uppercase tracking-wider">
               TrendHaven
             </h1>
-            <p className="text-gray-300 italic text-sm text-center font-extralight tracking-wide">
+            <p className="text-gray-300  text-sm text-center font-extralight tracking-wide">
               Online Marketplace
             </p>
           </div>

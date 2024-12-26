@@ -27,6 +27,7 @@ export default {
         neroBlack500:'#6d6d6d',
         neroBlack900:'#3d3d3d',
         customWhite:'#f3f2ef',
+        customWhite2:'#f8f8f8',
         customYellow:'#f8ba4d'
       },
     },

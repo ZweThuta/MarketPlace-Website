@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import FavItems from "../components/FavItems";
+import pic from "../logo/Heart.gif";
 
 const FavProducts = () => {
   const [currentUserId, setCurrentUserId] = useState(null);
@@ -73,6 +74,11 @@ const FavProducts = () => {
                   favProducts.length > 1 ? "s" : ""
                 } in your wishlist.`}
           </span>
+          {
+            !favProducts.length > 0 &&   <div className="flex justify-center  items-center mt-6">
+            <img src={pic} alt="pic" className="w-64 h-64" />
+          </div>
+          }
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
@@ -85,9 +91,9 @@ const FavProducts = () => {
               />
             ))
           ) : (
-            <p className="text-center text-gray-600 col-span-full">
-             {/*Empty Wishlist */}
-            </p>
+          <>
+          {/* Empty */}
+          </>
           )}
         </div>
         {favProducts.length > productsPerPage && (
@@ -103,7 +109,7 @@ const FavProducts = () => {
               containerClassName={
                 "flex items-center space-x-2 text-sm bg-white rounded-lg shadow-md p-3"
               }
-              activeClassName={"bg-richChocolate700 text-white rounded-full"}
+              activeClassName={"bg-neroBlack950 text-white rounded-full"}
               pageLinkClassName={
                 "px-3 py-1 rounded-lg hover:bg-gray-200 transition"
               }

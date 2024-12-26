@@ -25,7 +25,11 @@ class ProductController
     public function getProductById($productId)
     {
         try {
-            $sql = "SELECT * FROM products WHERE id = :productId";
+            $sql = "SELECT p.*, u.name, u.address, u.city, u.email, u.profile, u.phno FROM products p
+            JOIN users u 
+            ON p.userId = u.id
+            WHERE p.id = :productId";
+
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(":productId", $productId, PDO::PARAM_INT);
             $stmt->execute();
@@ -132,7 +136,7 @@ class ProductController
     }
 
 
-    
+
     private function uploadFile($file, $uploadDir)
     {
         if (isset($file) && $file['error'] === UPLOAD_ERR_OK) {
@@ -143,7 +147,7 @@ class ProductController
                 return $targetFilePath;
             }
         }
-        return null;  
+        return null;
     }
 
 

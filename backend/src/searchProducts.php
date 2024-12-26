@@ -24,7 +24,14 @@ class SearchController {
         $query = trim($_GET['query']); 
 
         try {
-            $sql = "SELECT * FROM products WHERE productName LIKE :query OR description LIKE :query OR category LIKE :query";
+            $sql = "SELECT products.*, users.name, users.profile 
+            FROM products 
+            JOIN users 
+            ON products.userId = users.id 
+            WHERE products.productName LIKE :query 
+            OR products.description LIKE :query 
+            OR products.category LIKE :query";
+    
             $stmt = $this->conn->prepare($sql);
 
             $searchParam = "%" . $query . "%";
