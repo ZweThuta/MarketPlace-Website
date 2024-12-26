@@ -108,7 +108,7 @@ const CheckOut = () => {
         setErrors({ message: response.data.message });
       }else{
         toast.success("Thank you for your order!");
-        navigate("/");
+        navigate("/billingReceipt");
       }
     } catch (error) {
       console.error("Error placing order:", error);
@@ -338,7 +338,7 @@ const CheckOut = () => {
             >
               {isSubmitting
                 ? "Submitting..."
-                : `Place Order (${finalTotalPrice.toFixed(2)})`}
+                : `Place Order ($${finalTotalPrice.toFixed(2)})`}
             </button>
             <button
               type="reset"

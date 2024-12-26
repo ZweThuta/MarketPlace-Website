@@ -19,6 +19,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FavProducts from "./pages/FavProducts";
 import CheckOut from "./pages/CheckOut";
+import BillingReceipt from "./pages/BillingReceipt";
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -86,7 +87,8 @@ const App = () => {
           path: "/favProducts",
           element: <FavProducts />,
         },
-        { path: "checkout", element: <CheckOut /> },
+        { path: "/checkout", element: <CheckOut /> },
+        {path:"/billingReceipt",element:<BillingReceipt/>}
       ],
     },
   ]);
