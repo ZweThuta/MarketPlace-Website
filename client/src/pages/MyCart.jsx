@@ -50,7 +50,7 @@ const MyCart = () => {
                 <span className="text-xl font-extrabold">${finalTotalPrice.toFixed(2)}</span>
               </div>
               <Link to="/checkout">
-              <button className="w-full mt-6 py-3 bg-blue-500 text-white text-lg font-semibold rounded hover:bg-blue-700 transition duration-200">
+              <button className="w-full mt-6 py-3 bg-neroBlack950 text-white text-lg font-semibold rounded hover:bg-neroBlack500 transition duration-200">
                 Proceed to Checkout
               </button>
               </Link>

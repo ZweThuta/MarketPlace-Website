@@ -283,7 +283,7 @@ const ProductDetails = () => {
                 />
                 <button
                   onClick={addToCartHandler}
-                  className="flex-1 bg-richChocolate700 text-white py-2 rounded-lg shadow-md hover:bg-richChocolate800 transition"
+                  className="flex-1 bg-neroBlack900 text-white py-2 rounded-lg shadow-md hover:bg-neroBlack950 transition"
                 >
                   <ShoppingCartIcon className="h-5 w-5 inline-block mr-2" />
                   Add to Bag

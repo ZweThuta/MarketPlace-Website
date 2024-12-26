@@ -99,7 +99,7 @@ const NavBar = () => {
               className="p-2 text-gray-600 hover:text-gray-900"
               aria-label="Search"
             >
-              <p className="text-customWhite bg-neroBlack500 px-2 py-1 uppercase rounded-lg text-xs tracking-wider">
+              <p className="text-customWhite bg-neroBlack950 px-2 py-1 uppercase rounded-lg text-xs tracking-wider">
                 Find
               </p>
               {/* <MagnifyingGlassIcon width={24} /> */}
@@ -125,10 +125,10 @@ const NavBar = () => {
       <div className="absolute left-1/2 transform -translate-x-1/2 bg-neroBlack950 py-4 px-5 rounded-2xl">
         <Link to={"/products"}>
           <div>
-            <h1 className="text-xl text-customWhite  font-semibold uppercase tracking-wider">
+            <h1 className="text-xl text-customWhite italic font-semibold uppercase tracking-wider">
               TrendHaven
             </h1>
-            <p className="text-gray-300 text-sm text-center font-extralight tracking-wide">
+            <p className="text-gray-300 italic text-sm text-center font-extralight tracking-wide">
               Online Marketplace
             </p>
           </div>

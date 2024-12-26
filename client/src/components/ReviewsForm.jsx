@@ -230,7 +230,7 @@ const ReviewsForm = ({ product }) => {
                   className={`py-2 px-20 text-white rounded-lg font-semibold transition ${
                     isSubmitting
                       ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-richChocolate700 hover:bg-richChocolate900"
+                      : "bg-neroBlack900 hover:bg-neroBlack950"
                   }`}
                 >
                   {isSubmitting ? "Posting..." : "Post"}

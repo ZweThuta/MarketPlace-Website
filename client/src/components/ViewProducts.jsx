@@ -105,7 +105,7 @@ const ViewProducts = ({ product, currentUserId }) => {
           </div>
         </div>
         {
-          localStorage.getItem("token") &&  <div className="flex justify-between items-center p-4 border-t">
+          localStorage.getItem("authToken") &&  <div className="flex justify-between items-center p-4 border-t">
           <Link to={`userDetails/${userId}`} className="flex items-center">
             {profile ? (
               <>
@@ -131,7 +131,7 @@ const ViewProducts = ({ product, currentUserId }) => {
           <div className="flex space-x-2">
             <button
               onClick={addToCartHandler}
-              className="text-richChocolate600 hover:text-richChocolate700 transition"
+              className="text-neroBlack500 hover:text-neroBlack950 transition"
             >
               <ShoppingCartIcon className="h-6 w-6" />
             </button>

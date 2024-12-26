@@ -97,7 +97,7 @@ import {
           <div className="flex justify-between items-center px-5 py-4 border-t">
             <button
               onClick={addToCartHandler}
-              className="flex items-center text-sm text-white bg-richChocolate600 hover:bg-richChocolate700 px-6 py-2 rounded-lg transition"
+              className="flex items-center text-sm text-white bg-neroBlack900 hover:bg-neroBlack950 px-6 py-2 rounded-lg transition"
             >
               <ShoppingCartIcon className="h-5 w-5 mr-2" /> Add to Cart
             </button>
