@@ -11,7 +11,13 @@ const Authform = ({ isLoginPage }) => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const navigation = useNavigation();
-  const [inputs, setInput] = useState({ name: "", email: "", password: "" });
+  const [inputs, setInput] = useState({
+    name: "",
+    email: "",
+    password: "",
+    con_password: "",
+    terms: "",
+  });
   const [errors, setErrors] = useState({});
   const isSubmitting = navigation.state === "submitting";
 
@@ -30,6 +36,18 @@ const Authform = ({ isLoginPage }) => {
       } else if (inputs.name.length < 3) {
         newErrors.name = "Name must be at least 3 characters long.";
       }
+      if (!inputs.con_password) {
+        newErrors.con_password = "Confirm Password is required.";
+      } else if (inputs.con_password !== inputs.password) {
+        newErrors.con_password = "Password does not match.";
+      } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(inputs.password)) {
+        newErrors.password =
+          "Password must contain at least one special character.";
+      }
+
+      if (!inputs.terms) {
+        newErrors.terms = "You must agree to the terms and conditions.";
+      }
     }
     if (!inputs.email) {
       newErrors.email = "Email is required.";
@@ -41,9 +59,9 @@ const Authform = ({ isLoginPage }) => {
     } else if (inputs.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters.";
     }
+
     return newErrors;
   };
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -65,8 +83,8 @@ const Authform = ({ isLoginPage }) => {
         } else {
           if (isLoginPage) {
             const token = response.data.data.token;
-            login(token); 
-            toast.success("Login successful!"); 
+            login(token);
+            toast.success("Login successful!");
             navigate("/");
             window.location.reload();
           } else {
@@ -94,7 +112,7 @@ const Authform = ({ isLoginPage }) => {
                 <>
                   <div>
                     <h1 className="text-xs text-gray-400 font-semibold uppercase p-5">
-                    TrendHaven
+                      TrendHaven
                     </h1>
                     <img
                       src={photo}
@@ -116,7 +134,7 @@ const Authform = ({ isLoginPage }) => {
                 <>
                   <div>
                     <h1 className="text-xs text-gray-400 font-semibold uppercase p-5">
-                    TrendHaven
+                      TrendHaven
                     </h1>
                     <img
                       src={foto}
@@ -166,7 +184,6 @@ const Authform = ({ isLoginPage }) => {
                           name="name"
                           type="text"
                           onChange={handleChange}
-                          required
                           className={`text-gray-800 bg-white border ${
                             errors.name ? "border-red-500" : "border-gray-300"
                           } w-full text-sm px-4 py-2.5 rounded-md outline-blue-500`}
@@ -190,7 +207,6 @@ const Authform = ({ isLoginPage }) => {
                         name="email"
                         type="email"
                         onChange={handleChange}
-                        required
                         className={`text-gray-800 bg-white border ${
                           errors.email ? "border-red-500" : "border-gray-300"
                         } w-full text-sm px-4 py-2.5 rounded-md outline-blue-500`}
@@ -213,7 +229,6 @@ const Authform = ({ isLoginPage }) => {
                         name="password"
                         type="password"
                         onChange={handleChange}
-                        required
                         className={`text-gray-800 bg-white border ${
                           errors.password ? "border-red-500" : "border-gray-300"
                         } w-full text-sm px-4 py-2.5 rounded-md outline-blue-500`}
@@ -226,6 +241,50 @@ const Authform = ({ isLoginPage }) => {
                       </p>
                     )}
                   </div>
+
+                  {!isLoginPage && (
+                    <div>
+                      <label className="text-gray-800 text-sm mb-2 block">
+                        Confirm Password
+                      </label>
+                      <div className="relative flex items-center">
+                        <input
+                          name="con_password"
+                          type="password"
+                          onChange={handleChange}
+                          className={`text-gray-800 bg-white border ${
+                            errors.con_password
+                              ? "border-red-500"
+                              : "border-gray-300"
+                          } w-full text-sm px-4 py-2.5 rounded-md outline-blue-500`}
+                          placeholder="Enter password again"
+                        />
+                      </div>
+                      {errors.con_password && (
+                        <p className="text-red-500 text-xs mt-4">
+                          {errors.con_password}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                  {!isLoginPage && (
+                    <div>
+                      <label className="flex items-center text-gray-800 text-sm">
+                        <input
+                          type="checkbox"
+                          name="terms"
+                          onChange={handleChange}
+                          className="mr-2"
+                        />
+                        I agree to the terms and conditions
+                      </label>
+                      {errors.terms && (
+                        <p className="text-red-500 text-xs mt-4">
+                          {errors.terms}
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <div className="!mt-12">
@@ -234,7 +293,11 @@ const Authform = ({ isLoginPage }) => {
                     disabled={isSubmitting}
                     className="w-full py-3 px-4 tracking-wider text-sm rounded-md text-white bg-richChocolate800 hover:bg-richChocolate900 focus:outline-none"
                   >
-                    {isSubmitting ? "Submiting" : isLoginPage ? "Login" : "Create an account"}
+                    {isSubmitting
+                      ? "Submiting"
+                      : isLoginPage
+                      ? "Login"
+                      : "Create an account"}
                   </button>
                 </div>
                 {isLoginPage ? (

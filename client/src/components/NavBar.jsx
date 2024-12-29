@@ -122,7 +122,7 @@ const NavBar = () => {
       </div>
 
       {/* Marketplace Link */}
-      <div className="absolute left-1/2 transform -translate-x-1/2 bg-neroBlack950 py-4 px-5 rounded-2xl">
+      <div className="absolute left-1/2 transform -translate-x-1/2 bg-neroBlack950 py-3 mt-2 px-5 rounded-2xl">
         <Link to={"/products"}>
           <div>
             <h1 className="text-xl text-customWhite italic font-semibold uppercase tracking-wider">

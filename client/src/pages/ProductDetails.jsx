@@ -313,7 +313,7 @@ const ProductDetails = () => {
                     You are the owner of this product.
                   </p>
                   <p className="text-xs">
-                    Manage or edit your listing from your profile.
+                    Manage or Edit item from your profile.
                   </p>
                 </div>
               </div>
@@ -366,9 +366,7 @@ const ProductDetails = () => {
           )}
         </div>
 
-        
       </div>
-
       <hr className="mt-5 border-t-3 border-grey" />
 
       <ReviewsForm product={product} />
