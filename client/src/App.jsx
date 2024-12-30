@@ -21,6 +21,8 @@ import FavProducts from "./pages/FavProducts";
 import CheckOut from "./pages/CheckOut";
 import BillingReceipt from "./pages/BillingReceipt";
 import About from "./pages/About";
+import Admin from "./pages/Admin";
+import AdminRoute from "./util/AdminRoute";
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -29,12 +31,20 @@ const App = () => {
       errorElement: <Error />,
       children: [
         {
+          path: "/adminPanel",
+          element: (
+            <AdminRoute>
+              <Admin />
+            </AdminRoute>
+          ),
+        },
+        {
           path: "/",
           element: <Index />,
         },
         {
-          path:"/about",
-          element: <About/>
+          path: "/about",
+          element: <About />,
         },
         {
           path: "/register",
@@ -93,7 +103,7 @@ const App = () => {
           element: <FavProducts />,
         },
         { path: "/checkout", element: <CheckOut /> },
-        {path:"/billingReceipt",element:<BillingReceipt/>}
+        { path: "/billingReceipt", element: <BillingReceipt /> },
       ],
     },
   ]);

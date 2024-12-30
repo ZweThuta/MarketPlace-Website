@@ -17,6 +17,7 @@ const Authform = ({ isLoginPage }) => {
     password: "",
     con_password: "",
     terms: "",
+    role:"user",
   });
   const [errors, setErrors] = useState({});
   const isSubmitting = navigation.state === "submitting";
@@ -83,7 +84,8 @@ const Authform = ({ isLoginPage }) => {
         } else {
           if (isLoginPage) {
             const token = response.data.data.token;
-            login(token);
+            const role = response.data.data.role;
+            login(token, role);
             toast.success("Login successful!");
             navigate("/");
             window.location.reload();

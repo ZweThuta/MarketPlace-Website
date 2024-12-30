@@ -45,7 +45,8 @@ class UserController
 
                 return $this->response(1, 'Login successful!', [
                     'token' => $token,
-                    'user_id' => $user['id']
+                    'user_id' => $user['id'],
+                    'role' => $user['role']
                 ]);
             } else {
                 return $this->response(0, 'Invalid email or password!');
@@ -92,7 +93,7 @@ class UserController
         }
 
         try {
-            $sql = "SELECT id, name, email, date, phno, address, city, profile, note, banner FROM users WHERE id = :id";
+            $sql = "SELECT id, name, email, date, phno, address, city, profile, note, banner, role FROM users WHERE id = :id";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(":id", $userId);
             $stmt->execute();

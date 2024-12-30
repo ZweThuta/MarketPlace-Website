@@ -68,11 +68,11 @@ const ProfileEdit = ({ isOpen, onClose }) => {
   const handleSave = async (e) => {
     e.preventDefault();  
   
-    // const validationErrors = validateForm();
-    // if (Object.keys(validationErrors).length > 0) {
-    //   setErrors(validationErrors);
-    //   return;
-    // }
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
   
     const payload = new FormData();
     payload.append("id",formData.id);

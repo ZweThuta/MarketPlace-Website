@@ -11,6 +11,8 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import { ArrowDownOnSquareIcon } from "@heroicons/react/24/outline";
+import pic from "../logo/WayToGo.gif";
+import { Link } from "react-router-dom";
 
 const styles = StyleSheet.create({
   page: { padding: 30, fontFamily: "Helvetica", backgroundColor: "#f9f9f9" },
@@ -159,11 +161,11 @@ const InvoicePDF = ({ order }) => (
   </Document>
 );
 const BillingReceipt = ({ order }) => (
-  <div className="text-center mt-8">
+  <div className="text-center mt-8 bg-gray-100">
     <PDFDownloadLink
       document={<InvoicePDF order={order} />}
       fileName={`order-receipt-${order.orderId}.pdf`}
-      className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+      className="bg-neroBlack900 text-white py-2 px-4 rounded hover:bg-neutral-800"
     >
       {({ loading }) =>
         loading ? (
@@ -204,7 +206,6 @@ const CheckOut = () => {
       console.error("Error fetching user data:", error);
     }
   };
-  console.log(groupedOrders);
 
   const fetchOrderData = async (userId) => {
     try {
@@ -246,7 +247,7 @@ const CheckOut = () => {
   };
 
   return (
-    <section className="text-center mt-12 shadow-lg p-8 bg-white">
+    <section className="text-center p-8 h-full bg-gray-100">
       <h1 className="text-3xl font-semibold uppercase tracking-wider mb-6">
         Order Confirmation
       </h1>
@@ -262,6 +263,18 @@ const CheckOut = () => {
       ) : (
         <p>Loading order details...</p>
       )}
+      <div className="flex justify-center mt-6">
+        <img src={pic} alt="pic" className="w-64 h-64 object-cover" />
+      </div>
+      <p className="p-5 text-neroBlack950 tracking-wider uppercase">
+        We will deliver as fast as we can!
+      </p>
+      <Link
+        to={"/"}
+        className="text-blue-500 hover:underline"
+      >
+        Go back Home
+      </Link>
     </section>
   );
 };

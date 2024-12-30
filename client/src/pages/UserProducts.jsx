@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Link, useLoaderData } from "react-router-dom";
 import UserItems from "../components/UserItems";
-import logo from "../logo/cat.png";
+import logo from "../logo/usericon.jpg";
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import pic from "../logo/addProduct.gif";

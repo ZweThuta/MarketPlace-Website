@@ -24,11 +24,12 @@ class UserController
 
             $hashedPassword = password_hash($userData->password, PASSWORD_DEFAULT);
 
-            $sql = "INSERT INTO users (name, email, password, date) VALUES (:name, :email, :password, NOW())";
+            $sql = "INSERT INTO users (name, email, password, date,role) VALUES (:name, :email, :password, NOW(),:role)";
             $stmt = $this->conn->prepare($sql);
 
             $stmt->bindParam(":name", $userData->name);
             $stmt->bindParam(":email", $userData->email);
+            $stmt->bindParam(":role", $userData->role);
             $stmt->bindParam(":password", $hashedPassword);
 
             if ($stmt->execute()) {
