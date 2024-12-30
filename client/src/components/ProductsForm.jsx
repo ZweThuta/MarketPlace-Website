@@ -144,6 +144,8 @@ const ProductsForm = ({ isAddProduct }) => {
       newErrors.quantity = "Stock quantity is required";
     } else if (quantity <= 0) {
       newErrors.quantity = "Stock quantity must be at least one.";
+    }else if (quantity > 20) {
+      newErrors.quantity = "Stock limit a maximum of 20 items";
     }
     if (!imagePreview) newErrors.image = "Cover image is required";
     if (!secondImagePreview) newErrors.secondImage = "Second image is required";

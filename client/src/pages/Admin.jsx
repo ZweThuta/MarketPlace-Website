@@ -9,6 +9,7 @@ import DashBoard from "../components/DashBoard";
 import Users from "../components/Users";
 import AdminProducts from "../components/AdminProducts";
 import Orders from "../components/Orders";
+import { motion } from "framer-motion";
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -41,10 +42,16 @@ const Admin = () => {
   ];
 
   return (
-    <div className="flex h-screen">
+    <motion.div
+    initial={{ opacity: 0, x: -30 }}
+    animate={{ opacity: 3, x: 0 }}
+    transition={{ duration: 0.8 }}
+     className="flex">
       {/* Sidebar - Tabs */}
       <div className="w-1/4 bg-neroBlack900 text-customWhite flex flex-col shadow-xl">
-        <h1 className="text-lg font-semibold p-4 border-b border-neutral-700 tracking-wider uppercase text-gray-500">Admin Panel</h1>
+        <h1 className="text-sm font-semibold p-4 border-b border-neutral-700 tracking-wider uppercase text-gray-500">Admin Panel</h1>
+        <hr className="border-t-3 border-neutral-600" />
+
         {tabs.map((tab) => (
           <button
             key={tab.value}
@@ -62,14 +69,14 @@ const Admin = () => {
       </div>
 
       {/* Content - Tab Panel */}
-      <div className="w-2/3 p-6">
+      <div className="w-full p-10">
         {tabs.map((tab) =>
           activeTab === tab.value ? (
             <div key={tab.value}>{tab.content}</div>
           ) : null
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
