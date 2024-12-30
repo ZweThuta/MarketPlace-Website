@@ -8,11 +8,14 @@ import {
   CurrencyDollarIcon,
   Square3Stack3DIcon,
 } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 
 const AdminProducts = () => {
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [selectedProductId, setselectedProductId] = useState(null);
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const productsPerPage = 10;
@@ -27,6 +30,7 @@ const AdminProducts = () => {
   const handlePageClick = (data) => {
     setCurrentPage(data.selected);
   };
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -44,13 +48,29 @@ const AdminProducts = () => {
     }
   };
 
-  const handleDelete = (id) => {
-    const updatedProducts = products.filter((product) => product.id !== id);
-    setProducts(updatedProducts);
-    axios
-      .delete(`${import.meta.env.VITE_USER_PRODUCT_DETAILS}?productId=${id}`)
-      .then(() => toast.success("Product removed successfully!"))
-      .catch(() => toast.error("Error deleting product:"));
+  const handleDelete = async () => {
+    try {
+      const updatedProducts = products.filter(
+        (product) => product.id !== selectedProductId
+      );
+      setProducts(updatedProducts);
+      await axios.delete(
+        `${
+          import.meta.env.VITE_USER_PRODUCT_DETAILS
+        }?productId=${selectedProductId}`
+      );
+      toast.success("Product removed successfully!");
+      navigate(0);
+      setShowModal(false);
+    } catch (error) {
+      toast.error("Error deleting product:");
+      setShowModal(false);
+    }
+  };
+
+  const confirmDelete = (id) => {
+    setselectedProductId(id);
+    setShowModal(true);
   };
 
   const categoryCount = products.reduce((acc, product) => {
@@ -67,16 +87,20 @@ const AdminProducts = () => {
     0
   );
   const finalTotalPrice = totalPrice * totalAmount;
+
   return (
     <div className="w-full">
+      {/* Header */}
       <h1 className="text-2xl mb-3 font-extrabold uppercase tracking-wide text-neroBlack500 border-b-2 border-gray-200 pb-4">
-        Products Dashboard
+        Products Manager
       </h1>
       <span className="text-sm text-gray-400">
         Visualize and manage the entire product catalog here.
       </span>
+
       {/* Product DashBoard */}
       <div className="flex gap-5">
+        {/* Product Count */}
         <div className="w-72 my-10 bg-white border border-gray-200 rounded-xl shadow-sm p-4 flex items-center justify-between">
           <div className="flex items-center space-x-6">
             <div className="bg-gray-100 p-3 rounded-lg">
@@ -92,6 +116,7 @@ const AdminProducts = () => {
           </button>
         </div>
 
+        {/* Category Count */}
         <div className="w-72 my-10 bg-white border border-gray-200 rounded-xl shadow-sm p-4 flex items-center justify-between">
           <div className="flex items-center space-x-6">
             <div className="bg-gray-100 p-3 rounded-lg">
@@ -115,6 +140,7 @@ const AdminProducts = () => {
           </button>
         </div>
 
+        {/* Total Price */}
         <div className="w-72 my-10 bg-white border border-gray-200 rounded-xl shadow-sm p-4 flex items-center justify-between">
           <div className="flex items-center space-x-6">
             <div className="bg-gray-100 p-3 rounded-lg">
@@ -132,6 +158,7 @@ const AdminProducts = () => {
           </button>
         </div>
 
+        {/* Total Product Amount */}
         <div className="w-72 my-10 bg-white border border-gray-200 rounded-xl shadow-sm p-4 flex items-center justify-between">
           <div className="flex items-center space-x-6">
             <div className="bg-gray-100 p-3 rounded-lg">
@@ -186,7 +213,7 @@ const AdminProducts = () => {
                 <td className="py-3 px-6">{product.quality}</td>
                 <td className="py-3 px-6 text-center">
                   <button
-                    onClick={() => handleDelete(product.id)}
+                    onClick={() => confirmDelete(product.id)}
                     className="text-red-600 hover:text-red-800 mr-5"
                   >
                     <TrashIcon className="w-5 h-5 inline" />
@@ -202,6 +229,8 @@ const AdminProducts = () => {
             ))}
           </tbody>
         </table>
+
+      {/* Pagination */}
       </div>
       {products.length > productsPerPage && (
         <div className="flex justify-center mt-10">
@@ -229,6 +258,30 @@ const AdminProducts = () => {
             breakClassName={"px-3 py-2"}
             disabledClassName={"text-gray-300 cursor-not-allowed"}
           />
+        </div>
+      )}
+
+      {/* Confim Model */}
+      {showModal && (
+        <div className="fixed inset-0 bg-neroBlack950 bg-opacity-50 flex items-center justify-center border-collapse">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h3 className="text-lg font-bold mb-3">Confirm Deletion!</h3>
+            <p>Are you sure you want to delete this product?</p>
+            <div className="flex justify-end gap-4 mt-4">
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-4 py-2 bg-gray-200 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

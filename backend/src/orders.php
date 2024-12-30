@@ -44,7 +44,7 @@ class OrderController {
 
             $orderId = $this->conn->lastInsertId();
 
-            foreach ($data['productId'] as $productId) {
+            foreach ($data['productId'] as $index => $productId) {
                 $stmt = $this->conn->prepare(
                     "INSERT INTO order_products (order_id, product_id, quantity) 
                      VALUES (:order_id, :product_id, :quantity)"
@@ -52,9 +52,10 @@ class OrderController {
                 $stmt->execute([
                     'order_id' => $orderId,
                     'product_id' => $productId,
-                    'quantity' => 1  
+                    'quantity' => $data['quantity'][$index]
                 ]);
             }
+            
 
          
             $this->conn->commit();
@@ -78,7 +79,7 @@ class OrderController {
             $query = "
             SELECT o.id AS orderId, o.userId, o.totalprice, o.delivery, o.order_date,
                    u.name, u.email, o.phno, o.address, o.city, o.country, o.zip, o.note,
-                   p.productName, p.image, p.price
+                   p.productName, p.image, p.price, op.quantity
             FROM orders o
             JOIN users u ON o.userId = u.id
             JOIN order_products op ON o.id = op.order_id

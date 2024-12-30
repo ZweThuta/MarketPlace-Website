@@ -72,6 +72,32 @@ class UserController
         return $stmt->rowCount() > 0;
     }
 
+    public function deleteUsers($userId){
+        try {
+            $sql = "SELECT * FROM users WHERE id = :userId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(":userId", $userId, PDO::PARAM_INT);
+            $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if(!$user){
+                return $this->response(0, 'User not found!');
+            }
+            $sql = "DELETE FROM users WHERE id = :userId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(":userId", $userId, PDO::PARAM_INT);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                return json_encode(['status' => 1, 'message' => 'User deleted successfully.']);
+            } else {
+                return json_encode(['status' => 0, 'message' => 'Failed to delete the user.']);
+            }
+        } catch (PDOException $e) {
+            return $this->response(0, 'Database error: ' . $e->getMessage());
+        }
+    }
+
     private function response($status, $message, $data = null)
     {
         return json_encode(['status' => $status, 'message' => $message, 'data' => $data]);
@@ -90,4 +116,14 @@ switch ($method) {
     case 'GET':
         echo $userController->getAllUsers();
         break;
+
+    case 'DELETE':
+        $userId = $_GET['userId'] ??  null;
+        if($userId){
+            echo $userController->deleteUsers($userId);
+        }
+        else{
+            echo json_encode(['status' => 0, 'message' => 'UserId is required.']);
+
+        }
 }

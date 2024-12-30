@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   UserMinusIcon,
   UserCircleIcon,
@@ -11,13 +11,15 @@ import {
 import { toast } from "react-toastify";
 
 const Users = () => {
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
   const [recentUserCount, setRecentUserCount] = useState(0);
   const [inactiveCount, setInactiveCount] = useState(0);
   const [adminCount, setAdminCount] = useState(0);
-
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const userCount = users.length - 1;
+  const userCount = users.length - adminCount;
   const usersPerPage = 5;
 
   const pageCount = Math.ceil(users.length / usersPerPage);
@@ -54,45 +56,54 @@ const Users = () => {
     const thirtyDaysAgo = new Date(now.setDate(now.getDate() - 30));
     const sixtyDaysAgo = new Date(now.setDate(now.getDate() - 30));
 
-    // Recent Users (Last 30 Days)
     const recentUsers = users.filter((user) => {
       const userDate = new Date(user.date);
       return userDate >= thirtyDaysAgo;
     });
 
-    // Inactive Users (No login in last 60 days)
     const inactiveUsers = users.filter((user) => {
       const lastLogin = new Date(user.date);
       return lastLogin <= sixtyDaysAgo;
     });
 
-    // Admin / Moderator Count
     const admins = users.filter(
       (user) => user.role === "admin" || user.role === "moderator"
     );
 
-    // Update State
     setRecentUserCount(recentUsers.length);
     setInactiveCount(inactiveUsers.length);
     setAdminCount(admins.length);
   };
 
-  const handleDelete = (id) => {
-    const updatedUsers = users.filter((user) => user.id !== id);
-    setUsers(updatedUsers);
-    axios
-      .delete(`${import.meta.env.VITE_REGISTER_URL}?userId=${id}`)
-      .then(() => toast.success("User removed successfully!"))
-      .catch(() => toast.error("Error deleting product:"));
+  const handleDelete = async () => {
+    try {
+      const updatedUsers = users.filter((user) => user.id !== selectedUserId);
+      setUsers(updatedUsers);
+      await axios.delete(
+        `${import.meta.env.VITE_REGISTER_URL}?userId=${selectedUserId}`
+      );
+      toast.success("User removed successfully!");
+      navigate(0);
+      setShowModal(false);
+    } catch (error) {
+      toast.error("Error deleting user:");
+      setShowModal(false);
+    }
+  };
+
+  const confirmDelete = (id) => {
+    setSelectedUserId(id);
+    setShowModal(true);
   };
 
   return (
     <>
+      {/* Header */}
       <h1 className="text-2xl mb-3 font-extrabold uppercase tracking-wide text-neroBlack500 border-b-2 border-gray-200 pb-4">
         Users Control
       </h1>
       <span className="text-sm text-gray-400">
-      Easily track and manage all users from this dashboard.
+        Easily track and manage all users from this dashboard.
       </span>
 
       {/* Users DashBoard */}
@@ -209,7 +220,7 @@ const Users = () => {
                 <td className="py-3 px-6 text-center">
                   {user.role !== "admin" && (
                     <button
-                      onClick={() => handleDelete(user.id)}
+                      onClick={() => confirmDelete(user.id)}
                       className="text-red-600 hover:text-red-800 mr-5"
                     >
                       <UserMinusIcon className="w-5 h-5 inline" />
@@ -220,6 +231,7 @@ const Users = () => {
             ))}
           </tbody>
         </table>
+        {/* Pagination */}
         {users.length > usersPerPage && (
           <div className="flex justify-center mt-10">
             <ReactPaginate
@@ -246,6 +258,29 @@ const Users = () => {
               breakClassName={"px-3 py-2"}
               disabledClassName={"text-gray-300 cursor-not-allowed"}
             />
+          </div>
+        )}
+        {/* Confim Model */}
+        {showModal && (
+          <div className="fixed inset-0 bg-neroBlack950 bg-opacity-50 flex items-center justify-center border-collapse">
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <h3 className="text-lg font-bold mb-3">Confirm Deletion!</h3>
+              <p>Are you sure you want to delete this user?</p>
+              <div className="flex justify-end gap-4 mt-4">
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="px-4 py-2 bg-gray-200 rounded"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="px-4 py-2 bg-red-600 text-white rounded"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </div>

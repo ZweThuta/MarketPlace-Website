@@ -33,6 +33,9 @@ const CheckOut = () => {
     }
   }, [currentUserId]);
 
+  useEffect(() => {
+    setFormData((prev) => ({ ...prev, delivery: deliveryMethod }));
+  }, [deliveryMethod]);
   
   const fetchUser = async () => {
     try {
@@ -70,6 +73,7 @@ const CheckOut = () => {
     productId: items.map((item) => item.id),
     userId: "",
     delivery: deliveryMethod,
+    quantity: items.map((item)=> item.amount)
   });
   
 
@@ -115,6 +119,7 @@ const CheckOut = () => {
       toast.error("Failed to place order. Please try again.");
     }
   };
+  
 
   const clearHandler = () => {
     setFormData({

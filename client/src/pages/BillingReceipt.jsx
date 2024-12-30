@@ -127,7 +127,7 @@ const InvoicePDF = ({ order }) => (
             {product.productName}
           </Text>
           <Text style={{ width: "20%", textAlign: "center", fontSize: 12 }}>
-            1
+            {product.quantity}
           </Text>
           <Text style={{ width: "20%", textAlign: "center", fontSize: 12 }}>
             ${product.price}
@@ -238,6 +238,7 @@ const CheckOut = () => {
       grouped[order.orderId].products.push({
         productName: order.productName,
         image: order.image,
+        quantity: order.quantity,
         price: order.price,
       });
       grouped[order.orderId].totalprice += parseFloat(order.totalprice);
