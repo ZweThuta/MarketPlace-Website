@@ -2,7 +2,13 @@
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 header("Content-Type: application/json");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 
+// Handle preflight requests (CORS preflight)
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
 include("dbConnect.php");
 
 class UserController
@@ -45,7 +51,7 @@ class UserController
     public function getAllUsers()
     {
         try {
-            $sql = "SELECT id, name, email FROM users"; // Exclude password
+            $sql = "SELECT id, name, email, date, phno, address, city, profile, note, banner, role FROM users";  
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
