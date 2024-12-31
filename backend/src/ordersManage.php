@@ -46,6 +46,34 @@ class OrderController
         }
     }
 
+    public function deleteOrder($orderId)
+    {
+        try {
+            $this->conn->beginTransaction();
+
+            $deleteOrderProducts = "DELETE FROM order_products WHERE order_id = :order_id";
+            $stmt = $this->conn->prepare($deleteOrderProducts);
+            $stmt->bindParam(':order_id', $orderId, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $deleteOrder = "DELETE FROM orders WHERE id = :order_id";
+            $stmt = $this->conn->prepare($deleteOrder);
+            $stmt->bindParam(':order_id', $orderId, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $this->conn->commit();
+
+            if ($stmt->rowCount() > 0) {
+                echo $this->response(1, "Order deleted successfully.");
+            } else {
+                echo $this->response(0, "No order found with the provided ID.");
+            }
+        } catch (PDOException $e) {
+            $this->conn->rollBack();
+            echo $this->response(0, "Failed to delete order: " . $e->getMessage());
+        }
+    }
+
     private function response($status, $message, $data = null)
     {
         return json_encode(['status' => $status, 'message' => $message, 'data' => $data]);
@@ -56,8 +84,17 @@ class OrderController
 $method = $_SERVER['REQUEST_METHOD'];
 $orderController = new OrderController();
 
-switch ($method) { 
+switch ($method) {
     case 'GET':
         $orderController->getOrders();
+        break;
+
+    case 'DELETE':
+        $orderId = isset($_GET['orderId']) ? intval($_GET['orderId']) : 0;
+        if ($orderId > 0) {
+            $orderController->deleteOrder($orderId);
+        } else {
+            echo json_encode(['status' => 0, 'message' => 'Invalid or missing order ID.']);
+        }
         break;
 }

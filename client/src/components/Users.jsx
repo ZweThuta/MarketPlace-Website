@@ -79,12 +79,18 @@ const Users = () => {
     try {
       const updatedUsers = users.filter((user) => user.id !== selectedUserId);
       setUsers(updatedUsers);
-      await axios.delete(
+     const response = await axios.delete(
         `${import.meta.env.VITE_REGISTER_URL}?userId=${selectedUserId}`
       );
-      toast.success("User removed successfully!");
-      navigate(0);
+      if (response.data.status === 1) {
+        toast.success("User removed successfully!");
       setShowModal(false);
+      navigate(0);
+      }
+      else{
+        toast.error(response.data.message);
+      }
+      
     } catch (error) {
       toast.error("Error deleting user:");
       setShowModal(false);
@@ -165,6 +171,7 @@ const Users = () => {
           </div>
         </div>
       </div>
+
       {/* Product Table */}
       <div className="overflow-x-auto rounded-2xl mt-8">
         <table className="w-full border-collapse shadow-lg">
@@ -231,6 +238,7 @@ const Users = () => {
             ))}
           </tbody>
         </table>
+
         {/* Pagination */}
         {users.length > usersPerPage && (
           <div className="flex justify-center mt-10">
@@ -260,6 +268,7 @@ const Users = () => {
             />
           </div>
         )}
+        
         {/* Confim Model */}
         {showModal && (
           <div className="fixed inset-0 bg-neroBlack950 bg-opacity-50 flex items-center justify-center border-collapse">

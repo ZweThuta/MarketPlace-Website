@@ -69,13 +69,16 @@ const Admin = () => {
       </div>
 
       {/* Content - Tab Panel */}
-      <div className="w-full p-10">
+      <motion.div className="w-full p-10"
+      initial={{ opacity: 0, x: 30 }}
+      animate={{ opacity: 3, x: 0 }}
+      transition={{ duration: 0.8 }}>
         {tabs.map((tab) =>
           activeTab === tab.value ? (
             <div key={tab.value}>{tab.content}</div>
           ) : null
         )}
-      </div>
+      </motion.div>
     </motion.div>
   );
 };

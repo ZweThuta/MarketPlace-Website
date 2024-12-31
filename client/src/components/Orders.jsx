@@ -7,9 +7,29 @@ import {
   TrashIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/solid";
-const Orders = () => {
-  const [orders, setOrders] = useState([]);
+import { useNavigate } from "react-router-dom";
+import ReactPaginate from "react-paginate";
+import { toast } from "react-toastify";
+import moment from "moment";
 
+const Orders = () => {
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState(null)
+  const [orders, setOrders] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const ordersPerPage = 3;
+
+  const pageCount = Math.ceil(orders.length / ordersPerPage);
+
+  const displayedOrders = orders.slice(
+    currentPage * ordersPerPage,
+    (currentPage + 1) * ordersPerPage
+  );
+
+  const handlePageClick = (data) => {
+    setCurrentPage(data.selected);
+  };
   useEffect(() => {
     fetchOrders();
   }, []);
@@ -31,6 +51,31 @@ const Orders = () => {
       console.error("Error fetching orders:", error);
     }
   };
+
+
+  const handleDelete = async ()=>{
+    try {
+      const updatedOrders = orders.filter((order)=> order.id !== selectedOrderId)
+      setOrders(updatedOrders);
+      const response = await axios.delete(`${import.meta.env.VITE_ADMIN_ORDER_URL}?orderId=${selectedOrderId}`);
+      if(response.data.status === 1){
+        toast.success('Order deleted successfully');
+        setShowModal(false);
+        navigate(0);
+      }
+      else{
+        toast.error('Failed to delete order');        
+      }
+    } catch (error) {
+          toast.error("Error removing order:");
+          setShowModal(false);
+        }
+  }
+
+  const confirmDelete = (id) =>{
+    setSelectedOrderId(id);
+    setShowModal(true);
+  }
 
   const groupOrders = (ordersData) => {
     const grouped = {};
@@ -93,9 +138,9 @@ const Orders = () => {
 
       {/* Order Displayed */}
       <div className="grid grid-cols-1 gap-6 mt-10 ">
-        {orders.length > 0 ? (
+        {displayedOrders.length > 0 ? (
           <>
-            {orders.map((order) => (
+            {displayedOrders.map((order) => (
               // Order Card
               <div
                 key={order.orderId}
@@ -193,9 +238,11 @@ const Orders = () => {
                 <div className="flex mt-3 justify-between">
                   <p className="text-sm font-semibold text-gray-400">
                     <span>Order Date - </span>
-                    <span>{order.order_date}</span>
+                    <span>{moment(order.order_date).format('MMMM Do YYYY')}</span>
                   </p>
-                  <button className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300">
+                  <button
+                  onClick={()=>confirmDelete(order.orderId)}
+                   className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300">
                     <TrashIcon className="w-5 h-5" />
                     <span>Cancel Order</span>
                   </button>
@@ -205,6 +252,60 @@ const Orders = () => {
           </>
         ) : (
           <p className="text-lg text-gray-500">No orders found.</p>
+        )}
+
+        {/* Pagination */}
+        {orders.length > ordersPerPage && (
+          <div className="flex justify-center mt-10">
+            <ReactPaginate
+              previousLabel={"← Previous"}
+              nextLabel={"Next →"}
+              breakLabel={"..."}
+              pageCount={pageCount}
+              marginPagesDisplayed={1}
+              pageRangeDisplayed={2}
+              onPageChange={handlePageClick}
+              containerClassName={
+                "flex items-center space-x-2 text-sm bg-white rounded-lg shadow-md p-3"
+              }
+              activeClassName={"bg-neroBlack950 text-white rounded-full"}
+              pageLinkClassName={
+                "px-3 py-1 rounded-lg hover:bg-gray-200 transition"
+              }
+              previousLinkClassName={
+                "px-4 py-2 rounded-lg hover:bg-gray-200 transition"
+              }
+              nextLinkClassName={
+                "px-4 py-2 rounded-lg hover:bg-gray-200 transition"
+              }
+              breakClassName={"px-3 py-2"}
+              disabledClassName={"text-gray-300 cursor-not-allowed"}
+            />
+          </div>
+        )}
+
+        {/* Confim Model */}
+        {showModal && (
+          <div className="fixed inset-0 bg-neroBlack950 bg-opacity-50 flex items-center justify-center border-collapse">
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <h3 className="text-lg font-bold mb-3">Confirm Deletion!</h3>
+              <p>Are you sure you want to remove this order?</p>
+              <div className="flex justify-end gap-4 mt-4">
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="px-4 py-2 bg-gray-200 rounded"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="px-4 py-2 bg-red-600 text-white rounded"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </>

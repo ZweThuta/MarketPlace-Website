@@ -121,21 +121,21 @@ const NavBar = () => {
         </Link>
       </div>
 
-     { /* Marketplace Link */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 bg-neroBlack950 py-3 mt-2 px-5 rounded-2xl">
-          <Link to={"/products"}>
-            <div>
-          <h1 className="text-xl text-customWhite italic font-semibold uppercase tracking-wider hover:text-shadow-xl">
-            TrendHaven
-          </h1>
-          <p className="text-gray-300 text-sm text-center font-extralight tracking-wide">
-            Online Marketplace
-          </p>
-            </div>
-          </Link>
-        </div>
+      {/* Marketplace Link */}
+      <div className="absolute left-1/2 transform -translate-x-1/2 bg-neroBlack950 py-3 mt-2 px-5 rounded-2xl">
+        <Link to={"/products"}>
+          <div>
+            <h1 className="text-xl text-customWhite italic font-semibold uppercase tracking-wider hover:text-shadow-xl">
+              TrendHaven
+            </h1>
+            <p className="text-gray-300 text-sm text-center font-extralight tracking-wide">
+              Online Marketplace
+            </p>
+          </div>
+        </Link>
+      </div>
 
-        {/* Cart and User Section */}
+      {/* Cart and User Section */}
       <div className="flex items-center gap-6">
         {/* User Profile */}
         {authToken ? (
@@ -177,15 +177,15 @@ const NavBar = () => {
               </button>
               {isDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-customWhite rounded-md shadow-lg py-2 z-20">
-                  {
-                    user.role === "admin" &&  <Link
-                    to="/adminPanel"
-                    className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                  >
-                    Admin Panel
-                  </Link>
-                  }
-                 
+                  {user.role === "admin" && (
+                    <Link
+                      to="/adminPanel"
+                      className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                    >
+                      Admin Panel
+                    </Link>
+                  )}
+
                   <Link
                     to="/userProduct"
                     className="block px-4 py-2 text-gray-800 hover:bg-gray-200"

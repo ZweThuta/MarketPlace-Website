@@ -73,10 +73,7 @@ const AdminProducts = () => {
     setShowModal(true);
   };
 
-  const categoryCount = products.reduce((acc, product) => {
-    acc[product.category] = (acc[product.category] || 0) + 1;
-    return acc;
-  }, {});
+
 
   const totalPrice = products.reduce(
     (acc, product) => acc + (Number(product.price) || 0),
@@ -99,7 +96,7 @@ const AdminProducts = () => {
       </span>
 
       {/* Product DashBoard */}
-      <div className="flex gap-5">
+      <div className="flex  justify-between">
         {/* Product Count */}
         <div className="w-72 my-10 bg-white border border-gray-200 rounded-xl shadow-sm p-4 flex items-center justify-between">
           <div className="flex items-center space-x-6">
@@ -116,29 +113,7 @@ const AdminProducts = () => {
           </button>
         </div>
 
-        {/* Category Count */}
-        <div className="w-72 my-10 bg-white border border-gray-200 rounded-xl shadow-sm p-4 flex items-center justify-between">
-          <div className="flex items-center space-x-6">
-            <div className="bg-gray-100 p-3 rounded-lg">
-              <InboxStackIcon className="w-8 h-8 text-neroBlack950" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-500 mb-2">By Category</p>
-              {Object.entries(categoryCount).map(([category, count]) => (
-                <div
-                  key={category}
-                  className="flex flex-row justify-between text-sm py-1 gap-4"
-                >
-                  <span>{category}</span>
-                  <span>{count}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <button className="p-1 rounded-full hover:bg-gray-100">
-            <span className="text-gray-500">...</span>
-          </button>
-        </div>
+     
 
         {/* Total Price */}
         <div className="w-72 my-10 bg-white border border-gray-200 rounded-xl shadow-sm p-4 flex items-center justify-between">
