@@ -9,6 +9,7 @@ import RevenueChart from './DashBoardComponents/RevenueChart ';
 import ProductSaleRate from './DashBoardComponents/ProductSaleRate';
 import UserDistributionChart from './DashBoardComponents/UserDistributionChart ';
 import TopBuyers from './DashBoardComponents/TopBuyers';
+import TopCategoryBar from './DashBoardComponents/TopCategoryBar';
 
 const DashBoard = () => {
   const [products, setProducts] = useState([]);
@@ -70,11 +71,11 @@ const DashBoard = () => {
         Admin Dashboard
       </h1>
       <span className="text-sm text-gray-400">
-        Easily track and manage all users from this dashboard.
+        Easily track the progess of online market from this dashboard.
       </span>
 
       {/* DashBoard Components */}
-      <div className='mt-10 flex flex-col gap-4'>
+      <div className='mt-10 mb-6 flex flex-col gap-4'>
         {/* Card */}
         <div className='mb-4 flex justify-between gap-4'>     
         <ProductCard products={products}/>
@@ -82,14 +83,16 @@ const DashBoard = () => {
         <Price products={products}/>
         <OrderCard orders={orders}/>
         </div>
+        <CategoryBar products={products}/>
         <div className='flex justify-between gap-4'>
         <UserDistributionChart orders={orders}/>
         <TopBuyers orders={orders}/>
         </div>
-        <CategoryBar products={products}/>
+        <TopCategoryBar products={products}/>
         <ProductSaleRate products={products}/>
-        {/* <RevenueChart orders={orders}/> */}
+        <RevenueChart orders={orders}/>
       </div>
+      <hr className="border-t-3 border-neutral-200" />
     </section>
   )
 }

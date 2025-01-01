@@ -68,7 +68,7 @@ const TopBuyers = ({ orders }) => {
   
   return (
     <Card className="max-w-lg">
-      <h3 className="text-tremor-title text-center font-semibold">
+      <h3 className="text-tremor-title text-center font-medium">
         Top Buyers by Orders
       </h3>
       <BarList data={topFiveUsers} className="mt-4" />

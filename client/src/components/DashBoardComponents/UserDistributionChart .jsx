@@ -67,7 +67,7 @@ const UserDistributionChart = ({ orders }) => {
 
   return (
     <Card className="max-w-xl">
-      <h3 className="text-tremor-title text-center font-semibold">Order Distribution by City</h3>
+      <h3 className="text-tremor-title font-medium mb-4">Order Distribution by City</h3>
       <DonutChart
         data={userDistribution}
         category="users"
@@ -78,7 +78,7 @@ const UserDistributionChart = ({ orders }) => {
       <Legend
           categories={userDistribution.map((data) => data.city)}
           colors={['blue', 'cyan', 'indigo', 'violet', 'fuchsia']}
-          className="max-w-xs"
+          className="max-w-xs mt-6"
         />
 
     </Card>
