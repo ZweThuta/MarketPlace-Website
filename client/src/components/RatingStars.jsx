@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 
-const AverageRating = ({ productId }) => {
+const AverageRating = ({ productId, isHomepage}) => {
   const [averageRating, setAverageRating] = useState(0);
 
   useEffect(() => {
@@ -28,14 +28,24 @@ const AverageRating = ({ productId }) => {
           <FontAwesomeIcon
             key={star}
             icon={faStar}
-            className={`text-2xl ${
-              star <= Math.round(averageRating)
-                ? "text-yellow-500"
-                : "text-gray-300"
-            }`}
+            className={
+              !isHomepage
+                ? `text-2xl ${
+                    star <= Math.round(averageRating)
+                      ? "text-yellow-500"
+                      : "text-gray-300"
+                  }`
+                : `text-lg ${
+                    star <= Math.round(averageRating)
+                      ? "text-yellow-500"
+                      : "text-gray-300"
+                  }`
+            }
           />
         ))}
-        <span className="ml-3 text-lg text-gray-500 font-medium">({averageRating.toFixed(1)}) Based on customer reviews</span>
+        {
+          !isHomepage && <span className="ml-3 text-lg text-gray-500 font-medium">({averageRating.toFixed(1)}) Based on customer reviews</span>
+        }
       </p>
     </div>
   );

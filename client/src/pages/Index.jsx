@@ -2,6 +2,7 @@ import React from "react";
 import VantaBackground from "../components/HomePageComponents/VantaBackground";
 import CategoryCard from "../components/HomePageComponents/CategoryCard";
 import CategoriesFilter from "../components/CategoriesFilter";
+import LimitedProduct from "../components/HomePageComponents/LimitedProduct";
 
 const Index = () => {
   return (
@@ -12,6 +13,7 @@ const Index = () => {
       <div className="mt-[45%]">
         <CategoryCard />
       </div>
+      <LimitedProduct/>
     </div>
   );
 };

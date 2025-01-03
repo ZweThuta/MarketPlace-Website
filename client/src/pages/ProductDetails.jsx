@@ -182,7 +182,7 @@ const ProductDetails = () => {
               {product.category}
             </span>
             <div className="mb-4">
-              <RatingStars productId={productId} />
+              <RatingStars productId={productId} isHomePage={false} />
             </div>
             <div className="mb-10">
               <span className="text-3xl font-semibold italic text-red-500">
