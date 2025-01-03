@@ -67,7 +67,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="flex items-center gap-10 justify-between py-3 px-4 bg-neroBlack950 shadow-md relative">
+    <nav className="flex items-center gap-10 justify-between py-3 px-4 bg-neroBlack950 shadow-md top-0 z-50">
       {/* Logo */}
       <div className="flex items-center ml-1 space-x-10">
         {/* Search Bar */}
@@ -92,7 +92,7 @@ const NavBar = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="What are you looking for?"
-              className="w-64 px-2 py-0 text-gray-800 text-sm font-medium bg-transparent focus:outline-none"
+              className="w-64 px-2 py-0 text-gray-800 text-sm font-medium bg-transparent focus:outline-none  border-none"
             />
             <button
               type="submit"

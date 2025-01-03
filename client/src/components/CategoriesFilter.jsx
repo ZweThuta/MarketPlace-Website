@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 const CategoriesFilter = () => {
   const [categories, setCategories] = useState([]);
   const location = useLocation();
-  const currentCategory = location.pathname.split('/')[2] || 'All';
+  const currentCategory = decodeURIComponent(location.pathname.split('/')[2] || 'All');
 
   useEffect(() => {
     fetchProducts();
@@ -26,7 +26,7 @@ const CategoriesFilter = () => {
   return (
     <div className="container mx-auto p-6">
       {/* Category Buttons */}
-      <div className="flex flex-wrap justify-center space-x-2 sm:space-x-4 mb-6">
+      <div className="flex flex-wrap justify-center gap-3 mb-6">
         <Link
           to="/products"
           className={`px-4 sm:px-6 py-1 sm:py-2 rounded shadow-md transition text-sm sm:text-base ${

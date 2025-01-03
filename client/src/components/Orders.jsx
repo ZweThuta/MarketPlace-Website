@@ -15,7 +15,7 @@ import moment from "moment";
 const Orders = () => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const [selectedOrderId, setSelectedOrderId] = useState(null)
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [orders, setOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const ordersPerPage = 3;
@@ -52,30 +52,32 @@ const Orders = () => {
     }
   };
 
-
-  const handleDelete = async ()=>{
+  const handleDelete = async () => {
     try {
-      const updatedOrders = orders.filter((order)=> order.id !== selectedOrderId)
+      const updatedOrders = orders.filter(
+        (order) => order.id !== selectedOrderId
+      );
       setOrders(updatedOrders);
-      const response = await axios.delete(`${import.meta.env.VITE_ADMIN_ORDER_URL}?orderId=${selectedOrderId}`);
-      if(response.data.status === 1){
-        toast.success('Order deleted successfully');
+      const response = await axios.delete(
+        `${import.meta.env.VITE_ADMIN_ORDER_URL}?orderId=${selectedOrderId}`
+      );
+      if (response.data.status === 1) {
+        toast.success("Order deleted successfully");
         setShowModal(false);
         navigate(0);
-      }
-      else{
-        toast.error('Failed to delete order');        
+      } else {
+        toast.error("Failed to delete order");
       }
     } catch (error) {
-          toast.error("Error removing order:");
-          setShowModal(false);
-        }
-  }
+      toast.error("Error removing order:");
+      setShowModal(false);
+    }
+  };
 
-  const confirmDelete = (id) =>{
+  const confirmDelete = (id) => {
     setSelectedOrderId(id);
     setShowModal(true);
-  }
+  };
 
   const groupOrders = (ordersData) => {
     const grouped = {};
@@ -228,7 +230,11 @@ const Orders = () => {
                         alt={product.productName}
                         className="w-16 h-16 object-cover rounded border"
                       />
-                      <p className="text-lg">{product.productName}</p>
+                      <p className="text-lg">
+                        {product.productName.length > 20
+                          ? product.productName.slice(0, 20) + "..."
+                          : product.productName}
+                      </p>
                       <p className="text-md">x {product.quantity}</p>
                     </div>
                   ))}
@@ -238,11 +244,14 @@ const Orders = () => {
                 <div className="flex mt-3 justify-between">
                   <p className="text-sm font-semibold text-gray-400">
                     <span>Order Date - </span>
-                    <span>{moment(order.order_date).format('MMMM Do YYYY')}</span>
+                    <span>
+                      {moment(order.order_date).format("MMMM Do YYYY")}
+                    </span>
                   </p>
                   <button
-                  onClick={()=>confirmDelete(order.orderId)}
-                   className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300">
+                    onClick={() => confirmDelete(order.orderId)}
+                    className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300"
+                  >
                     <TrashIcon className="w-5 h-5" />
                     <span>Cancel Order</span>
                   </button>

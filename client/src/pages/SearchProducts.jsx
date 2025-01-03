@@ -71,7 +71,7 @@ const SearchProducts = () => {
       )}
 
       {/* Error State */}
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <p className="text-red-500 h-screen">{error}</p>}
 
       {/* Search Results */}
       {!loading && !error && displayedProducts.length > 0 ? (
