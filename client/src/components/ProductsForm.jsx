@@ -444,6 +444,7 @@ const ProductsForm = ({ isAddProduct }) => {
                     <option>Health & Wellness</option>
                     <option>Baby & Kids</option>
                     <option>Technology & Gadgets</option>
+                    <option>Books, Stationery & Media</option>
 
 
 
@@ -460,6 +461,8 @@ const ProductsForm = ({ isAddProduct }) => {
                     <option>Health & Wellness</option>
                     <option>Baby & Kids</option>
                     <option>Technology & Gadgets</option>
+                    <option>Books, Stationery & Media</option>
+
                   </>
                 )}
 

@@ -3,6 +3,8 @@ import * as THREE from "three";
 import CLOUDS from "vanta/src/vanta.clouds";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { motion } from "framer-motion";
+
 
 const VantaBackground = ({ children }) => {
   const vantaRef = useRef(null);
@@ -39,7 +41,7 @@ const VantaBackground = ({ children }) => {
         const userData = response.data.data;
         const filterUsers = userData
           .filter((user) => user.role === "user")
-          .sort(() => 0.5 - Math.random())
+          // .sort(() => 0.5 - Math.random())
           .slice(0, 5);
         setUsers(filterUsers);
       } else {
@@ -51,11 +53,12 @@ const VantaBackground = ({ children }) => {
   };
 
   return (
+    <>
     <div
       ref={vantaRef}
       style={{
         width: "100%",
-        height: "90vh",
+        height: "95vh",
         position: "relative",
         overflow: "hidden",
       }}
@@ -71,9 +74,14 @@ const VantaBackground = ({ children }) => {
           color: "#1a1a1a",
           textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
           whiteSpace: "wrap",
+          speed: 1,
         }}
       >
-        <div className="mb-52 mr-72 bg-transparent opacity-90">
+        <motion.div
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8 }}
+         className="mb-52 mr-72 bg-transparent opacity-90">
           <h1 className="text-6xl text-nowrap font-extrabold tracking-wider text-neroBlack950 mb-10 uppercase">
             Welcome to TrendHaven
           </h1>
@@ -98,31 +106,39 @@ const VantaBackground = ({ children }) => {
               Explore Items
             </Link>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="text-left absolute bottom-0 right-0 ">
-          <h1 className="text-sm font-semibold tracking-wider text-customWhite2 uppercase mb-3">
-            Trust Sellers
-          </h1>
-          <p className="text-customWhite2 text-xs max-w-sm text-justify mb-3 ">
-            Meet the talented artisans and designers behind the products you
-            love. Connect with them directly to ask questions, request custom or personalized items, and make special requests. 
-          </p>
-          <div className="flex items-center">
-            <div className="flex -space-x-2">
-              {users.map((user) => (
-                <img
-                  key={user.id}
-                  src={`${import.meta.env.VITE_IMAGES_URL}/${user.profile}`}
-                  alt="User Profile"
-                  className="w-10 h-10 rounded-full object-cover border-2 border-gray-600"
-                />
-              ))}
+        {users.length > 0 && (
+          <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+           className="text-left absolute bottom-0 right-0 ">
+            <h1 className="text-sm font-semibold tracking-wider text-customWhite2 uppercase mb-3">
+              Trust Sellers
+            </h1>
+            <p className="text-customWhite2 text-xs max-w-sm text-justify mb-3 ">
+              Meet the talented artisans and designers behind the products you
+              love. Connect with them directly to ask questions, request custom
+              or personalized items, and make special requests.
+            </p>
+            <div className="flex items-center">
+              <div className="flex -space-x-2">
+                {users.map((user) => (
+                  <img
+                    key={user.id}
+                    src={`${import.meta.env.VITE_IMAGES_URL}/${user.profile}`}
+                    alt="User Profile"
+                    className="w-10 h-10 rounded-full object-cover border-2 border-gray-600"
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        )}
       </div>
     </div>
+    </>
   );
 };
 
