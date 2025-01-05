@@ -1,18 +1,18 @@
 import React from 'react';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-
+import logo from "../logo/logo.png"
 const Footer = () => {
   return (
     <footer className="bg-neutral-800 text-white py-10">
       <div className="container px-10 grid grid-cols-1 md:grid-cols-4 gap-8">
-        {/* Company Info */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">TrendHaven</h3>
-          <p className="text-sm">Your ultimate destination for the latest fashion, electronics, and lifestyle products.</p>
-        </div>
+          <div>
+              <img src={logo} alt='TrendHaven Logo' className="w-20 h-20" />
+              <h3 className="text-xl font-semibold mb-4">TrendHaven</h3>
+            <p className="text-sm">Your ultimate destination for the latest fashion, electronics, and lifestyle products.</p>
+          </div>
 
-        {/* Quick Links */}
+          {/* Quick Links */}
         <div>
           <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
           <ul className="space-y-2">

@@ -157,7 +157,7 @@ public function updateReview($reviewId, $newComment, $newRating){
             return $this->response(0, 'Rating must be between 1 and 5.');
         }
 
-        $sql = "UPDATE reviews SET comment = :newComment, rating = :newRating, updated_at = NOW() WHERE id = :reviewId";
+        $sql = "UPDATE reviews SET comment = :newComment, rating = :newRating, date = NOW() WHERE id = :reviewId";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':newComment', $newComment, PDO::PARAM_STR);
         $stmt->bindParam(':newRating', $newRating, PDO::PARAM_INT);

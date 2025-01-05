@@ -10,6 +10,8 @@ import sportIcon from "./categories/Sports & Outdoor.jpg";
 import healthIcon from "./categories/Health & Wellness.jpg";
 import travelIcon from "./categories/Travel & Luggage.jpg";
 import bookIcon from "./categories/Books.jpg";
+import GameIcon from "./categories/GamesAndFigures.jpg";
+
 
 import { motion } from "framer-motion";
 
@@ -91,9 +93,16 @@ const CategoryCard = () => {
         className="w-24 h-24 rounded-xl shadow-md"
       />
     ),
-    Books: (
+    "Books & Media": (
       <img
         src={bookIcon}
+        alt="Books"
+        className="w-24 h-24 rounded-xl shadow-md"
+      />
+    ),
+    "Games & Figures": (
+      <img
+        src={GameIcon}
         alt="Books"
         className="w-24 h-24 rounded-xl shadow-md"
       />

@@ -45,7 +45,7 @@ const PrevArrow = (props) => {
   );
 };
 
-const LimitedProduct = () => {
+const NewArrivals = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -57,10 +57,17 @@ const LimitedProduct = () => {
       const response = await axios.get(import.meta.env.VITE_GET_PRODUCTS_URL);
       if (response.data.status === 1) {
         const limitedProducts = response.data.data
-          .filter((product) => product.quantity < 2)
+        .filter((product) => {
+            const productDate = new Date(product.date);
+            const currentDate = new Date();
+            const timeDifference = currentDate - productDate;
+            const daysDifference = timeDifference / (1000 * 3600 * 24);
+            return daysDifference <= 7 && product.quantity >= 2; 
+          })
           .sort(() => 0.5 - Math.random())
           .slice(0, 10);
         setProducts(limitedProducts);
+
       } else {
         console.error(response.data.message);
       }
@@ -108,10 +115,9 @@ const LimitedProduct = () => {
   };
 
   return (
-    <>
-    <div className="container mx-auto px-8 py-10">
+    <div className="container mx-auto px-8 py-10 mb-10">
       <h1 className="mb-10 uppercase font-semibold text-2xl tracking-wider text-gray-800 ml-10">
-        Limited Products
+        New Arrivals
       </h1>
       <Slider {...settings}>
         {products.length > 0 ? (
@@ -167,9 +173,7 @@ const LimitedProduct = () => {
         )}
       </Slider>
     </div>
-      {/* <hr className="border-t-2 mx-10 border-neutral-200" /> */}
-      </>
   );
 };
 
-export default LimitedProduct;
+export default NewArrivals;

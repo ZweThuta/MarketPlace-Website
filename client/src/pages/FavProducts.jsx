@@ -62,7 +62,7 @@ const FavProducts = () => {
   };
   return (
     <>
-      <div className="p-10 ">
+      <div className="p-10 h-screen">
         <div className="flex flex-col items-center mb-10">
           <h1 className="text-4xl font-extrabold tracking-wide text-gray-900 mb-3">
             My Wishlist

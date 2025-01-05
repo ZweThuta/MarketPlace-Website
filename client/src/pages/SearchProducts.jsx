@@ -1,10 +1,10 @@
 import { Spinner } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import ViewProducts from "../components/ViewProducts";
 import ReactPaginate from "react-paginate";
-
+import noFound from "../logo/noProductFound.gif";
 const SearchProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -57,7 +57,7 @@ const SearchProducts = () => {
   return (
     <div className="container mx-auto p-4">
       {/* Header */}
-      <h1 className="text-2xl font-bold mb-4">
+      <h1 className="text-2xl font-bold mb-4 mt-5">
         Search Results for:{" "}
         <span className="text-blue-600">&quot;{query}&quot;</span>
       </h1>
@@ -70,8 +70,17 @@ const SearchProducts = () => {
         </div>
       )}
 
-      {/* Error State */}
-      {error && <p className="text-red-500 h-screen">{error}</p>}
+     { /* Error State */}
+      {error && (
+        <div className="flex flex-col items-center  h-screen mt-20">
+          <Link to={"/products"} >
+          <p className="text-xs tracking-wide uppercase font-semibold text-neroBlack500">Click the cat to go back to the products page</p>
+          <img src={noFound} alt="No products found" className="w-80 h-80 object-cover" />
+          </Link>
+          <p className="text-red-500 text-lg font-semibold">{error}</p>
+          
+        </div>
+      )}
 
       {/* Search Results */}
       {!loading && !error && displayedProducts.length > 0 ? (
@@ -83,7 +92,9 @@ const SearchProducts = () => {
       ) : (
         !loading &&
         !error && (
+          <>
           <p className="text-gray-500 text-center">No products found.</p>
+          </>
         )
       )}
 

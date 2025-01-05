@@ -1,19 +1,23 @@
 import React from "react";
 import VantaBackground from "../components/HomePageComponents/VantaBackground";
 import CategoryCard from "../components/HomePageComponents/CategoryCard";
-import CategoriesFilter from "../components/CategoriesFilter";
 import LimitedProduct from "../components/HomePageComponents/LimitedProduct";
+import NewArrivals from "../components/HomePageComponents/NewArrivals";
+import HomeBanner from "../components/HomePageComponents/HomeBanner";
 
 const Index = () => {
   return (
     <div className="w-full h-auto flex flex-col bg-cover bg-center relative">
-      <div className="absolute top-0 left-0 w-full h-screen -z-10">
+      <div className="absolute top-4 left-0 w-full h-screen">
         <VantaBackground />
       </div>
-      <div className="mt-[45%]">
-        <CategoryCard />
+      <div className="mt-[44%]">
+        {""}
       </div>
+        <CategoryCard />
       <LimitedProduct/>
+      <NewArrivals/>
+      <HomeBanner/>
     </div>
   );
 };
