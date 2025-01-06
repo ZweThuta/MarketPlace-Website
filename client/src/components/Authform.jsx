@@ -2,8 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate, Link, useNavigation } from "react-router-dom";
 import { useAuth } from "../util/AuthContext";
-import photo from "../logo/female.png";
-import foto from "../logo/male.png";
+import foto from "../logo/registerCat.gif";
+import photo from "../logo/loginCat.gif";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -106,13 +106,13 @@ const Authform = ({ isLoginPage }) => {
   };
   return (
     <>
-      <section>
+      <section className="h-auto w-full py-24 bg-gray-100">
         <div>
-          <div className="font-[sans-serif] bg-white max-w-4xl flex items-center mx-auto md:h-screen p-4">
+          <div className="font-[sans-serif] bg-white max-w-4xl flex items-center mx-auto md:h-auto p-4 rounded-xl">
             <div className="grid md:grid-cols-3 items-center shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-xl overflow-hidden">
               {!isLoginPage ? (
                 <>
-                  <div>
+                  <div className="flex flex-col justify-between gap-10">
                     <h1 className="text-xs text-gray-400 font-semibold uppercase p-5">
                       TrendHaven
                     </h1>
@@ -293,7 +293,7 @@ const Authform = ({ isLoginPage }) => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-3 px-4 tracking-wider text-sm rounded-md text-white bg-richChocolate800 hover:bg-richChocolate900 focus:outline-none"
+                    className="w-full py-3 px-4 tracking-widest uppercase text-sm rounded-md text-customWhite bg-neroBlack950 hover:bg-transparent hover:border-2 hover:text-neroBlack950 hover:border-neroBlack950  focus:outline-none"
                   >
                     {isSubmitting
                       ? "Submiting"

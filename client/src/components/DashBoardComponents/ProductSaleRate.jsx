@@ -4,7 +4,7 @@ import { format } from "date-fns";
 const ProductSaleRate = ({ products }) => {
     const currentDate = new Date(); 
     const last1Year = new Date();
-    last1Year.setFullYear(currentDate.getFullYear() - 1);
+    last1Year.setFullYear(currentDate.getMonth() - 1);
 
     const productMonthlySellRate = {};
 

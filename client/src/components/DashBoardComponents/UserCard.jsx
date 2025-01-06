@@ -3,10 +3,7 @@ import {
     UserGroupIcon,
 } from "@heroicons/react/24/solid";
 
-const UserCard = ({ users }) => {
-
-  console.log(users);
-  
+const UserCard = ({ users }) => {  
   return (
     <Card
       className=" max-w-xs flex items-center justify-between"

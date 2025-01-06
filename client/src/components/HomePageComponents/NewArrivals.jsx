@@ -140,8 +140,8 @@ const NewArrivals = () => {
                 </Link>
                 <div className="p-5 text-center">
                   <h3 className="text-xl font-semibold text-neroBlack950">
-                    {product.productName.length > 20
-                      ? product.productName.substr(0, 20) + "..."
+                    {product.productName.length > 15
+                      ? product.productName.substr(0, 15) + "..."
                       : product.productName}
                   </h3>
                   <div className="flex space-x-3 items-center justify-center">
