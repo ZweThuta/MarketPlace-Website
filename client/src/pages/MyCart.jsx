@@ -12,7 +12,7 @@ const MyCart = () => {
 
   return (
     <>
-      <section className="container mx-auto p-6 h-screen">
+      <section className="container mx-auto p-6 h-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-extrabold tracking-wide text-gray-900 mb-3">
             My Cart

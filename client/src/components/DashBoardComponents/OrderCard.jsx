@@ -1,60 +1,35 @@
-import { Card, Metric, Text } from "@tremor/react";
+import { Card } from "@tremor/react";
 import {
     BanknotesIcon,
 } from "@heroicons/react/24/solid";
 
 const OrderCard = ({ orders }) => {
 
-    const groupOrders = (ordersData) => {
-        const grouped = {};
-    
-        ordersData.forEach((order) => {
-          const {
-            orderId,
-            name,
-            email,
-            profile,
-            totalprice,
-            delivery,
-            order_date,
-            phno,
-            address,
-            city,
-            country,
-            zip,
-            note,
-            productName,
-            image,
-            quantity,
-          } = order;
-    
-          if (!grouped[orderId]) {
-            grouped[orderId] = {
-              orderId,
-              name,
-              email,
-              profile,
-              totalprice,
-              delivery,
-              order_date,
-              phno,
-              address,
-              city,
-              country,
-              zip,
-              note,
-              products: [],
-            };
-          }
-          grouped[orderId].products.push({ productName, image, quantity });
-        });
-    
-        return Object.values(grouped);
-      };
+  const groupOrders = (orders) => {
+    const grouped = {};
+
+    orders.forEach((order) => {
+      if (!grouped[order.orderId]) {
+        grouped[order.orderId] = {
+          ...order,
+          products: [],
+          totalprice: 0,
+        };
+      }
+      grouped[order.orderId].products.push({
+        productName: order.productName,
+        image: order.image,
+        quantity: order.quantity,
+        price: order.price,
+      });
+      grouped[order.orderId].totalprice += parseFloat(order.totalprice);
+    });
+
+    return grouped;
+  };
       const groupedOrders = groupOrders(orders);
 
-      // Calculate total sales
-      const totalSales = groupedOrders.reduce((acc, order) => acc + parseFloat(order.totalprice), 0);
+      const totalSales = Object.values(groupedOrders).reduce((acc, order) => acc + parseFloat(order.totalprice), 0);
       
   return (
     <Card

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useNavigation } from "react-router-dom";
 
 const ProfileEdit = ({ isOpen, onClose }) => {
   const formRef = useRef(null);
@@ -9,6 +9,8 @@ const ProfileEdit = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState("");
   const [id, setId] = useState("");
   const navigate = useNavigate();
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -18,7 +20,7 @@ const ProfileEdit = ({ isOpen, onClose }) => {
     phno: "",
     note: "",
     profileImage: null,
-    banner:null,
+    banner: null,
   });
   const [errors, setErrors] = useState({});
   const [imagePreview, setImagePreview] = useState(null);
@@ -43,13 +45,13 @@ const ProfileEdit = ({ isOpen, onClose }) => {
     }
   };
 
-  const handleBannerChange = (e) =>{
+  const handleBannerChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setFormData((prev) => ({ ...prev, banner: file }));
       setBanner(URL.createObjectURL(file));
     }
-  }
+  };
 
   const validateForm = () => {
     const errors = {};
@@ -66,16 +68,16 @@ const ProfileEdit = ({ isOpen, onClose }) => {
   };
 
   const handleSave = async (e) => {
-    e.preventDefault();  
-  
+    e.preventDefault();
+
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-  
+
     const payload = new FormData();
-    payload.append("id",formData.id);
+    payload.append("id", formData.id);
     payload.append("name", formData.name);
     payload.append("email", formData.email);
     payload.append("address", formData.address);
@@ -85,33 +87,34 @@ const ProfileEdit = ({ isOpen, onClose }) => {
     if (formData.profileImage) {
       payload.append("profile", formData.profileImage);
     }
-    if(formData.banner){
-      payload.append("banner",formData.banner);
+    if (formData.banner) {
+      payload.append("banner", formData.banner);
     }
-    
-  
+
     try {
       const token = localStorage.getItem("authToken");
-      const response = await axios.post(import.meta.env.VITE_USER_EDIT_URL, payload, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-  
+      const response = await axios.post(
+        import.meta.env.VITE_USER_EDIT_URL,
+        payload,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       if (response.data.status === 0) {
         setErrors({ message: response.data.message });
       } else {
         console.log("User updated successfully:", response.data);
-        onClose();  
+        onClose();
         navigate("/userProduct");
       }
     } catch (error) {
       console.error("Error updating profile:", error);
     }
   };
-  
-  
 
   const handleClear = () => {
     formRef.current.reset();
@@ -124,7 +127,7 @@ const ProfileEdit = ({ isOpen, onClose }) => {
       phno: "",
       note: "",
       profileImage: null,
-      banner:null,
+      banner: null,
     });
     setBanner(null);
     setImagePreview(null);
@@ -152,14 +155,14 @@ const ProfileEdit = ({ isOpen, onClose }) => {
           phno: data.phno || "",
           note: data.note || "",
           profileImage: null,
-          banner:null
+          banner: null,
         });
         setName(data.name);
         setEmail(data.email);
         setId(data.id);
       } else {
         console.error("Failed to fetch", response.data.message);
-        navigate("/userProduct")
+        navigate("/userProduct");
       }
     } catch (error) {
       console.error("Error fetching", error.message);
@@ -195,7 +198,7 @@ const ProfileEdit = ({ isOpen, onClose }) => {
               />
             ) : (
               <div className="w-full h-full text-sm text-center flex items-center justify-center bg-gray-200 text-gray-500">
-                 Your profile
+                Your profile
               </div>
             )}
           </div>
@@ -207,8 +210,8 @@ const ProfileEdit = ({ isOpen, onClose }) => {
           />
         </div>
 
-         {/* Profile Image */}
-         <div className="flex flex-col items-center mb-4">
+        {/* Profile Image */}
+        <div className="flex flex-col items-center mb-4">
           <div className="relative w-full h-24 overflow-hidden shadow-md border-2 border-gray-300">
             {banner ? (
               <img
@@ -218,7 +221,7 @@ const ProfileEdit = ({ isOpen, onClose }) => {
               />
             ) : (
               <div className="w-full h-full text-sm text-center flex items-center justify-center bg-gray-200 text-gray-500">
-                 Your banner
+                Your banner
               </div>
             )}
           </div>
@@ -291,9 +294,10 @@ const ProfileEdit = ({ isOpen, onClose }) => {
             </button>
             <button
               type="submit"
+              disabled={isSubmitting}
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition text-sm"
             >
-              Save
+              {isSubmitting ? "Saving..." : "Save"}
             </button>
           </div>
         </form>

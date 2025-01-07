@@ -41,8 +41,8 @@ const Orders = () => {
         const ordersData = response.data.data;
 
         // Group orders by orderId
-        const groupedOrders = groupOrders(ordersData);
-
+        const groupedOrders = Object.values(groupOrders(ordersData));
+        
         setOrders(groupedOrders);
       } else {
         console.error(response.data.message);
@@ -79,54 +79,29 @@ const Orders = () => {
     setShowModal(true);
   };
 
-  const groupOrders = (ordersData) => {
+  const groupOrders = (orders) => {
     const grouped = {};
 
-    ordersData.forEach((order) => {
-      const {
-        orderId,
-        name,
-        email,
-        profile,
-        totalprice,
-        delivery,
-        order_date,
-        phno,
-        address,
-        city,
-        country,
-        zip,
-        note,
-        productName,
-        image,
-        quantity,
-      } = order;
-
-      if (!grouped[orderId]) {
-        grouped[orderId] = {
-          orderId,
-          name,
-          email,
-          profile,
-          totalprice,
-          delivery,
-          order_date,
-          phno,
-          address,
-          city,
-          country,
-          zip,
-          note,
+    orders.forEach((order) => {
+      if (!grouped[order.orderId]) {
+        grouped[order.orderId] = {
+          ...order,
           products: [],
+          totalprice: 0,
         };
       }
-
-      // Add product to the specific order
-      grouped[orderId].products.push({ productName, image, quantity });
+      grouped[order.orderId].products.push({
+        productName: order.productName,
+        image: order.image,
+        quantity: order.quantity,
+        price: order.price,
+      });
+      grouped[order.orderId].totalprice += parseFloat(order.totalprice);
     });
 
-    return Object.values(grouped);
+    return grouped;
   };
+
 
   return (
     <>
@@ -212,7 +187,7 @@ const Orders = () => {
                   <div className="text-lg font-semibold tracking-wider uppercase">
                     <span className="text-gray-500">Total Price: </span>
                     <span className="text-green-500 tracking-widest">
-                      ${order.totalprice}
+                    ${parseFloat(order.totalprice).toFixed(2)}
                     </span>
                   </div>
                 </div>
