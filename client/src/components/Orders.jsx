@@ -81,24 +81,32 @@ const Orders = () => {
 
   const groupOrders = (orders) => {
     const grouped = {};
-
+  
     orders.forEach((order) => {
       if (!grouped[order.orderId]) {
         grouped[order.orderId] = {
           ...order,
           products: [],
-          totalprice: 0,
+          totalprice: 0,  
         };
       }
+      
+       
+      const productTotalPrice = parseFloat(order.totalprice);
+      
+       
       grouped[order.orderId].products.push({
         productName: order.productName,
         image: order.image,
         quantity: order.quantity,
         price: order.price,
+        totalPrice: productTotalPrice,  
       });
-      grouped[order.orderId].totalprice += parseFloat(order.totalprice);
+  
+       
+      grouped[order.orderId].totalprice = productTotalPrice;
     });
-
+  
     return grouped;
   };
 

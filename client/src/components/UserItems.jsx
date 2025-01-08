@@ -21,7 +21,6 @@ const UserItems = ({ product }) => {
   const shortDescription =
     description.length > 150 ? description.substr(0, 150) + "..." : description;
 
-    console.log(product);
     
   return (
     <div className="w-full p-6">

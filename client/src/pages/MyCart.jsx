@@ -12,8 +12,8 @@ const MyCart = () => {
 
   return (
     <>
-      <section className="container mx-auto p-6 h-auto">
-        <div className="text-center mb-12">
+      <section className="container mx-auto p-6 h-full">
+        <div className="text-center mb-20">
           <h1 className="text-4xl font-extrabold tracking-wide text-gray-900 mb-3">
             My Cart
           </h1>
@@ -33,7 +33,7 @@ const MyCart = () => {
           )}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 h-auto">
           <div className="lg:col-span-2">
             {items.length > 0 && (
               <div>

@@ -34,9 +34,13 @@ const CheckOut = () => {
   }, [currentUserId]);
 
   useEffect(() => {
-    setFormData((prev) => ({ ...prev, delivery: deliveryMethod }));
-  }, [deliveryMethod]);
-  
+    setFormData((prev) => ({
+      ...prev,
+      delivery: deliveryMethod,
+      totalprice: finalTotalPrice,
+    }));
+  }, [deliveryMethod, totalAmount]);
+
   const fetchUser = async () => {
     try {
       const token = localStorage.getItem("authToken");
@@ -73,9 +77,8 @@ const CheckOut = () => {
     productId: items.map((item) => item.id),
     userId: "",
     delivery: deliveryMethod,
-    quantity: items.map((item)=> item.amount)
+    quantity: items.map((item) => item.amount),
   });
-  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -108,9 +111,9 @@ const CheckOut = () => {
     }
     try {
       const response = axios.post(import.meta.env.VITE_ORDER_URL, formData);
-      if(response.status === 0){
+      if (response.status === 0) {
         setErrors({ message: response.data.message });
-      }else{
+      } else {
         toast.success("Thank you for your order!");
         navigate("/billingReceipt");
       }
@@ -119,7 +122,6 @@ const CheckOut = () => {
       toast.error("Failed to place order. Please try again.");
     }
   };
-  
 
   const clearHandler = () => {
     setFormData({

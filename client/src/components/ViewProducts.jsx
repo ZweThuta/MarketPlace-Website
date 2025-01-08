@@ -59,7 +59,7 @@ const ViewProducts = ({ product, currentUserId }) => {
       if (response.data?.status === 1) {
         toast.success("Added to Favourites!");
       } else {
-        toast.error("Already added to Favourites!");
+        toast.warning("Already added to Favourites!");
       }
     } catch (error) {
       console.error("Error adding to Favourites:", error);

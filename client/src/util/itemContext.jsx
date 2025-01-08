@@ -8,98 +8,90 @@ const initialState = {
 };
 
 const message = (
-  <span className="text-sm text-ivoryWhite tracking-wide ">
+  <span className="text-sm text-ivoryWhite tracking-wide">
     Great Choice! Added to Your Cart!
   </span>
 );
 
 const itemReducer = (state, action) => {
-  if (action.type === "ADD_ITEM") {
-    const existItemIndex = state.items.findIndex(
-      (item) => item.id === action.item.id
-    );
-    const existItem = state.items[existItemIndex];
+  switch (action.type) {
+    case "ADD_ITEM":
+      const existItemIndex = state.items.findIndex(
+        (item) => item.id === action.item.id
+      );
+      const existItem = state.items[existItemIndex];
 
-    let updatedItems;
-    let updatedTotalAmount;
+      let updatedItems;
+      let updatedTotalAmount;
 
-    if (existItem) {
-      const newAmount = existItem.amount + action.item.amount;
+      if (existItem) {
+        const newAmount = existItem.amount + action.item.amount;
 
-      if (newAmount > action.item.quantity) {
-        toast.error(`This item has only ${action.item.quantity} in stock at the market.`);
-        return state; 
+        if (newAmount > action.item.quantity) {
+          toast.error(`This item has only ${action.item.quantity} in stock at the market.`);
+          return state; 
+        }
+
+        const updatedItem = {
+          ...existItem,
+          amount: newAmount,
+        };
+        updatedItems = [...state.items];
+        updatedItems[existItemIndex] = updatedItem;
+      } else {
+        if (action.item.amount > action.item.quantity) {
+          toast.error(`This item has only ${action.item.quantity} in stock at the market.`);
+          return state;
+        }
+
+        updatedItems = state.items.concat(action.item);
       }
-      else{
-        // toast.success(message);
-      }
 
-      const updatedItem = {
-        ...existItem,
-        amount: newAmount,
+      updatedTotalAmount = state.totalAmount + action.item.price * action.item.amount;
+
+      return {
+        items: updatedItems,
+        totalAmount: updatedTotalAmount,
       };
-      updatedItems = [...state.items];
-      updatedItems[existItemIndex] = updatedItem;
-    } else {
-     
-      if (action.item.amount > action.item.quantity) {
-        toast.error(`This item has only ${action.item.quantity} in stock at the market.`);
-        return state;
+
+    case "REMOVE_ITEM":
+      const removeItemIndex = state.items.findIndex(
+        (item) => item.id === action.id
+      );
+      const removedItem = state.items[removeItemIndex];
+      const newTotalAmount = state.totalAmount - removedItem.price * removedItem.amount;
+
+      const newItems = state.items.filter((item) => item.id !== action.id);
+
+      return {
+        items: newItems,
+        totalAmount: newTotalAmount,
+      };
+
+    case "REMOVE_ONE_ITEM":
+      const decreaseItemIndex = state.items.findIndex(
+        (item) => item.id === action.id
+      );
+      const decreasedItem = state.items[decreaseItemIndex];
+      const updatedAmount = state.totalAmount - decreasedItem.price;
+
+      let decreasedItems;
+      if (decreasedItem.amount === 1) {
+        decreasedItems = state.items.filter((item) => item.id !== action.id);
+      } else {
+        const updatedDecreasedItem = { ...decreasedItem, amount: decreasedItem.amount - 1 };
+        decreasedItems = [...state.items];
+        decreasedItems[decreaseItemIndex] = updatedDecreasedItem;
       }
-      else{
-        toast.success(message);
-      }
 
-      updatedItems = state.items.concat(action.item);
-    }
+      return {
+        items: decreasedItems,
+        totalAmount: updatedAmount,
+      };
 
-    updatedTotalAmount =
-      state.totalAmount + action.item.price * action.item.amount;
-
-    return {
-      items: updatedItems,
-      totalAmount: updatedTotalAmount,
-    };
+    default:
+      return state;
   }
-
-  if (action.type === "REMOVE_ITEM") {
-    const existItemIndex = state.items.findIndex(
-      (item) => item.id === action.id
-    );
-    const existItem = state.items[existItemIndex];
-    const updatedTotalAmount = state.totalAmount - existItem.price * existItem.amount;
-
-    const updatedItems = state.items.filter((item) => item.id !== action.id);
-
-    return {
-      items: updatedItems,
-      totalAmount: updatedTotalAmount,
-    };
-  }
-
-  if (action.type === "REMOVE_ONE_ITEM") {
-    const existItemIndex = state.items.findIndex(
-      (item) => item.id === action.id
-    );
-    const existItem = state.items[existItemIndex];
-    const updatedTotalAmount = state.totalAmount - existItem.price;
-
-    let updatedItems;
-    if (existItem.amount === 1) {
-      updatedItems = state.items.filter((item) => item.id !== action.id);
-    } else {
-      const updatedItem = { ...existItem, amount: existItem.amount - 1 };
-      updatedItems = [...state.items];
-      updatedItems[existItemIndex] = updatedItem;
-    }
-
-    return {
-      items: updatedItems,
-      totalAmount: updatedTotalAmount,
-    };
-  }
-
-  return state; 
 };
 
 export const itemContext = createContext({
@@ -115,6 +107,7 @@ export const ItemContextProvider = (props) => {
 
   const addItemHandler = (item) => {
     dispatchItem({ type: "ADD_ITEM", item });
+    toast.success(message); 
   };
 
   const removeItemHandler = (id) => {

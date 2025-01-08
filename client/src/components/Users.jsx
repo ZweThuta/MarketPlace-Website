@@ -193,7 +193,7 @@ const Users = () => {
                 className="border-b border-neroBlack500 hover:bg-gray-100"
               >
                 <td className="py-3 px-6 flex items-center gap-4">
-                  <Link>
+                  <Link to={`/userDetail/${user.id}`}>
                     {user && user.profile ? (
                       <>
                         <img

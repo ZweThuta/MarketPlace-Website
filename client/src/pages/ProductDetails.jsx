@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Spinner } from "@material-tailwind/react";
 
 import {
@@ -327,6 +327,7 @@ const ProductDetails = () => {
          Seller Information
         </h1>
         <div className="flex items-center space-x-4 mb-6">
+          <Link to={`/userDetail/${product.userId}`}>
           {product.profile ? (
             <img
               src={`${import.meta.env.VITE_IMAGES_URL}/${product.profile}`}
@@ -336,7 +337,7 @@ const ProductDetails = () => {
           ) : (
             <UserCircleIcon className="w-20 h-20 text-gray-400 border-4 border-gray-200 rounded-full" />
           )}
-
+         </Link>
           <div>
             <h2 className="text-xl font-bold text-gray-800">{product.name}</h2>
             <p className="text-sm text-gray-500">{product.email}</p>

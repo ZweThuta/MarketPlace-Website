@@ -23,6 +23,7 @@ import BillingReceipt from "./pages/BillingReceipt";
 import About from "./pages/About";
 import Admin from "./pages/Admin";
 import AdminRoute from "./util/AdminRoute";
+import UserDetails from "./pages/UserDetails";
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -75,6 +76,10 @@ const App = () => {
         {
           path: "/userProductDetail/:productId",
           element: <UserProductsDetails />,
+        },
+        {
+          path:"/userDetail/:userId",
+          element:<UserDetails/>
         },
         {
           path: "/products",

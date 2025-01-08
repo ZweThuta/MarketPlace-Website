@@ -1,12 +1,13 @@
 import axios from "axios";
 import {useLoaderData } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ViewProducts from "../components/ViewProducts";
 import ReactPaginate from "react-paginate";
 import CategoriesFilter from "../components/CategoriesFilter";
 const Category = () => {
     const products = useLoaderData();
     const [currentPage, setCurrentPage] = useState(0);
+    const [currentUserId, setCurrentUserId] = useState(null);
     const productsPerPage = 12;
   
     const pageCount = Math.ceil(products.length / productsPerPage);
@@ -19,6 +20,29 @@ const Category = () => {
     const handlePageClick = (data) => {
       setCurrentPage(data.selected);
     };
+
+    useEffect(() => {
+      fetchUser();
+    }, []);
+  
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        if (!token) throw new Error("No authentication token found.");
+  
+        const userResponse = await axios.get(import.meta.env.VITE_LOGIN_URL, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        if (userResponse.data?.data?.id) {
+          setCurrentUserId(userResponse.data.data.id);
+        } else {
+          throw new Error("Failed to fetch user ID.");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
   
     return (
       <>
@@ -27,7 +51,7 @@ const Category = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
             {displayedProducts.length > 0 ? (
               displayedProducts.map((product) => (
-                <ViewProducts product={product} key={product.id} />
+                <ViewProducts product={product} currentUserId={currentUserId} key={product.id} />
               ))
             ) : (
               <p className="text-center text-gray-600 col-span-full">

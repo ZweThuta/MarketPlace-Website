@@ -1,17 +1,16 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import fashionIcon from "./categories/Fashion & Apparel.jpg";
-import babyIcon from "./categories/Baby & Kids.jpg";
-import beautyIcon from "./categories/Beauty & Personal Care.jpg";
-import electroIcon from "./categories/Electronics.jpg";
-import homeIcon from "./categories/Home & Living.jpg";
-import sportIcon from "./categories/Sports & Outdoor.jpg";
-import healthIcon from "./categories/Health & Wellness.jpg";
-import travelIcon from "./categories/Travel & Luggage.jpg";
-import bookIcon from "./categories/Books.jpg";
-import GameIcon from "./categories/GamesAndFigures.jpg";
-
+import fashionIcon from "./categoryIcons/Fashion_Icon.png";
+import babyIcon from "./categoryIcons/Baby_Icon.png";
+import beautyIcon from "./categoryIcons/Beauty_Icon.png";
+import electroIcon from "./categoryIcons/Electro_Icon.png";
+import homeIcon from "./categoryIcons/Home_Icon.png";
+import sportIcon from "./categoryIcons/Sport_Icon.png";
+import healthIcon from "./categoryIcons/Health_Icon.png";
+import travelIcon from "./categoryIcons/Travel_Icon.png";
+import bookIcon from "./categoryIcons/Book_Icon.png";
+import GameIcon from "./categoryIcons/Game_Icon.png";
 
 import { motion } from "framer-motion";
 
@@ -133,7 +132,7 @@ const CategoryCard = () => {
                 to={`/category/${category.category}`}
                 className="flex flex-col items-center p-5 bg-gray-100 rounded-2xl shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-300 border border-gray-200"
               >
-                <div className="mb-4 flex justify-center items-center bg-gradient-to-r from-neroBlack950 to-customWhite rounded-2xl p-2">
+                <div className="mb-4 flex justify-center items-center bg-gray-100 hover:border-none transition-all duration-100 border-2 rounded-2xl p-2">
                   {categoryIcons[category.category] || (
                     <div className="w-20 h-20 bg-gray-200 rounded-xl flex items-center justify-center">
                       <span className="text-2xl font-semibold text-gray-500">
@@ -142,7 +141,7 @@ const CategoryCard = () => {
                     </div>
                   )}
                 </div>
-                <h2 className="text-lg font-semibold text-neroBlack950 text-center tracking-wider">
+                <h2 className="text-sm font-semibold uppercase text-neroBlack950 text-center tracking-wider">
                   {category.category}
                 </h2>
               </Link>
