@@ -9,6 +9,7 @@ import {
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { itemContext } from "../util/itemContext";
+import trendHavenLogo from "../logo/trendHaven_Logo1.png";
 
 const NavBar = () => {
   const [user, setUser] = useState(null);
@@ -125,10 +126,11 @@ const NavBar = () => {
       <div className="absolute left-1/2 transform -translate-x-1/2 bg-neroBlack950 py-3 mt-2 px-5 rounded-2xl">
         <Link to={"/products"}>
           <div>
-            <h1 className="text-xl text-customWhite italic font-semibold uppercase tracking-wider hover:text-shadow-xl">
+          {/* <h1 className="text-xl text-customWhite italic font-semibold uppercase tracking-wider hover:text-shadow-xl">
               TrendHaven
-            </h1>
-            <p className="text-gray-300 text-sm text-center font-extralight tracking-wide">
+            </h1> */}
+            <img src={trendHavenLogo} alt="Trend Haven Logo" className="w-36 h-auto mb-1" />
+            <p className="text-gray-300 text-xs text-center font-extralight tracking-wide">
               Online Marketplace
             </p>
           </div>

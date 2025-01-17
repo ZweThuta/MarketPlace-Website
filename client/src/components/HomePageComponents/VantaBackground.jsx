@@ -86,7 +86,7 @@ const VantaBackground = ({ children }) => {
             <h1 className="text-6xl text-nowrap font-extrabold tracking-wider text-neroBlack950 mb-10 uppercase">
               Welcome to TrendHaven
             </h1>
-            <p className="text-neroBlack500 mt-4 mb-10 text-md max-w-6xl text-justify mx-auto">
+            <p className="text-neroBlack900 mt-4 mb-10 text-md max-w-6xl text-justify mx-auto">
               Start a small business or find unique, handcrafted items from
               talented local sellers. Discover exclusive products that stand out
               from the ordinary, made with passion and precision. At TrendHaven,

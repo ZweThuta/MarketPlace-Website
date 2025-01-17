@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { ArrowUturnLeftIcon } from "@heroicons/react/24/solid";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import googlePay from "../logo/google-pay.png";
 
 const CheckOut = () => {
   const navigation = useNavigate();
@@ -325,6 +326,111 @@ const CheckOut = () => {
             </div>
           </div>
           <hr />
+
+          <div>
+            <div>
+              <h1 className="text-1xl capitalize text-gray-400 font-semibold mb-6">
+                Payment Method
+              </h1>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* Credit/Debit Card */}
+              <label
+                className="flex items-center p-4 border rounded-lg shadow-sm hover:shadow-md cursor-pointer transition duration-300 bg-gray-50"
+                htmlFor="creditCard"
+              >
+                <input
+                  type="radio"
+                  id="creditCard"
+                  name="paymentMethod"
+                  value="creditCard"
+                  className="mr-4 accent-blue-500"
+                />
+                <div className="flex items-center">
+                  <img
+                   src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png"
+                    alt="Visa"
+                   className="w-10 h-4 mr-2"
+                  />
+                  <img
+                     src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png"
+                    alt="Mastercard"
+                    className="w-10 h-6"
+                  />
+                </div>
+                <span className="ml-4 font-medium text-gray-700">
+                  Credit/Debit Card
+                </span>
+              </label>
+
+              {/* PayPal */}
+              <label
+                className="flex items-center p-4 border rounded-lg shadow-sm hover:shadow-md cursor-pointer transition duration-300 bg-gray-50"
+                htmlFor="paypal"
+              >
+                <input
+                  type="radio"
+                  id="paypal"
+                  name="paymentMethod"
+                  value="paypal"
+                  className="mr-4 accent-blue-500"
+                />
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/256px-PayPal.svg.png"
+                  alt="PayPal"
+                  className="w-20 h-6"
+                />
+                <span className="ml-4 font-medium text-gray-700">PayPal</span>
+              </label>
+
+              {/* Google Pay */}
+              <label
+                className="flex items-center p-4 border rounded-lg shadow-sm hover:shadow-md cursor-pointer transition duration-300 bg-gray-50"
+                htmlFor="googlePay"
+              >
+                <input
+                  type="radio"
+                  id="googlePay"
+                  name="paymentMethod"
+                  value="googlePay"
+                  className="mr-4 accent-blue-500"
+                />
+                <img
+               src={googlePay}
+                  alt="Google Pay"
+                  className="w-10 h-10"
+                />
+                <span className="ml-4 font-medium text-gray-700">
+                  Google Pay
+                </span>
+              </label>
+
+              {/* Cash on Delivery */}
+              <label
+                className="flex items-center p-4 border rounded-lg shadow-sm hover:shadow-md cursor-pointer transition duration-300 bg-gray-50"
+                htmlFor="cashOnDelivery"
+              >
+                <input
+                  type="radio"
+                  id="cashOnDelivery"
+                  name="paymentMethod"
+                  value="cashOnDelivery"
+                  className="mr-4 accent-blue-500"
+                />
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/2642/2642729.png"
+                  alt="Cash"
+                  className="w-8 h-8"
+                />
+                <span className="ml-4 font-medium text-gray-700">
+                  Cash on Delivery
+                </span>
+              </label>
+            </div>
+          </div>
+          <hr className="mb-6" />
+
+
           <div>
             <h1 className="text-1xl capitalize text-gray-400 font-semibold mb-6">
               Additional Information

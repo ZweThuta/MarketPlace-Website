@@ -17,7 +17,7 @@ const Authform = ({ isLoginPage }) => {
     password: "",
     con_password: "",
     terms: "",
-    role:"user",
+    role: "user",
   });
   const [errors, setErrors] = useState({});
   const isSubmitting = navigation.state === "submitting";
@@ -243,6 +243,16 @@ const Authform = ({ isLoginPage }) => {
                       </p>
                     )}
                   </div>
+                  {isLoginPage && (
+                    <p className="text-gray-800 text-sm mt-4 text-center">
+                      <Link
+                        to={"/resetPassword"}
+                        className="text-blue-600 font-semibold hover:underline"
+                      >
+                        Forgot Password?
+                      </Link>
+                    </p>
+                  )}
 
                   {!isLoginPage && (
                     <div>

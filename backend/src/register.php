@@ -51,7 +51,7 @@ class UserController
     public function getAllUsers()
     {
         try {
-            $sql = "SELECT id, name, email, date, phno, address, city, profile, note, banner, role FROM users";  
+            $sql = "SELECT id, name, email, date, phno, address, city, profile, note, banner, role FROM users";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -72,7 +72,8 @@ class UserController
         return $stmt->rowCount() > 0;
     }
 
-    public function deleteUsers($userId){
+    public function deleteUsers($userId)
+    {
         try {
             $sql = "SELECT * FROM users WHERE id = :userId";
             $stmt = $this->conn->prepare($sql);
@@ -80,7 +81,7 @@ class UserController
             $stmt->execute();
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if(!$user){
+            if (!$user) {
                 return $this->response(0, 'User not found!');
             }
             $sql = "DELETE FROM users WHERE id = :userId";
@@ -119,11 +120,9 @@ switch ($method) {
 
     case 'DELETE':
         $userId = $_GET['userId'] ??  null;
-        if($userId){
+        if ($userId) {
             echo $userController->deleteUsers($userId);
-        }
-        else{
+        } else {
             echo json_encode(['status' => 0, 'message' => 'UserId is required.']);
-
         }
 }

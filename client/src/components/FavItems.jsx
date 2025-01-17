@@ -31,7 +31,7 @@ import {
     
   
     const shortProductName =
-      productName.length > 30 ? productName.substr(0, 30) + "..." : productName;
+      productName.length > 25 ? productName.substr(0, 25) + "..." : productName;
     const shortDescription =
       description.length > 80 ? description.substr(0, 80) + "..." : description;
   

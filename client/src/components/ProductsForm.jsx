@@ -384,7 +384,7 @@ const ProductsForm = ({ isAddProduct }) => {
 
             <div>
               <label className="text-gray-800 text-sm mb-2 block">
-                Quality
+                Product Brand
               </label>
               <input
                 name="quality"
@@ -393,7 +393,7 @@ const ProductsForm = ({ isAddProduct }) => {
                 className={`text-gray-800 bg-white border ${
                   errors.productName ? "border-red-500" : "border-gray-300"
                 } w-full text-sm px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                placeholder="Brand new or second"
+                placeholder="Enter product brand"
                 value={quality}
               />
               {errors.quality && (
@@ -639,7 +639,7 @@ const ProductsForm = ({ isAddProduct }) => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full md:w-auto py-3 px-10 tracking-wider text-sm rounded-md text-white bg-richChocolate800 hover:bg-richChocolate900 focus:outline-none"
+                className="w-full md:w-auto py-3 px-10 tracking-wider text-sm rounded-md text-white bg-neroBlack950 hover:bg-neroBlack500 focus:outline-none"
               >
                 {isSubmitting
                   ? "Submiting"

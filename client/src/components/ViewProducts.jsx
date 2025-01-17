@@ -2,6 +2,7 @@ import {
   UserCircleIcon,
   ShoppingCartIcon,
   HeartIcon,
+  TagIcon
 } from "@heroicons/react/24/solid";
 
 import { useContext, useState } from "react";
@@ -79,8 +80,8 @@ const ViewProducts = ({ product, currentUserId }) => {
         </Link>
         <Link
           to={`/category/${category}`}
-          className="absolute top-3 right-3 bg-black bg-opacity-50 text-white text-xs px-3 py-1 rounded-full capitalize"
-        >
+          className="absolute top-3 right-3 bg-black bg-opacity-50 text-white text-xs px-3 py-1 rounded-full capitalize flex gap-1"
+        > <TagIcon className="w-4 h-4 opacity-80"/>
           {category}
         </Link>
 

@@ -24,6 +24,7 @@ import About from "./pages/About";
 import Admin from "./pages/Admin";
 import AdminRoute from "./util/AdminRoute";
 import UserDetails from "./pages/UserDetails";
+import ResetPassword from "./components/ResetPassword";
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -59,6 +60,10 @@ const App = () => {
           path: "/logout",
           element: <Logout />,
         },
+        {
+          path: "/resetPassword",
+          element: <ResetPassword />,
+        },
 
         {
           path: "/addProduct",
@@ -78,8 +83,8 @@ const App = () => {
           element: <UserProductsDetails />,
         },
         {
-          path:"/userDetail/:userId",
-          element:<UserDetails/>
+          path: "/userDetail/:userId",
+          element: <UserDetails />,
         },
         {
           path: "/products",
