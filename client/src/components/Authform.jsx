@@ -4,6 +4,7 @@ import { useNavigate, Link, useNavigation } from "react-router-dom";
 import { useAuth } from "../util/AuthContext";
 import foto from "../logo/registerCat.gif";
 import photo from "../logo/loginCat.gif";
+import logo from "../logo/trendHaven_Logo2.png";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -113,9 +114,11 @@ const Authform = ({ isLoginPage }) => {
               {!isLoginPage ? (
                 <>
                   <div className="flex flex-col justify-between gap-10">
-                    <h1 className="text-xs text-gray-400 font-semibold uppercase p-5">
-                      TrendHaven
-                    </h1>
+                    <img
+                      src={logo}
+                      alt="TrendHavenLogo"
+                      className="w-32 h-32 object-contain mb-4 ml-6"
+                    />
                     <img
                       src={photo}
                       alt="shopping"
@@ -135,9 +138,11 @@ const Authform = ({ isLoginPage }) => {
               ) : (
                 <>
                   <div>
-                    <h1 className="text-xs text-gray-400 font-semibold uppercase p-5">
-                      TrendHaven
-                    </h1>
+                    <img
+                      src={logo}
+                      alt="TrendHavenLogo"
+                      className="w-24 h-24 object-contain mb-4 ml-6"
+                    />
                     <img
                       src={foto}
                       alt="shopping"
@@ -244,12 +249,13 @@ const Authform = ({ isLoginPage }) => {
                     )}
                   </div>
                   {isLoginPage && (
-                    <p className="text-gray-800 text-sm mt-4 text-center">
+                    <p className="text-gray-800 text-xs mt-6 text-left tracking-wide">
+                      Forgot your password? Don't worry!
                       <Link
                         to={"/resetPassword"}
-                        className="text-blue-600 font-semibold hover:underline"
+                        className="text-blue-600 font-semibold hover:underline ml-1"
                       >
-                        Forgot Password?
+                        Reset password here
                       </Link>
                     </p>
                   )}
@@ -299,7 +305,7 @@ const Authform = ({ isLoginPage }) => {
                   )}
                 </div>
 
-                <div className="!mt-12">
+                <div className="!mt-6">
                   <button
                     type="submit"
                     disabled={isSubmitting}
