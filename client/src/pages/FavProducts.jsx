@@ -62,7 +62,7 @@ const FavProducts = () => {
   };
   return (
     <>
-      <div className="p-10 h-screen">
+      <div className="p-10 h-auto">
         <div className="flex flex-col items-center mb-10">
           <h1 className="text-4xl font-extrabold tracking-wide text-gray-900 mb-3">
             My Wishlist
@@ -74,11 +74,11 @@ const FavProducts = () => {
                   favProducts.length > 1 ? "s" : ""
                 } in your wishlist.`}
           </span>
-          {
-            !favProducts.length > 0 &&   <div className="flex justify-center  items-center mt-6">
-            <img src={pic} alt="pic" className="w-64 h-64" />
-          </div>
-          }
+          {!favProducts.length > 0 && (
+            <div className="flex justify-center  items-center mt-6">
+              <img src={pic} alt="pic" className="w-64 h-64" />
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
@@ -91,9 +91,7 @@ const FavProducts = () => {
               />
             ))
           ) : (
-          <>
-          {/* Empty */}
-          </>
+            <>{/* Empty */}</>
           )}
         </div>
         {favProducts.length > productsPerPage && (

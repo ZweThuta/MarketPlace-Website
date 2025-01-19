@@ -8,6 +8,7 @@ import {
   ArrowRightCircleIcon,
   ArrowLeftCircleIcon,
 } from "@heroicons/react/24/outline";
+import { TagIcon } from "@heroicons/react/24/solid";
 import RatingStars from "../RatingStars";
 import { motion } from "framer-motion";
 
@@ -57,17 +58,16 @@ const NewArrivals = () => {
       const response = await axios.get(import.meta.env.VITE_GET_PRODUCTS_URL);
       if (response.data.status === 1) {
         const limitedProducts = response.data.data
-        .filter((product) => {
+          .filter((product) => {
             const productDate = new Date(product.date);
             const currentDate = new Date();
             const timeDifference = currentDate - productDate;
             const daysDifference = timeDifference / (1000 * 3600 * 24);
-            return daysDifference <= 7 && product.quantity >= 2; 
+            return daysDifference <= 7 && product.quantity >= 2;
           })
           .sort(() => 0.5 - Math.random())
           .slice(0, 10);
         setProducts(limitedProducts);
-
       } else {
         console.error(response.data.message);
       }
@@ -158,8 +158,9 @@ const NewArrivals = () => {
                   </div>
                   <Link
                     to={`/category/${product.category}`}
-                    className="absolute top-3 left-3 bg-black bg-opacity-70 text-white text-sm px-4 py-1 rounded-full capitalize"
+                    className="absolute top-3 left-3 bg-black bg-opacity-50 text-white text-xs px-3 py-1 rounded-full capitalize flex gap-1"
                   >
+                    <TagIcon className="w-4 h-4 opacity-80" />
                     {product.category}
                   </Link>
                 </div>

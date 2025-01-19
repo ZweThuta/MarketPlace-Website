@@ -8,6 +8,7 @@ import {
   ArrowRightCircleIcon,
   ArrowLeftCircleIcon,
 } from "@heroicons/react/24/outline";
+import { TagIcon } from "@heroicons/react/24/solid";
 import RatingStars from "../RatingStars";
 import { motion } from "framer-motion";
 
@@ -109,66 +110,69 @@ const LimitedProduct = () => {
 
   return (
     <>
-    <div className="container mx-auto px-8 py-10">
-      <h1 className="mb-10 uppercase font-semibold text-2xl tracking-wider text-gray-800 ml-10">
-        Limited Products
-      </h1>
-      <Slider {...settings}>
-        {products.length > 0 ? (
-          products.map((product) => (
-            <motion.div
-              key={product.id}
-              className="px-4 mb-5"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeInUp}
-            >
-              <div className="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-xl transition-transform transform hover:-translate-y-2 relative">
-                <Link to={`/productDetails/${product.id}`}>
-                  <img
-                    src={`${import.meta.env.VITE_IMAGES_URL}/${product.image}`}
-                    alt={product.productName}
-                    className="w-full h-64 object-cover"
-                  />
-                </Link>
-                <div className="p-5 text-center">
-                  <h3 className="text-xl font-semibold text-neroBlack950">
-                    {product.productName.length > 15
-                      ? product.productName.substr(0, 15) + "..."
-                      : product.productName}
-                  </h3>
-                  <div className="flex space-x-3 items-center justify-center">
-                    <p className="text-red-400 text-xl font-semibold mt-2">
-                      ${product.price}
-                    </p>
-                    <div className="mt-2">
-                      <RatingStars
-                        productId={product.id}
-                        isHomepage={true}
-                        width={10}
-                      />
-                    </div>
-                  </div>
-                  <Link
-                    to={`/category/${product.category}`}
-                    className="absolute top-3 left-3 bg-black bg-opacity-70 text-white text-sm px-4 py-1 rounded-full capitalize"
-                  >
-                    {product.category}
+      <div className="container mx-auto px-8 py-10">
+        <h1 className="mb-10 uppercase font-semibold text-2xl tracking-wider text-gray-800 ml-10">
+          Limited Products
+        </h1>
+        <Slider {...settings}>
+          {products.length > 0 ? (
+            products.map((product) => (
+              <motion.div
+                key={product.id}
+                className="px-4 mb-5"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeInUp}
+              >
+                <div className="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-xl transition-transform transform hover:-translate-y-2 relative">
+                  <Link to={`/productDetails/${product.id}`}>
+                    <img
+                      src={`${import.meta.env.VITE_IMAGES_URL}/${
+                        product.image
+                      }`}
+                      alt={product.productName}
+                      className="w-full h-64 object-cover"
+                    />
                   </Link>
+                  <div className="p-5 text-center">
+                    <h3 className="text-xl font-semibold text-neroBlack950">
+                      {product.productName.length > 15
+                        ? product.productName.substr(0, 15) + "..."
+                        : product.productName}
+                    </h3>
+                    <div className="flex space-x-3 items-center justify-center">
+                      <p className="text-red-400 text-xl font-semibold mt-2">
+                        ${product.price}
+                      </p>
+                      <div className="mt-2">
+                        <RatingStars
+                          productId={product.id}
+                          isHomepage={true}
+                          width={10}
+                        />
+                      </div>
+                    </div>
+                    <Link
+                      to={`/category/${product.category}`}
+                      className="absolute top-3 left-3 bg-black bg-opacity-50 text-white text-xs px-3 py-1 rounded-full capitalize flex gap-1"
+                    >
+                      <TagIcon className="w-4 h-4 opacity-80" />
+                      {product.category}
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))
-        ) : (
-          <p className="text-center text-gray-600 col-span-full">
-            No product available!
-          </p>
-        )}
-      </Slider>
-    </div>
+              </motion.div>
+            ))
+          ) : (
+            <p className="text-center text-gray-600 col-span-full">
+              No product available!
+            </p>
+          )}
+        </Slider>
+      </div>
       {/* <hr className="border-t-2 mx-10 border-neutral-200" /> */}
-      </>
+    </>
   );
 };
 
