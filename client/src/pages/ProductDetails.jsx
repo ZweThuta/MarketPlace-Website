@@ -323,21 +323,21 @@ const ProductDetails = () => {
       </div>
       <hr className="mt-5 border-t-3 border-grey" />
       <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-7xl mx-auto mt-10">
-      <h1 className="mb-10 uppercase   font-semibold text-lg tracking-wide text-gray-400">
-         Seller Information
+        <h1 className="mb-10 uppercase   font-semibold text-lg tracking-wide text-gray-400">
+          Seller Information
         </h1>
         <div className="flex items-center space-x-4 mb-6">
           <Link to={`/userDetail/${product.userId}`}>
-          {product.profile ? (
-            <img
-              src={`${import.meta.env.VITE_IMAGES_URL}/${product.profile}`}
-              alt={product.name}
-              className="w-20 h-20 rounded-full border-2 border-neroBlack950 shadow-md object-cover"
-            />
-          ) : (
-            <UserCircleIcon className="w-20 h-20 text-gray-400 border-4 border-gray-200 rounded-full" />
-          )}
-         </Link>
+            {product.profile ? (
+              <img
+                src={`${import.meta.env.VITE_IMAGES_URL}/${product.profile}`}
+                alt={product.name}
+                className="w-20 h-20 rounded-full border-2 border-neroBlack950 shadow-md object-cover"
+              />
+            ) : (
+              <UserCircleIcon className="w-20 h-20 text-gray-400 border-4 border-gray-200 rounded-full" />
+            )}
+          </Link>
           <div>
             <h2 className="text-xl font-bold text-gray-800">{product.name}</h2>
             <p className="text-sm text-gray-500">{product.email}</p>
@@ -366,7 +366,6 @@ const ProductDetails = () => {
             </div>
           )}
         </div>
-
       </div>
       <hr className="mt-5 border-t-3 border-grey" />
 

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext();
 
@@ -10,14 +10,15 @@ export const AuthProvider = ({ children }) => {
     setAuthToken(token);
     setUserRole(role);
     localStorage.setItem("authToken", token);
-    localStorage.setItem("userRole", role);  
+    localStorage.setItem("userRole", role);
   };
 
   const logout = () => {
     setAuthToken(null);
     setUserRole(null);
     localStorage.removeItem("authToken");
-    localStorage.removeItem("userRole");   
+    localStorage.removeItem("userRole");
+    // localStorage.removeItem("chatbotOpened");
   };
 
   return (
