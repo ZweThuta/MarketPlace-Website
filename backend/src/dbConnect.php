@@ -24,10 +24,8 @@ class DbConnect
             $conn = new PDO("mysql:host={$this->server};port={$this->port};dbname={$this->dbname}", $this->user, $this->password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, self::ERR_MODE);
             return $conn;
-            
         } catch (PDOException $e) {
             throw new Exception("Database connection error: " . $e->getMessage());
         }
     }
 }
-?>

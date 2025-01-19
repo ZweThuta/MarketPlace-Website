@@ -117,7 +117,7 @@ const Authform = ({ isLoginPage }) => {
                     <img
                       src={logo}
                       alt="TrendHavenLogo"
-                      className="w-32 h-32 object-contain mb-4 ml-6"
+                      className="w-24 h-24 object-contain mb-4 ml-6"
                     />
                     <img
                       src={photo}

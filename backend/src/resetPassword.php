@@ -60,7 +60,7 @@ class UserController
             $stmt->execute();
 
             if ($stmt->rowCount() == 0) {
-                return $this->response(0, 'Email not found!');
+                return $this->response(0, 'Email not found. Please try again!');
             }
 
             $stmt->fetch(PDO::FETCH_ASSOC);
@@ -72,7 +72,6 @@ class UserController
             $updateStmt->bindParam(":email", $email);
             $updateStmt->execute();
 
-            // Send email
             $subject = "Password Reset Request";
             $message = "<p>Dear user,</p>
                         <p>We received a request to reset your password. Please use the following code to reset your password:</p>

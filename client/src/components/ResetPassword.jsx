@@ -101,7 +101,7 @@ const ResetPassword = () => {
 
         {message && (
           <p
-            className={`mt-3 text-center text-md font-semibold ${
+            className={`mt-3 mb-4 text-center text-md font-semibold ${
               message.includes("Error") ? "text-red-500" : "text-green-500"
             }`}
           >
@@ -133,6 +133,9 @@ const ResetPassword = () => {
             <button
               type="submit"
               disabled={isSubmitting}
+              onClick={() => {
+                toast.warning("Please wait a momnet!");
+              }}
               className="w-full bg-neroBlack950 text-white py-2 rounded hover:bg-neroBlack500 transition"
             >
               {isSubmitting ? "Sending code to email" : "Send Reset Code"}
