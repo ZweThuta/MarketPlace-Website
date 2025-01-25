@@ -35,7 +35,7 @@ Ensure the following tools are installed on your system:
 
    ```bash
    git clone https://github.com/ZweThuta/MarketPlace-Website.git
-   cd frontend
+   cd client
    ```
 
 2. Install dependencies:
