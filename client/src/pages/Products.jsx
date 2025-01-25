@@ -15,8 +15,6 @@ const Products = () => {
     quality: "all",
   });
 
-  const productsPerPage = 12;
-
   const uniqueBrands = Array.from(
     new Set(products.map((product) => product.quality))
   );
@@ -34,6 +32,8 @@ const Products = () => {
 
     return isWithinPriceRange && isCategoryMatch && isBrandMatch;
   });
+
+  const productsPerPage = 12;
 
   const pageCount = Math.ceil(filteredProducts.length / productsPerPage);
 

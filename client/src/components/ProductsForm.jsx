@@ -136,7 +136,7 @@ const ProductsForm = ({ isAddProduct }) => {
       newErrors.price = "Price is required";
     } else if (price <= 0) {
       newErrors.price = "Price must be a positive number";
-    } 
+    }
     if (!category) {
       newErrors.category = "Category is required";
     }
@@ -144,7 +144,7 @@ const ProductsForm = ({ isAddProduct }) => {
       newErrors.quantity = "Stock quantity is required";
     } else if (quantity <= 0) {
       newErrors.quantity = "Stock quantity must be at least one.";
-    }else if (quantity > 20) {
+    } else if (quantity > 20) {
       newErrors.quantity = "Stock limit a maximum of 20 items";
     }
     if (!imagePreview) newErrors.image = "Cover image is required";
@@ -446,9 +446,6 @@ const ProductsForm = ({ isAddProduct }) => {
                     <option>Technology & Gadgets</option>
                     <option>Books & Media</option>
                     <option>Games & Figures</option>
-
-
-
                   </>
                 ) : (
                   <>

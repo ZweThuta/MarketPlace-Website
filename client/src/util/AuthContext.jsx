@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }) => {
     setUserRole(null);
     localStorage.removeItem("authToken");
     localStorage.removeItem("userRole");
-    // localStorage.removeItem("chatbotOpened");
   };
 
   return (

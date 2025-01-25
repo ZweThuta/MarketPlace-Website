@@ -13,15 +13,21 @@ const CheckOut = () => {
   const [deliveryMethod, setDeliveryMethod] = useState("standard");
   const [currentUserId, setCurrentUserId] = useState(null);
   const [errors, setErrors] = useState({});
+  const [orders, setOrders] = useState([]);
 
   const deliveryFees = {
     standard: 5.0,
     express: 16.0,
   };
 
+  const discount = totalAmount * 0.1;
   const tax = totalAmount * 0.05;
   const deliveryFee = deliveryFees[deliveryMethod];
-  const finalTotalPrice = totalAmount + tax + deliveryFee;
+  const finalTotalPrice =
+    orders.length === 0
+      ? totalAmount + tax + deliveryFee - discount
+      : totalAmount + tax + deliveryFee;
+
   const isSubmitting = navigation.state === "submitting";
 
   useEffect(() => {
@@ -32,6 +38,7 @@ const CheckOut = () => {
     if (currentUserId) {
       setFormData((prev) => ({ ...prev, userId: currentUserId }));
     }
+    fetchOrder();
   }, [currentUserId]);
 
   useEffect(() => {
@@ -55,6 +62,21 @@ const CheckOut = () => {
         setCurrentUserId(userResponse.data.data.id);
       } else {
         throw new Error("Failed to fetch user ID.");
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  const fetchOrder = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_DISCOUNT_URL}?userId=${currentUserId}`
+      );
+      if (response.data?.data?.length) {
+        setOrders(response.data.data);
+      } else {
+        console.log("No orders found");
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -140,6 +162,14 @@ const CheckOut = () => {
   return (
     <section className="max-w-full mx-auto p-8 grid grid-cols-1 lg:grid-cols-3 gap-10">
       <div className="lg:col-span-2 bg-white p-8 rounded-lg shadow-lg">
+        {orders.length === 0 && (
+          <div className="mb-10  mt-4">
+            <span className="text-green-500 text-xl  font-semibold">
+              🎉 Dear customer, enjoy an exclusive 10% discount on your first
+              purchase!
+            </span>
+          </div>
+        )}
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-semibold mb-6 uppercase tracking-wider text-gray-800">
             Billing Details
@@ -152,6 +182,7 @@ const CheckOut = () => {
             <span className="capitalize tracking-wide">Back to cart</span>
           </Link>
         </div>
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <h1 className="text-1xl capitalize text-gray-400 font-semibold">
             Contact Information
@@ -348,12 +379,12 @@ const CheckOut = () => {
                 />
                 <div className="flex items-center">
                   <img
-                   src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png"
+                    src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png"
                     alt="Visa"
-                   className="w-10 h-4 mr-2"
+                    className="w-10 h-4 mr-2"
                   />
                   <img
-                     src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png"
+                    src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png"
                     alt="Mastercard"
                     className="w-10 h-6"
                   />
@@ -395,11 +426,7 @@ const CheckOut = () => {
                   value="googlePay"
                   className="mr-4 accent-blue-500"
                 />
-                <img
-               src={googlePay}
-                  alt="Google Pay"
-                  className="w-10 h-10"
-                />
+                <img src={googlePay} alt="Google Pay" className="w-10 h-10" />
                 <span className="ml-4 font-medium text-gray-700">
                   Google Pay
                 </span>
@@ -429,7 +456,6 @@ const CheckOut = () => {
             </div>
           </div>
           <hr className="mb-6" />
-
 
           <div>
             <h1 className="text-1xl capitalize text-gray-400 font-semibold mb-6">
@@ -506,6 +532,14 @@ const CheckOut = () => {
               <span className="text-medium tracking-wide">Delivery Fee:</span>
               <span>${deliveryFee.toFixed(2)}</span>
             </div>
+            {orders.length === 0 && (
+              <div className="flex justify-between mb-2 text-green-500 font-semibold">
+                <span className="text-medium tracking-wide  ">
+                  Discount (10%):
+                </span>
+                <span>${discount.toFixed(2)}</span>
+              </div>
+            )}
             <hr className="my-4" />
             <div className="flex justify-between text-2xl font-bold">
               <span>Total:</span>

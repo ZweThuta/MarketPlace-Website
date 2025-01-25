@@ -4,6 +4,7 @@ import CategoryCard from "../components/HomePageComponents/CategoryCard";
 import LimitedProduct from "../components/HomePageComponents/LimitedProduct";
 import NewArrivals from "../components/HomePageComponents/NewArrivals";
 import HomeBanner from "../components/HomePageComponents/HomeBanner";
+import Discount from "../components/HomePageComponents/Discount";
 
 const Index = () => {
   return (
@@ -11,13 +12,12 @@ const Index = () => {
       <div className="absolute top-4 left-0 w-full h-screen">
         <VantaBackground />
       </div>
-      <div className="mt-[44%]">
-        {""}
-      </div>
-        <CategoryCard />
-      <LimitedProduct/>
-      <NewArrivals/>
-      <HomeBanner/>
+      <div className="mt-[44%]">{""}</div>
+      <CategoryCard />
+      {/* <Discount /> */}
+      <LimitedProduct />
+      <NewArrivals />
+      <HomeBanner />
     </div>
   );
 };

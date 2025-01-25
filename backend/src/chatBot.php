@@ -51,7 +51,7 @@ $product_keywords = [
         "smart lighting",
         "fitness trackers"
     ],
-    "fashion" => [
+    "apparel" => [
         "clothing",
         "apparel",
         "fashion",
@@ -387,8 +387,8 @@ $faq = [
         "response" => "To cancel an order, go to your Orders section, select the order you want to cancel, and click Cancel Order. Cancellations can only be made before the order is shipped."
     ],
     "discounts and offers" => [
-        "keywords" => ["discounts", "offers", "promotions", "sales", "promo codes", "coupons", "deals"],
-        "response" => "Check our Promotions page for ongoing discounts and offers. You can also use promo codes at checkout for additional savings."
+        "keywords" => ["discounts", "offers", "promotions", "sales", "promo codes", "coupons", "deals", "discount"],
+        "response" => "TrendHaven offers a 10% discount on your first purchase! Enjoy shopping with us and take advantage of this special offer."
     ],
     "gift cards" => [
         "keywords" => ["gift cards", "purchase gift card", "how to buy gift card", "gift card use", "gift card balance"],
@@ -409,6 +409,14 @@ $faq = [
     "technical issues" => [
         "keywords" => ["technical issues", "website error", "cannot log in", "site problem", "technical support"],
         "response" => "If you face technical issues, please contact our technical support team via the Contact Us page or live chat. We're here to help resolve the issue."
+    ],
+    "goodjob" => [
+        "keywords" => ["good job", "great work", "well done", "awesome", "amazing", "excellent", "fantastic", "superb", "impressive", "bravo", "good job", "good"],
+        "response" => "Thank you! I'm here to assist you with any questions or requests you have. Feel free to ask me anything!"
+    ],
+    [
+        "keywords" => ["thank you", "thanks", "appreciate", "thank you bot", "thanks bot", "thank you chatbot", "thanks chatbot", "thank you for help", "thanks for help"],
+        "response" => "You're welcome! If you need any further assistance, feel free to ask. I'm here to help!"
     ]
 ];
 
@@ -440,6 +448,8 @@ $greetings = [
     "bot" => "Yes, I'm here! How can I assist you?",
     "help" => "I'm here to help! What can I do for you?",
     "bye" => "Good Bye! Thank you for chatting with me.",
+    "no" => "Okay then!"
+
 ];
 
 

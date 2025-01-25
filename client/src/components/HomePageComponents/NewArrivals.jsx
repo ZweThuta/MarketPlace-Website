@@ -63,7 +63,7 @@ const NewArrivals = () => {
             const currentDate = new Date();
             const timeDifference = currentDate - productDate;
             const daysDifference = timeDifference / (1000 * 3600 * 24);
-            return daysDifference <= 7 && product.quantity >= 2;
+            return daysDifference <= 30 && product.quantity >= 2;
           })
           .sort(() => 0.5 - Math.random())
           .slice(0, 10);

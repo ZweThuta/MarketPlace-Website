@@ -90,7 +90,7 @@ const ChatBot = () => {
 
       {/* ChatBot */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 max-w-lg w-full bg-white shadow-xl rounded-lg z-20 overflow-hidden">
+        <div className="fixed bottom-6 right-6  max-w-lg w-full bg-white shadow-xl rounded-lg z-20 overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 bg-neroBlack950">
             <h2 className="text-white font-semibold text-lg">TrendBuddy</h2>
@@ -104,7 +104,7 @@ const ChatBot = () => {
 
           {/* Welcome Message */}
           {messages.length === 0 && (
-            <div className="p-4 flex flex-col items-center text-center">
+            <div className="p-4 flex flex-col h-36 items-center text-center">
               <img
                 src={TrendBuddy}
                 alt="TrendBuddy"
@@ -122,7 +122,7 @@ const ChatBot = () => {
           )}
 
           {/* Chat Messages */}
-          <div className="chat-messages px-4 py-2 h-80 overflow-y-auto bg-gray-50">
+          <div className="chat-messages px-4 py-2 h-96 overflow-y-auto bg-gray-50">
             {messages.map((msg, index) => (
               <div
                 key={index}
